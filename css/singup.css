@@ -8,7 +8,8 @@
 
 .logo-img {
   width: 100px;
-  height: 120px;
+  height: 121px;
+  transition: width 0.8s ease-in-out, height 0.8s ease-in-out;
 }
 
 .sing_up_page .logo_signup_page {
@@ -309,6 +310,13 @@ footer .links {
   line-height: 25px;
   text-align: center;
   font-size: 21px;
+}
+
+@media (max-width: 1024px) {
+  .logo-img {
+    width: 64px !important;
+    height: 64px !important;
+  }
 }
 
 @media (max-width: 700px) {
