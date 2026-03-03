@@ -20,6 +20,10 @@ function setInfoState(el, visible) {
   el.style.visibility = visible ? "visible" : "hidden";
 }
 
+if (full_name) {
+  full_name.addEventListener("blur", validateFullname);
+}
+
 function getIconBase(icon) {
   if (icon && icon.src) {
     const idx = icon.src.lastIndexOf("/");
