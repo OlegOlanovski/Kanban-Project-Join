@@ -17,11 +17,11 @@
   width: 300px;
   min-width: 300px;
   max-width: 300px;
-  max-height: 580px;
+  max-height: none;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: visible;
   overflow-x: hidden;
 }
 
@@ -122,7 +122,8 @@
 .card {
   width: 252px;
   max-width: 252px;
-  height: 250px;
+  min-height: 250px;
+  height: auto;
   background: #ffffff;
   border-radius: 24px;
   padding: 16px;
@@ -136,8 +137,7 @@
 
 .card-content {
   flex: 1 1 auto;
-  overflow: auto;
-  padding-right: 6px;
+  overflow: visible;
 }
 
 /* width */
