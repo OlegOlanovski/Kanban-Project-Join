@@ -2,6 +2,8 @@ let full_name = document.getElementById("name");
 let email = document.getElementById("mail");
 let password = document.getElementById("password");
 let infoPassword = document.getElementById("info-password");
+let infoName = document.getElementById("info-name");
+let infoEmail = document.getElementById("info-email");
 let confirmPassword = document.getElementById("confirm-password");
 let infoConfirmPassword = document.getElementById("info-confirm-password");
 let isAccept = document.getElementById("accept-id");
@@ -10,6 +12,58 @@ let acceptTooltipTimer = null;
 let singupButton = document.getElementById("singup-button");
 let iconImgMail = document.getElementById("email-icon");
 let iconImg = document.getElementById("lock-icon");
+let passwordToggleIcon = document.getElementById("password-toggle");
+let confirmPasswordToggleIcon = document.getElementById("confirm-password-toggle");
+
+function setInfoState(el, visible) {
+  if (!el) return;
+  el.style.visibility = visible ? "visible" : "hidden";
+}
+
+if (full_name) {
+  full_name.addEventListener("blur", validateFullname);
+}
+
+function getIconBase(icon) {
+  if (icon && icon.src) {
+    const idx = icon.src.lastIndexOf("/");
+    if (idx !== -1) return icon.src.slice(0, idx + 1);
+  }
+  return window.location.pathname.includes("/subpages/") ? "../assets/icons/" : "./assets/icons/";
+}
+
+function setIconSrc(icon, filename) {
+  if (!icon) return;
+  icon.src = getIconBase(icon) + filename;
+}
+
+function isSignupFormValid() {
+  if (!full_name || !email || !password || !confirmPassword || !isAccept) return false;
+  const okName = full_name.value.trim() !== "";
+  const okEmail = validateEmailRegEx(email);
+  const okPass = password.value.length > 5;
+  const okConfirm = confirmPassword.value !== "" && password.value === confirmPassword.value;
+  const okCheckbox = isAccept.checked;
+  return okName && okEmail && okPass && okConfirm && okCheckbox;
+}
+
+function syncSignupButtonState() {
+  if (!singupButton) return;
+  const ok = isSignupFormValid();
+  singupButton.disabled = !ok;
+  singupButton.classList.toggle("disebles-singup-button", !ok);
+}
+
+(function initSignupButtonState() {
+  if (!singupButton || !full_name || !email || !password || !confirmPassword || !isAccept) return;
+  const fields = [full_name, email, password, confirmPassword];
+  fields.forEach((el) => {
+    el.addEventListener("input", syncSignupButtonState);
+    el.addEventListener("change", syncSignupButtonState);
+  });
+  isAccept.addEventListener("change", syncSignupButtonState);
+  syncSignupButtonState();
+})();
 /**
  * Input  Name prüfen
  */
@@ -19,9 +73,11 @@ function validateFullname() {
   if (ok) {
     full_name.classList.add("isValidate");
     full_name.classList.remove("isInvaled");
+    setInfoState(infoName, false);
   } else {
     full_name.classList.add("isInvaled");
     full_name.classList.remove("isValidate");
+    setInfoState(infoName, true);
   }
 
   return ok;
@@ -52,9 +108,11 @@ function validateEmail() {
     
     email.classList.remove("isInvaled");
     email.classList.add("isValidate");
+    setInfoState(infoEmail, false);
   } else {
     email.classList.add("isInvaled");
     email.classList.remove("isValidate");
+    setInfoState(infoEmail, true);
   }
 
   return isValid;
@@ -65,12 +123,29 @@ function validateEmail() {
 function updatePasswordIcon() {
   if (password.value.length === 0) {
     if (!iconImg) return;
-    iconImg.src = "./assets/icons/lock.png";
+    setIconSrc(iconImg, "lock.png");
     return;
   }
   if (!iconImg) return;
-  iconImg.src =
-    password.type === "text" ? "./assets/icons/visibility.svg" : "./assets/icons/visibility_off.svg";
+  setIconSrc(
+    iconImg,
+    password.type === "text" ? "visibility.svg" : "visibility_off.svg",
+  );
+}
+
+function updateSignupToggleIcons() {
+  if (passwordToggleIcon && password) {
+    setIconSrc(
+      passwordToggleIcon,
+      password.type === "text" ? "visibility.svg" : "visibility_off.svg",
+    );
+  }
+  if (confirmPasswordToggleIcon && confirmPassword) {
+    setIconSrc(
+      confirmPasswordToggleIcon,
+      confirmPassword.type === "text" ? "visibility.svg" : "visibility_off.svg",
+    );
+  }
 }
 
 // Initial prüfen
@@ -84,6 +159,7 @@ function updatePasswordIcon() {
     password.type = password.type === "password" ? "text" : "password";
     password.classList.toggle("show-password");
     updatePasswordIcon();
+    updateSignupToggleIcons();
   });
   if (!confirmPassword) return;
   confirmPassword.addEventListener("input", toggleIconState);
@@ -95,6 +171,7 @@ function updatePasswordIcon() {
     const hidden2 = confirmPassword.type === "password";
     confirmPassword.type = hidden2 ? "text" : "password";
     confirmPassword.classList.toggle("show-password", hidden2);
+    updateSignupToggleIcons();
   });
 
   function toggleIconState() {
@@ -106,8 +183,31 @@ function updatePasswordIcon() {
       password.classList.remove("password-empty");
     }
     updatePasswordIcon();
+    updateSignupToggleIcons();
   }
 })();
+
+if (passwordToggleIcon && password) {
+  passwordToggleIcon.addEventListener("click", (e) => {
+    e.preventDefault();
+    const hidden = password.type === "password";
+    password.type = hidden ? "text" : "password";
+    password.classList.toggle("show-password", hidden);
+    updateSignupToggleIcons();
+    password.focus();
+  });
+}
+
+if (confirmPasswordToggleIcon && confirmPassword) {
+  confirmPasswordToggleIcon.addEventListener("click", (e) => {
+    e.preventDefault();
+    const hidden = confirmPassword.type === "password";
+    confirmPassword.type = hidden ? "text" : "password";
+    confirmPassword.classList.toggle("show-password", hidden);
+    updateSignupToggleIcons();
+    confirmPassword.focus();
+  });
+}
 
 
 function validatePassword() {
@@ -115,16 +215,14 @@ function validatePassword() {
 
   if (ok) {
     password.classList.add("isValidate");
-    password.classList.add("visibility-off");
     password.classList.remove("isInvaled");
-    infoPassword.style.visibility = "hidden";
+    setInfoState(infoPassword, false);
   } else {
-    infoPassword.style.visibility = "visible";
+    setInfoState(infoPassword, true);
     password.classList.add("isInvaled");
     password.classList.remove("isValidate");
-    password.classList.remove("visibility-off");
     if (iconImg) {
-      iconImg.src = "./assets/icons/lock.png";
+      setIconSrc(iconImg, "lock.png");
     }
 
     updatePasswordIcon();
@@ -143,11 +241,11 @@ function validateConfirmPassword() {
   if (ok) {
     confirmPassword.classList.add("isValidate");
     confirmPassword.classList.remove("isInvaled");
-    infoPassword.style.visibility = "hidden";
-    infoConfirmPassword.style.visibility = "hidden";
+    setInfoState(infoPassword, false);
+    setInfoState(infoConfirmPassword, false);
   } else {
-    infoPassword.style.visibility = "visible";
-    infoConfirmPassword.style.visibility = "visible";
+    setInfoState(infoPassword, true);
+    setInfoState(infoConfirmPassword, true);
     confirmPassword.classList.add("isInvaled");
     confirmPassword.classList.remove("isValidate");
   }

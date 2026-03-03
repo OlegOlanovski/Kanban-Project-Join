@@ -8,7 +8,8 @@
 
 .logo-img {
   width: 100px;
-  height: 120px;
+  height: 121px;
+  transition: width 0.8s ease-in-out, height 0.8s ease-in-out;
 }
 
 .sing_up_page .logo_signup_page {
@@ -20,16 +21,13 @@
   z-index: 5;
 }
 
-.visibility-off {
-  display: block;
-  background-image: url("../assets/icons/visibility_off.svg");
-}
-
-.info-password {
+.info-password,
+.info-name,
+.info-email {
   display: block;
   width: 100%;
   min-height: 12px;
-  font-size: 10px;
+  font-size: 16px;
   line-height: 1.1;
   color: tomato;
   visibility: hidden;
@@ -37,14 +35,13 @@
   text-align: left;
   position: absolute;
   left: 0;
-  bottom: 0;
 }
 
 .info-confirm-password {
   display: block;
   width: 100%;
   min-height: 12px;
-  font-size: 10px;
+  font-size: 16px;
   line-height: 1.1;
   color: tomato;
   visibility: hidden;
@@ -52,7 +49,6 @@
   text-align: left;
   position: absolute;
   left: 0;
-  bottom: 0;
 }
 
 .disebles-singup-button {
@@ -70,7 +66,7 @@
   color: #d32828 !important;
   padding: 6px 10px;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.2;
   border: 1px solid #d32828;
   white-space: nowrap;
@@ -109,7 +105,7 @@
   justify-content: center;
   margin: 0;
   font-weight: 600;
-  font-size: 12px !important;
+  font-size: 16px !important;
   line-height: 1.2;
   padding: 0 12px;
   box-sizing: border-box;
@@ -132,6 +128,7 @@
   padding: 0;
   gap: 16px;
   width: 422px;
+  height: 286px;
 }
 
 .field-group {
@@ -143,6 +140,21 @@
 
 .field-group input {
   width: 100%;
+}
+
+.field-group .input-icon {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  transform: none;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.field-group .input-icon.password-toggle {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .form-header {
@@ -195,10 +207,10 @@
 
 .main-form input {
   width: 422px;
-  height: 47px;
+  height: 48px;
   border-radius: 10px;
   border: 1px solid #d1d1d1;
-  font-size: 16px;
+  font-size: 20px;
   padding: 0 48px 0 16px;
   line-height: 47px;
 }
@@ -217,7 +229,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  font-size: 14px;
+  font-size: 16px;
   color: #2a3647;
   position: relative;
 }
@@ -244,7 +256,8 @@
   content: "";
   width: 16px;
   height: 12px;
-  background: url("../assets/icons/check-black.svg") no-repeat center / 16px 12px;
+  background: url("../assets/icons/check-black.svg") no-repeat center / 16px
+    12px;
   transform: scale(0);
   transition: transform 0.12s ease;
 }
@@ -300,6 +313,7 @@
 
 footer .links {
   color: rgba(42, 54, 71, 0.45);
+  font-size: 16px;
 }
 
 .button-text {
@@ -309,6 +323,13 @@ footer .links {
   line-height: 25px;
   text-align: center;
   font-size: 21px;
+}
+
+@media (max-width: 1024px) {
+  .logo-img {
+    width: 64px !important;
+    height: 64px !important;
+  }
 }
 
 @media (max-width: 700px) {
@@ -325,8 +346,8 @@ footer .links {
 
 @media (max-width: 600px) {
   .logo {
-    top: 37px;
-    left: 38px;
+    top: 12px;
+    left: 12px;
     transform: none;
     margin: 0;
   }
@@ -365,11 +386,12 @@ footer .links {
   .form-fields {
     width: 100%;
     height: auto;
-    gap: 12px;
+    gap: 5px;
   }
 
   .field-group {
     width: 90%;
+    padding-bottom: 0;
   }
 
   .main-form input {
@@ -377,8 +399,31 @@ footer .links {
   }
 
   .info-password,
+  .info-confirm-password,
+  .info-name,
+  .info-email {
+    position: static;
+    margin-top: 4px;
+    min-height: 12px;
+    font-size: 16px;
+  }
+
+  .info-password,
   .info-confirm-password {
-    font-size: 10px;
+    font-size: 0;
+    line-height: 0;
+  }
+
+  .info-password::after {
+    content: "Password short.";
+    font-size: 16px;
+    line-height: 1.1;
+  }
+
+  .info-confirm-password::after {
+    content: "No match.";
+    font-size: 16px;
+    line-height: 1.1;
   }
 
   .form-check-content {
@@ -389,7 +434,6 @@ footer .links {
 }
 
 @media (max-width: 420px) {
-
   html,
   body {
     overflow-y: auto;
@@ -404,8 +448,7 @@ footer .links {
   }
 
   footer {
-    margin-top: 34px;
-    padding-bottom: 16px;
+    margin-top: 58px;
   }
 
   .main-content {
@@ -429,11 +472,53 @@ footer .links {
   }
 
   .reg-notice {
-    font-size: 10px !important;
+    font-size: 16px !important;
   }
 
   #singup-button {
     width: 120px;
     height: 48px;
+  }
+}
+
+@media (max-width: 320px) and (max-height: 667px) {
+  .logo {
+    top: 16px;
+    left: 24px;
+  }
+
+  .main-form {
+    width: 94vw;
+    padding: 12px 0 18px;
+  }
+
+  .form-header {
+    margin-bottom: 8px;
+    padding-top: 4px;
+  }
+
+  .form-header h1 {
+    font-size: 32px;
+  }
+
+  .form-header h1::after {
+    width: 80px;
+  }
+
+  .form-fields {
+    gap: 8px;
+  }
+
+  .field-group {
+    width: 94%;
+    padding-bottom: 0;
+  }
+
+  .button-text {
+    font-size: 17px;
+  }
+
+  .form-check-content a {
+    margin-top: 6px;
   }
 }
