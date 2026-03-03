@@ -487,10 +487,6 @@ footer .links {
     left: 24px;
   }
 
-  .main-content {
-    padding-top: 16px;
-  }
-
   .main-form {
     width: 94vw;
     padding: 12px 0 18px;
@@ -520,10 +516,6 @@ footer .links {
 
   .button-text {
     font-size: 17px;
-  }
-
-  .form-check-content {
-    flex-direction: column;
   }
 
   .form-check-content a {
