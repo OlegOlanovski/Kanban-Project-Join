@@ -215,8 +215,7 @@
   .card {
     width: 252px;
     max-width: 252px;
-    min-height: 250px;
-    height: auto;
+    height: 250px;
     background: #ffffff;
     border-radius: 24px;
     padding: 16px;
