@@ -21,12 +21,9 @@
   z-index: 5;
 }
 
-.visibility-off {
-  display: block;
-  background-image: url("../assets/icons/visibility_off.svg");
-}
-
-.info-password {
+.info-password,
+.info-name,
+.info-email {
   display: block;
   width: 100%;
   min-height: 12px;
@@ -144,6 +141,21 @@
 
 .field-group input {
   width: 100%;
+}
+
+.field-group .input-icon {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  transform: none;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.field-group .input-icon.password-toggle {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .form-header {
@@ -385,7 +397,9 @@ footer .links {
   }
 
   .info-password,
-  .info-confirm-password {
+  .info-confirm-password,
+  .info-name,
+  .info-email {
     font-size: 10px;
   }
 
