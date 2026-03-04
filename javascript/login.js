@@ -190,14 +190,24 @@ function getCokkieCheckHelper() {
     const hidenNav = document.querySelectorAll("#nav_li");
     const loginBtn = document.getElementById("login-btn");
     const buttoMenu = document.getElementById("headerUserBtn");
+    const sidebarFooter = document.querySelector(".sidebar-footer");
+    const menueUl = document.querySelector(".menu ul");
+    
+    if (menueUl) menueUl.style.justifyContent = "flex-start";
     if (hidenNav) hidenNav.forEach(el => el.style.display = "none");  
     if (loginBtn) loginBtn.style.display = "block";
     if (buttoMenu) buttoMenu.style.opacity = "0";
-     if (buttoMenu) buttoMenu.style.cursor = "none";
+    if (buttoMenu) buttoMenu.style.cursor = "none";
+    if (sidebarFooter) sidebarFooter.style.display = "flex";
   } else {
     const hidenNav = document.querySelectorAll("#nav_li");
+    const sidebarFooter = document.querySelector(".sidebar-footer");
     const loginBtn = document.getElementById("login-btn");
+    const menueUl = document.querySelector(".menu ul");
+    
+    if (menueUl) menueUl.style.justifyContent = "space-around"; 
     if (hidenNav) hidenNav.forEach(el => el.style.display = "block");
+    if (sidebarFooter) sidebarFooter.style.display = "none";
     if (loginBtn) loginBtn.style.display = "none";
   }
   return cookies.loggedInUser || null;
