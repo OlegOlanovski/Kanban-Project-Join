@@ -71,7 +71,7 @@ body.loaded .logo_page {
 .links {
   text-decoration: none;
   color: #2a3647;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .signup {
@@ -84,6 +84,7 @@ body.loaded .logo_page {
   color: white;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: 16px;
 }
 
 .signup:hover {
@@ -295,7 +296,7 @@ footer {
 }
 
 footer .links {
-  font-size: 14px;
+  font-size: 16px;
   color: rgba(42, 54, 71, 0.45);
 }
 
