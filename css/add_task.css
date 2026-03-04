@@ -112,15 +112,16 @@
   display: flex;
   width: 50%;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  height: 560px;
 }
 
 .form_2 {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
   width: 50%;
+  height: 560px;
 }
 
 .form-details {
@@ -231,17 +232,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 35px;
   background: #f6f7f8;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   padding: 6px 10px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .subtasks-actions {
   display: flex;
   align-items: center;
   gap: 4px;
+  padding: 6px;
 }
 
 .subtasks-remove {
