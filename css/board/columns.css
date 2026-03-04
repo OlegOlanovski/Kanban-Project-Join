@@ -260,6 +260,10 @@
   margin-left: 0;
 }
 
+.card-avatar-more {
+  background: #2a3647;
+}
+
 .avatar-color-0 { background:#FF7A00; }
 .avatar-color-1 { background:#FF5EB3; }
 .avatar-color-2 { background:#6E52FF; }
