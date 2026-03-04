@@ -234,9 +234,8 @@ function validatePassword() {
  *  Confirm Password prüfen
  */
 function validateConfirmPassword() {
-  validatePassword();
-
-  const ok = confirmPassword.value !== "" && password.value === confirmPassword.value;
+  const okPass = validatePassword();
+  const ok = okPass && confirmPassword.value !== "" && password.value === confirmPassword.value;
 
   if (ok) {
     confirmPassword.classList.add("isValidate");
