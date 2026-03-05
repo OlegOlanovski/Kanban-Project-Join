@@ -284,9 +284,7 @@ body.visited .login-form {
   width: 422px;
 }
 
-.info-password,
-.info-name,
-.info-email {
+.info-password, .info-email {
   display: block;
   width: 100%;
   font-size: 16px;
@@ -296,6 +294,7 @@ body.visited .login-form {
   text-align: left;
   left: 0;
 }
+
 footer {
   display: flex;
   justify-content: center;
