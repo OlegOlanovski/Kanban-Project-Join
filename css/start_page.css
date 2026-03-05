@@ -226,7 +226,7 @@ body.visited .login-form {
   display: flex;
   justify-content: center;
   gap: 35px;
-  margin-top: -65px;
+  margin-top: -8px;
 }
 
 .login-form .button-group button {
