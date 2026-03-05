@@ -118,7 +118,7 @@ body {
   margin-bottom: 8px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .policy-content {
     padding: 56px 48px 80px;
   }

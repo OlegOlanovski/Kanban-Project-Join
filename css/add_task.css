@@ -408,7 +408,7 @@ label .label-star {
   width: 110px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .form-details {
     display: flex;
     flex-direction: column;
