@@ -410,20 +410,7 @@ footer .links {
 
   .info-password,
   .info-confirm-password {
-    font-size: 0;
-    line-height: 0;
-  }
-
-  .info-password::after {
-    content: "Password short.";
-    font-size: 16px;
-    line-height: 1.1;
-  }
-
-  .info-confirm-password::after {
-    content: "No match.";
-    font-size: 16px;
-    line-height: 1.1;
+    visibility: hidden;
   }
 
   .form-check-content {

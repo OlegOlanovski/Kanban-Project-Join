@@ -276,7 +276,7 @@ body.visited .login-form {
 }
 
 .info-password {
-  opacity: 0;
+  visibility: hidden;
   height: 30px;
   color: rgb(255, 47, 47);
   font-size: 16px;
