@@ -1,4 +1,27 @@
 /* RESPONSIVE*/
+@media (max-width: 1439px) {
+  .board {
+    display: grid;
+    grid-template-columns: repeat(2, 250px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: start;
+  }
+
+  .column {
+    flex: 0 0 250px;
+    width: 250px;
+    max-width: 250px;
+  }
+
+  .column-header,
+  .cards,
+  .empty {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 1023px) {
   .layout {
     min-width: 0;
@@ -205,9 +228,11 @@
   }
 
   .board {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 250px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: start;
     padding: 0 24px 24px;
     overflow-x: hidden;
   }
@@ -223,35 +248,36 @@
     max-height: none;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     flex-shrink: 0;
-    overflow-y: visible;
-    overflow-x: hidden;
+    overflow: visible;
   }
 
   .column-header {
-    width: 252px;
-    max-width: 252px;
+    width: 100%;
+    max-width: 100%;
+    padding: 8px 0;
   }
 
   .cards {
-    width: 252px;
-    min-width: 252px;
-    max-width: 252px;
-    height: 100%;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
     background: transparent;
     border-radius: 24px;
-    padding: 16px 0;
+    padding: 12px 0 16px;
     cursor: grab;
     user-select: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
+    overflow: visible;
   }
 
   .card {
-    width: 252px;
-    max-width: 252px;
+    width: 100%;
+    max-width: 250px;
     height: 250px;
     background: #ffffff;
     border-radius: 24px;
@@ -265,8 +291,8 @@
   }
 
   .empty {
-    width: 252px;
-    max-width: 252px;
+    width: 100%;
+    max-width: 100%;
   }
 
   .task-overlay {
@@ -285,6 +311,63 @@
 
   .task-edit-row {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .board-section {
+    padding: 0 16px;
+  }
+
+  .board-header {
+    gap: 16px;
+  }
+
+  .board-nav {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .search-bar,
+  .search-input {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .add-task-button {
+    margin-left: auto;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0 16px 24px;
+  }
+
+  .column {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  .column-header,
+  .cards,
+  .empty {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .cards {
+    height: auto;
+    overflow: visible;
   }
 }
 
