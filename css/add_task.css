@@ -326,12 +326,16 @@
 }
 
 .kpi-panel-task-footer .--primary-btn-cancel:hover {
-  background-color: #ffffff;
   color: #29abe2;
+  background-color: #ffffff;
+  background-image: url("../assets/icons/iconoir_cancel_blue.svg");
+  background-repeat: no-repeat;
+  background-position: right 11px center;
+  background-size: 23px;
 }
 
 .kpi-panel-task-footer .primary-btn.--primary-btn-cancel:hover .btn-icon {
-  fill: #29abe2;
+  opacity: 0;
 }
 
 label .label-star {
