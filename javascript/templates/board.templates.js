@@ -161,11 +161,11 @@ function buildAssignedAvatarsHtml(task) {
     const initials = getInitials(name);
     const colorClass = getContactColorClass(contact);
     html +=
-      '<span class="card-avatar ' +
-      escapeHtml(colorClass) +
-      '">' +
-      escapeHtml(initials) +
-      "</span>";
+      '<span class="card-avatar ' + escapeHtml(colorClass) +'">' +escapeHtml(initials) +'</span>';
+  }
+  const remaining = list.length - maxAvatars;
+  if (remaining > 0) {
+    html +='<span class="card-avatar card-avatar-more">+' + remaining + "</span>";
   }
   return html;
 }

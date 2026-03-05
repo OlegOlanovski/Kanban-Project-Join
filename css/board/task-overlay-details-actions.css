@@ -20,14 +20,13 @@
   gap: 8px;
   padding: 6px 8px;
   border-radius: 8px;
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition: background 0.15s ease, transform 0.15s ease, color 0.15s ease;
 }
 
 .task-overlay-action[hidden] {
   display: none !important;
 }
 
-#taskOverlayCancel,
 #taskOverlaySave {
   border: 1px solid #cfd6e4;
 }
@@ -50,9 +49,19 @@
   transform: translateY(-1px);
 }
 
-.task-overlay-sep {
-  width: 1px;
-  height: 24px;
-  background: #d1d1d1;
+#taskOverlayDelete:hover,
+#taskOverlayEdit:hover {
+  background: transparent;
+  transform: none;
+  color: #29abe2;
 }
 
+#taskOverlayDelete:hover img,
+#taskOverlayEdit:hover img {
+  filter: invert(49%) sepia(77%) saturate(517%) hue-rotate(165deg) brightness(95%) contrast(90%);
+}
+
+#taskOverlaySave:hover {
+  background: #29abe2;
+  border-color: #29abe2;
+}
