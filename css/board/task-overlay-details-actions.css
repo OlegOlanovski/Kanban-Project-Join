@@ -27,7 +27,6 @@
   display: none !important;
 }
 
-#taskOverlayCancel,
 #taskOverlaySave {
   border: 1px solid #cfd6e4;
 }
@@ -62,8 +61,7 @@
   filter: invert(49%) sepia(77%) saturate(517%) hue-rotate(165deg) brightness(95%) contrast(90%);
 }
 
-.task-overlay-sep {
-  width: 1px;
-  height: 24px;
-  background: #d1d1d1;
+#taskOverlaySave:hover {
+  background: #29abe2;
+  border-color: #29abe2;
 }

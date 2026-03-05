@@ -9,7 +9,6 @@ function initOverlayEvents() {
   bindOverlayDelete(els);
   bindOverlayEdit(els);
   bindOverlaySave(els);
-  bindOverlayCancel(els);
   bindOverlayEditForm(els);
   initOverlayEditWidgets();
   bindOverlayOpenByCard();
@@ -23,7 +22,6 @@ function getOverlayElements() {
   const delBtn = document.getElementById("taskOverlayDelete");
   const editBtn = document.getElementById("taskOverlayEdit");
   const saveBtn = document.getElementById("taskOverlaySave");
-  const cancelBtn = document.getElementById("taskOverlayCancel");
   const view = document.getElementById("taskOverlayView");
   const editForm = document.getElementById("taskOverlayEditForm");
   if (!backdrop || !closeBtn) {
@@ -38,7 +36,6 @@ function getOverlayElements() {
     delBtn: delBtn,
     editBtn: editBtn,
     saveBtn: saveBtn,
-    cancelBtn: cancelBtn,
     view: view,
     editForm: editForm,
   };
@@ -91,15 +88,6 @@ function bindOverlaySave(els) {
     e.stopPropagation();
     if (!openedTaskId) return;
     saveOverlayEdits(openedTaskId, els);
-  });
-}
-
-function bindOverlayCancel(els) {
-  if (!els.cancelBtn) return;
-  els.cancelBtn.addEventListener("click", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    exitOverlayEditMode(els);
   });
 }
 
@@ -367,5 +355,4 @@ function toggleOverlayEditState(els, editing) {
   if (els.editBtn) els.editBtn.hidden = editing;
   if (els.delBtn) els.delBtn.hidden = editing;
   if (els.saveBtn) els.saveBtn.hidden = !editing;
-  if (els.cancelBtn) els.cancelBtn.hidden = !editing;
 }
