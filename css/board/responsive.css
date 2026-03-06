@@ -211,8 +211,11 @@
     background-image: url("../../assets/icons/addPlus-white.svg");
     background-repeat: no-repeat;
     background-position: center;
+    background-size: 20px 20px;
     font-size: 0;
-    height: 48px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
     border-radius: 16px;
     margin-left: 0;
     align-self: auto;
@@ -222,8 +225,11 @@
     background-image: url("../../assets/icons/addPlus-white.svg");
     background-repeat: no-repeat;
     background-position: center;
+    background-size: 20px 20px;
     font-size: 0;
-    height: 48px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
     border-radius: 16px;
   }
 
@@ -320,23 +326,38 @@
   }
 
   .board-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "title add"
+      "search search";
+    align-items: center;
     gap: 16px;
   }
 
+  .board-title {
+    grid-area: title;
+  }
+
   .board-nav {
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 12px;
+    display: contents;
+  }
+
+  .board-search-empty {
+    grid-column: 1 / -1;
   }
 
   .search-bar,
   .search-input {
+    grid-area: search;
     width: 100%;
     max-width: 100%;
   }
 
   .add-task-button {
-    margin-left: auto;
+    grid-area: add;
+    justify-self: end;
+    margin-left: 0;
   }
 
   .board {
