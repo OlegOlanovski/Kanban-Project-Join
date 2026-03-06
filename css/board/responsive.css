@@ -129,7 +129,7 @@
   .sidebar-footer a.active {
     background-color: #091931;
     color: #ffffff;
-    border-radius: 16px;
+    border-radius: 20px;
   }
 
   .sidebar-footer a.active::before {
@@ -148,7 +148,7 @@
     position: fixed;
     width: 100%;
     padding: 24px 40px 20px 25px;
-    height: 80px;
+    height: 96px;
     z-index: 998;
   }
 
@@ -162,6 +162,7 @@
   .header-help {
     display: none !important;
   }
+
 
   .menu-item--mobile {
     display: block;
@@ -211,8 +212,11 @@
     background-image: url("../../assets/icons/addPlus-white.svg");
     background-repeat: no-repeat;
     background-position: center;
+    background-size: 20px 20px;
     font-size: 0;
-    height: 48px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
     border-radius: 16px;
     margin-left: 0;
     align-self: auto;
@@ -222,8 +226,11 @@
     background-image: url("../../assets/icons/addPlus-white.svg");
     background-repeat: no-repeat;
     background-position: center;
+    background-size: 20px 20px;
     font-size: 0;
-    height: 48px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
     border-radius: 16px;
   }
 
@@ -320,23 +327,38 @@
   }
 
   .board-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "title add"
+      "search search";
+    align-items: center;
     gap: 16px;
   }
 
+  .board-title {
+    grid-area: title;
+  }
+
   .board-nav {
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 12px;
+    display: contents;
+  }
+
+  .board-search-empty {
+    grid-column: 1 / -1;
   }
 
   .search-bar,
   .search-input {
+    grid-area: search;
     width: 100%;
     max-width: 100%;
   }
 
   .add-task-button {
-    margin-left: auto;
+    grid-area: add;
+    justify-self: end;
+    margin-left: 0;
   }
 
   .board {
@@ -368,6 +390,12 @@
   .cards {
     height: auto;
     overflow: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  .board-title {
+    font-size: 40px;
   }
 }
 
@@ -404,5 +432,22 @@
     align-items: center;
     justify-content: center;
     gap: 3px;
+  }
+}
+
+@media (max-width: 425px) {
+  .header {
+    height: 80px;
+  }
+
+  .header-title {
+    width: 32px;
+    height: 39.2px;
+  }
+
+  .header-user {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
   }
 }

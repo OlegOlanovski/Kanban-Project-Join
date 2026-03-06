@@ -42,7 +42,13 @@
   }
 
   .header {
-    padding: 24px 40px 20px 25px;
+    padding: 24px 40px !important;
+    height: 96px;
+  }
+}
+
+@media (max-width: 425px) {
+  .header {
     height: 80px;
   }
 }

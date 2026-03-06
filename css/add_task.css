@@ -20,15 +20,17 @@
 }
 
 .contact-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 32px;
   height: 32px;
+  margin-left: -8px;
   border-radius: 50%;
   background: #2a7cff;
   color: white;
   font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
 }
 
 .avatar-color-0 {
@@ -113,7 +115,6 @@
   width: 50%;
   justify-content: center;
   align-items: flex-start;
-  height: 560px;
 }
 
 .form_2 {
@@ -121,7 +122,7 @@
   align-items: center;
   flex-direction: column;
   width: 50%;
-  height: 560px;
+  height: 460px;
 }
 
 .form-details {
@@ -181,9 +182,15 @@
   width: 100%;
 }
 
+.subtasks-input.is-empty .subtasks-add-btn,
+.subtasks-input.is-empty .subtasks-clear-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .subtasks-input input {
   width: 100%;
-  padding-right: 44px;
+  padding-right: 80px;
 }
 
 .subtasks-add-btn {
@@ -199,6 +206,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.subtasks-clear-btn {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subtasks-clear-btn img {
+  width: 16px;
+  height: 16px;
 }
 
 .subtasks-add-btn img {
@@ -262,6 +289,11 @@
   padding: 0 2px;
 }
 
+.subtasks-remove img {
+  width: 16px;
+  height: 16px;
+}
+
 .subtasks-edit {
   background: transparent;
   border: none;
@@ -270,6 +302,11 @@
   cursor: pointer;
   line-height: 1;
   padding: 0 2px;
+}
+
+.subtasks-edit img{
+  width: 16px;
+  height: 16px;
 }
 
 .subtasks-separator {
@@ -429,27 +466,7 @@ label .label-star {
 }
 
 @media (max-width: 900px) {
-  .header {
-    height: 80px;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px 40px 20px 25px;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
-  }
 
-  .header-title {
-    display: block !important;
-    height: 50px;
-    width: 50px;
-    content: url("../assets/icons/logo.svg");
-    margin-left: 0px;
-  }
-
-  .header-help {
-    display: none;
-  }
 
   .add-task-button {
     background-image: url("../assets/icons/addPlus-white.svg");

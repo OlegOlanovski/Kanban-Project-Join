@@ -582,18 +582,21 @@ body {
   }
 
   .header {
-    padding: 20px 40px;
+    padding: 20px 40px !important;
     height: 96px;
   }
-
+.header-title,
+.header-help {
+  display: none !important;
+}
   .good-morning {
     display: none;
   }
 
   .header-logo {
     display: block;
-    width: 32px;
-    height: 39px;
+    width: 56px;
+    height: 64px;
     object-fit: contain;
   }
 
@@ -718,6 +721,8 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 20px 27px;
+    position: fixed;
+    z-index: 1000;
   }
 
   .header-help {
@@ -739,8 +744,7 @@ body {
   }
 
   .summary-section {
-    padding-top: 20px;
-    margin: 0 auto;
+    padding-top: 150px;
   }
 
   .summary-headline {
@@ -753,7 +757,7 @@ body {
   }
 
   .summary-title {
-    font-size: 44px;
+    font-size: 61px;
     line-height: 1.1;
     margin: 0;
     white-space: nowrap;
@@ -946,7 +950,7 @@ body {
 }
 
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .summary-section{
     margin: 0 auto;
     width: 100%;
@@ -963,7 +967,6 @@ body {
 
   .summary-headline {
     position: relative;
-    right: 40px;
   }
 
   .summary-content {
@@ -1007,7 +1010,7 @@ body {
 
 @media (max-width: 768px) {
   .summary-section {
-    padding-top: 20px;
+    padding-top: 150px;
     padding-left: 16px;
     padding-right: 16px;
     
@@ -1047,16 +1050,6 @@ body {
 
   .kpi-number {
     font-size: 36px;
-  }
-
-  .summary-section {
-    padding-top: 20px;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .kpi-panel {
-    gap: 16px;
   }
 
   .kpi-top {
@@ -1104,8 +1097,8 @@ body {
 
 
   .header-logo {
-    width: 44px;
-    height: 50px;
+    width: 56px;
+    height: 64px;
   }
 }
 
@@ -1144,6 +1137,24 @@ body {
   }
 }
 
+@media (max-width: 425px) {
+  .header {
+    height: 80px;
+  }
+
+  .header-logo {
+    width: 32px;
+    height: 39.2px;
+  }
+
+  .header-user,
+  .header-guest {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+
 @media (min-width: 801px) and (max-width: 890px) {
   .summary-section {
     max-width: 780px;
@@ -1156,4 +1167,5 @@ body {
     padding-left: 0;
     padding-right: 0;
   }
+  
 }

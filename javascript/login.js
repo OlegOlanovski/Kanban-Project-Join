@@ -56,10 +56,7 @@ function guastLogin() {
   document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
 
   try {
-    sessionStorage.setItem(
-      "loggedInUser",
-      JSON.stringify({ mail: "Guest", namen: "Guest" }),
-    );
+    sessionStorage.setItem("loggedInUser",JSON.stringify({ mail: "Guest", namen: "Guest" }),);
   } catch (e) {}
 
   window.location.href = "./subpages/summary.html";
@@ -97,7 +94,7 @@ async function logIn() {
   }
   const users = loginData ? Object.values(loginData) : [];
   if (!users.length) { alert("No users found in database. Please register first."); return;}
-  const infoPasswordElement = document.getElementById("info-password");
+  const infoPasswordElement = document.getElementById("info-no-match");
   let emailFound = false;
   for (const user of users) {
     if ((user.mail || "") === (email.value || "")) {

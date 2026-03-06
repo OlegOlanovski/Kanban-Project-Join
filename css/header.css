@@ -13,7 +13,7 @@ html, body{
   
 }
 
-.d-none{ display:none !important; }
+/* .d-none{ display:none !important; } */
 
 .layout{
   display:flex;
@@ -302,6 +302,7 @@ html, body{
 }
 .userMenuItem:hover{ background:rgba(255,255,255,.08); }
 @media (max-width: 1023px){
+
   .layout{
     flex-direction:column;
     min-height:100vh;
@@ -317,7 +318,7 @@ html, body{
   .header-title,
   .header-help{ display:none !important; }
 
-  .header-logo{ display:block !important; height: 50px; margin-left: 5px;}
+  .header-logo{ display:block !important; width:56px; height:64px;}
 
   .sidebar{
     width:100%;
@@ -423,6 +424,29 @@ html, body{
 
 }
 
+@media (max-width: 768px){
+  .header-logo{
+    width:56px;
+    height:64px;
+  }
+}
+@media (max-width: 425px){
+  .header{
+    height:80px;
+  }
+
+  .header-logo{
+    width:32px;
+    height:39.2px;
+  }
+
+  .header-guest,
+  .header-user{
+    width:40px;
+    height:40px;
+    font-size:16px;
+  }
+}
 @media (max-width: 360px){
   .menu a{ font-size:11px; }
   .menu ul{ padding:0 6px; }
