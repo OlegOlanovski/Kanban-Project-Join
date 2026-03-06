@@ -57,30 +57,13 @@ function updateSearchEmptyState(tasks) {
 }
 
 function taskMatchesQuery(task, query) {
-  const hay = buildTaskSearchText(task);
-  return hay.includes(query);
+  const title = buildTaskSearchTitle(task);
+  return title.includes(query);
 }
 
-function buildTaskSearchText(task) {
+function buildTaskSearchTitle(task) {
   const normalize = getNormalizeSearchFn();
-  const assigned = resolveAssignedList(task);
-  const subs = getTaskSubtasks(task);
-  const subtaskTitles = [];
-  for (let i = 0; i < subs.length; i++) {
-    if (subs[i] && subs[i].title) subtaskTitles.push(subs[i].title);
-  }
-  const values = [
-    task.title,
-    task.description,
-    getLabelText(task),
-    task.category,
-    task.status,
-    task.priority || task.prio,
-    task.dueDate || task.due,
-    assigned.join(" "),
-    subtaskTitles.join(" "),
-  ];
-  return normalize(values.join(" "));
+  return normalize(task && task.title ? task.title : "");
 }
 
 function renderTaskCard(task) {
