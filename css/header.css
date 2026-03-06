@@ -319,6 +319,7 @@ html, body{
   .header-help{ display:none !important; }
 
   .header-logo{ display:block !important; width:56px; height:64px;}
+  
 
   .sidebar{
     width:100%;
@@ -428,6 +429,7 @@ html, body{
   .header-logo{
     width:56px;
     height:64px;
+    
   }
 }
 @media (max-width: 425px){
@@ -438,6 +440,7 @@ html, body{
   .header-logo{
     width:32px;
     height:39.2px;
+   
   }
 
   .header-guest,

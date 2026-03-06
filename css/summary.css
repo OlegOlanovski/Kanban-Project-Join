@@ -1006,6 +1006,11 @@ body {
     height: 64px;
   }
 
+  .summary-headline {
+    margin-left: 0;
+    
+  }
+
 }
 
 @media (max-width: 768px) {
@@ -1092,7 +1097,7 @@ body {
 
 
   .summary-headline {
-    margin-left: 55px;
+    margin-left: 15px;
   }
 
 
@@ -1133,7 +1138,7 @@ body {
   }
 
   .summary-headline {
-    margin-left: 50px;
+    margin-left: 18px;
   }
 }
 
