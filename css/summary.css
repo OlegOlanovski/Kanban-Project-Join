@@ -849,7 +849,7 @@ body {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 425px) {
   .summary-section,
   .kpi-panel {
     max-width: 390px;
@@ -1099,7 +1099,7 @@ body {
 
 
   .summary-headline {
-    margin-left: 40px;
+    margin-left: 55px;
   }
 
 
@@ -1109,7 +1109,7 @@ body {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 425px) {
   .summary-section {
     padding-left: 14px;
     padding-right: 14px;
@@ -1140,7 +1140,7 @@ body {
   }
 
   .summary-headline {
-    margin-left: 40px;
+    margin-left: 50px;
   }
 }
 
