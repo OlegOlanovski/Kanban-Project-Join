@@ -595,8 +595,8 @@ body {
 
   .header-logo {
     display: block;
-    width: 32px;
-    height: 39px;
+    width: 56px;
+    height: 64px;
     object-fit: contain;
   }
 
@@ -949,7 +949,7 @@ body {
 }
 
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .summary-section{
     margin: 0 auto;
     width: 100%;
@@ -1096,8 +1096,8 @@ body {
 
 
   .header-logo {
-    width: 44px;
-    height: 50px;
+    width: 56px;
+    height: 64px;
   }
 }
 
@@ -1133,6 +1133,24 @@ body {
 
   .summary-headline {
     margin-left: 40px;
+  }
+}
+
+@media (max-width: 425px) {
+  .header {
+    height: 80px;
+  }
+
+  .header-logo {
+    width: 32px;
+    height: 39.2px;
+  }
+
+  .header-user,
+  .header-guest {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
   }
 }
 

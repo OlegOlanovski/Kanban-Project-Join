@@ -148,7 +148,7 @@
     position: fixed;
     width: 100%;
     padding: 24px 40px 20px 25px;
-    height: 80px;
+    height: 96px;
     z-index: 998;
   }
 
@@ -162,6 +162,7 @@
   .header-help {
     display: none !important;
   }
+
 
   .menu-item--mobile {
     display: block;
@@ -431,5 +432,22 @@
     align-items: center;
     justify-content: center;
     gap: 3px;
+  }
+}
+
+@media (max-width: 425px) {
+  .header {
+    height: 80px;
+  }
+
+  .header-title {
+    width: 32px;
+    height: 39.2px;
+  }
+
+  .header-user {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
   }
 }

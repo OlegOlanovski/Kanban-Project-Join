@@ -47,6 +47,12 @@
   }
 }
 
+@media (max-width: 425px) {
+  .header {
+    height: 80px;
+  }
+}
+
 @media (max-width: 768px) {
   .contacts-header h1 {
     font-size: 36px;
