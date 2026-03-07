@@ -179,7 +179,7 @@ body.visited .login-form {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 0;
+  bottom: 0px;
   width: 88px;
   height: 3px;
   background-color: rgb(94, 192, 233);
@@ -432,12 +432,16 @@ footer .links:hover {
     max-width: 92vw;
     height: auto;
     padding: 32px 16px;
-    gap: 20px;
+    gap: 8px;
     border-radius: 30px;
   }
 
   .login-form h1 {
     font-size: 40px;
+  }
+
+  .login-form h1::after {
+    bottom: 16px;
   }
 
   .input-wrapper {
