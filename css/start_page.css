@@ -275,15 +275,6 @@ body.visited .login-form {
   border: 1px solid rgb(255, 47, 47) !important;
 }
 
-.info-password {
-  visibility: hidden;
-  height: 30px;
-  color: rgb(255, 47, 47);
-  font-size: 16px;
-  text-align: center;
-  width: 422px;
-}
-
 .info-password,
 .info-email {
   display: block;
@@ -294,10 +285,6 @@ body.visited .login-form {
   margin: 0;
   text-align: left;
   left: 0;
-}
-
-#info-password {
-  visibility: hidden;
 }
 
 footer {
