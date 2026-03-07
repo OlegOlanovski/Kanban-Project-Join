@@ -297,7 +297,7 @@ body.visited .login-form {
 }
 
 #info-password {
-  display: none;
+  visibility: hidden;
 }
 
 footer {
