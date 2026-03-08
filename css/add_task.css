@@ -271,6 +271,7 @@
 .subtasks-actions {
   display: flex;
   align-items: center;
+  flex-direction: row-reverse;
   gap: 0px;
   padding: 6px;
 }
@@ -306,6 +307,36 @@
 }
 
 .subtasks-edit img{
+  width: 16px;
+  height: 16px;
+}
+
+.subtasks-save-edit{
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.subtasks-save-edit img{
+  width: 16px;
+  height: 16px;
+} 
+
+.subtasks-cancel-edit{
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.subtasks-cancel-edit img{
   width: 16px;
   height: 16px;
 }
