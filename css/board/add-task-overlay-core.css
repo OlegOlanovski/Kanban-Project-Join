@@ -148,6 +148,7 @@ body.no-scroll {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: -8px;
 }
 
 .add-task-overlay .contact-avatar.avatar-color-0 {
