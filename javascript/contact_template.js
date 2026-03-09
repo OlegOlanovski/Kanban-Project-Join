@@ -73,9 +73,7 @@ function modalLeftTemplate(mode) {
     <div class="modal-left">
       <button class="modal-close" id="closeAddContact" type="button">×</button>
       <img src="../assets/icons/logo-white.svg" class="modal-logo" alt="">
-      <h2 class="modal-title">${
-        String(mode || "").trim().toLowerCase() === "edit" ? "Edit contact" : "Add contact"
-      }</h2>
+      <h2 class="modal-title">${String(mode || "").trim().toLowerCase() === "edit" ? "Edit contact" : "Add contact"}</h2>
       <p class="modal-subtitle">Tasks are better with a team!</p>
       <div class="modal-line"></div>
     </div>
@@ -96,13 +94,14 @@ function modalAvatarTemplate(mode, data) {
     `;
 }
 
-function modalActionsTemplate(mode) {
+function modalActionsTemplate(mode, data) {
   return `
     <div class="modal-actions">
       <button type="button"
-              class="btn-cancel"
-              id="modalSecondaryBtn"
-              data-action="${String(mode || "").trim().toLowerCase() === "edit" ? "delete" : "cancel"}">
+              class="${String(mode || "").trim().toLowerCase() === "edit" ? "btn-cancel contact-action" : "btn-cancel"}"
+              id="${String(mode || "").trim().toLowerCase() === "edit" ? "modalSecondaryBtn" : "closeAddContact"}"
+              data-action="${String(mode || "").trim().toLowerCase() === "edit" ? "delete" : "cancel"}"
+              data-id="${String(mode || "").trim().toLowerCase() === "edit" && data ? data.id : ""}">
         ${String(mode || "").trim().toLowerCase() === "edit" ? "Delete" : "Cancel"}
         <img src="../assets/icons/${String(mode || "").trim().toLowerCase() === "edit" ? "delete.svg" : "iconoir_cancel.svg"}" alt="">
       </button>
@@ -128,6 +127,7 @@ function modalFormTemplate(mode, data) {
                required
                value="${(data && data.name) ? data.name : ""}">
         <img src="../assets/icons/person.png" class="input-icon" alt="">
+        <div class="input-error-message" id="nameError"></div>
       </div>
 
       <div class="input-wrapper">
@@ -137,6 +137,7 @@ function modalFormTemplate(mode, data) {
                required
                value="${(data && data.email) ? data.email : ""}">
         <img src="../assets/icons/mail.png" class="input-icon" alt="">
+        <div class="input-error-message" id="emailError"></div>
       </div>
 
       <div class="input-wrapper">
@@ -147,7 +148,7 @@ function modalFormTemplate(mode, data) {
         <img src="../assets/icons/call.svg" class="input-icon" alt="">
       </div>
 
-      ${modalActionsTemplate(mode)}
+      ${modalActionsTemplate(mode, data)}
     </form>
   `;
 }
@@ -174,6 +175,9 @@ function contactModalTemplate(mode, data) {
   return `
     <div class="modal-backdrop d-none" id="addContactModal">
       ${contactModalInnerTemplate(mode, data || {})}
+    </div>
+    <div id="contactSuccessToast" class="contact-toast d-none">
+      Contact successfully created
     </div>
   `;
 }

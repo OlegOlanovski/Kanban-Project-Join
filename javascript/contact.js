@@ -146,6 +146,17 @@ function closeModal() {
   }, 300);
 }
 
+function showContactToast() {
+  let toast = document.getElementById("contactSuccessToast");
+  if (!toast) return;
+
+  toast.classList.remove("d-none");
+
+  setTimeout(function () {
+    toast.classList.add("d-none");
+  }, 2000);
+}
+
 function buildModalData(mode, contact) {
   if (!contact) return {};
   return {
@@ -208,12 +219,44 @@ function renderDetails() {
   if (isMobile()) showMobileDetails();
 }
 
+function clearContactErrors() {
+  let nameError = document.getElementById("nameError");
+  let emailError = document.getElementById("emailError");
+
+  if (nameError) nameError.textContent = "";
+  if (emailError) emailError.textContent = "";
+}
+
+function validateContactForm() {
+  let name = normalize(document.getElementById("contactName")?.value);
+  let email = normalize(document.getElementById("contactEmail")?.value).toLowerCase();
+
+  let nameError = document.getElementById("nameError");
+  let emailError = document.getElementById("emailError");
+
+  clearContactErrors();
+
+  let valid = true;
+
+  if (!name) {
+    if (nameError) nameError.textContent = "Please enter a name";
+    valid = false;
+  }
+
+  if (!email) {
+    if (emailError) emailError.textContent = "Please enter an email";
+    valid = false;
+  }
+
+  return valid;
+}
+
 function createFromForm() {
   let name = normalize(document.getElementById("contactName")?.value);
   let email = normalize(document.getElementById("contactEmail")?.value).toLowerCase();
   let phone = normalize(document.getElementById("contactPhone")?.value);
 
-  if (!name || !email) return;
+  if (!validateContactForm()) return;
 
   let id = generateId();
 
@@ -231,6 +274,7 @@ function createFromForm() {
   renderContactsList();
   renderDetails();
   closeModal();
+  showContactToast();
 }
 
 function saveEdit(editId) {
@@ -241,7 +285,7 @@ function saveEdit(editId) {
   let email = normalize(document.getElementById("contactEmail")?.value).toLowerCase();
   let phone = normalize(document.getElementById("contactPhone")?.value);
 
-  if (!name || !email) return;
+  if (!validateContactForm()) return;
 
   contacts[idx] = { ...contacts[idx], name, email, phone };
   selectedId = editId;
@@ -272,9 +316,14 @@ function handleClick(e) {
   }
 
   let act = e.target.closest(".contact-action");
-  if (act?.dataset.action === "delete") return deleteContact(act.dataset.id);
+  if (act?.dataset.action === "delete") {
+    deleteContact(act.dataset.id);
+    closeModal();
+    return;
+  }
 
   if (act?.dataset.action === "edit") {
+    window.closeMobileMenu && window.closeMobileMenu();
     let contact = contacts.find(c => c.id === act.dataset.id);
     return openModal("edit", contact);
   }
