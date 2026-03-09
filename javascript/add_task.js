@@ -328,25 +328,34 @@ function updateAssignedCheckboxes() {
 async function renderSelectedContacts() {
   const text = document.getElementById("assignedText");
   if (!text) return;
+  const selectedIds = Array.from(selectedContacts);
 
-  if (!selectedContacts.size) {
+  if (!selectedIds.length) {
     text.textContent = "Select contacts to assign";
     return;
   }
- const limit = 8;
-  if (selectedContacts.size > limit) {
-    text.textContent = `${selectedContacts.size} contacts selected`;
-    return;
-  }
+
   const contactsData = await loadContactsFromStorage();
   const list = Array.isArray(contactsData) ? contactsData : Object.values(contactsData || {});
-  text.innerHTML = [...selectedContacts]
+  const limit = 8;
+  const visibleIds = selectedIds.slice(0, limit);
+  const remaining = selectedIds.length - visibleIds.length;
+
+  const avatarsHtml = visibleIds
     .map((id) => {
       const c = list.find((x) => x.id === id);
+      if (!c) return "";
       const colorClass = getContactColorClass(c || {});
       return `<span class="contact-avatar ${colorClass}">${getInitials(c?.name || "")}</span>`;
     })
     .join("");
+
+  let moreHtml = "";
+  if (remaining > 0) {
+    moreHtml = `<span class="contact-avatar contact-avatar-more">+${remaining}</span>`;
+  }
+
+  text.innerHTML = avatarsHtml + moreHtml;
 }
 
 /**
