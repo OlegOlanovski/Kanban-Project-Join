@@ -117,6 +117,7 @@ function modalActionsTemplate(mode, data) {
 function modalFormTemplate(mode, data) {
   return `
     <form id="addContactForm"
+          novalidate
           data-mode="${String(mode || "").trim().toLowerCase()}"
           data-edit-id="${(data && data.id) ? data.id : ""}">
       
