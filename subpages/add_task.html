@@ -118,14 +118,17 @@
 
                                     <label for="category">Category <span class="label-star">*</span></label>
                                     
-                                    <div class="select-wrapper">
-                                        <select id="category" onclick="selectAnimate()">
-                                            <option value="">Select task category</option>
-                                            <option value="user">User Story</option>
-                                            <option value="tech">Technical Task</option>
-                                        </select>
-                                        <span id="selectIcon">▼</span>
+                                    <div class="multi-select category-select">
+                                        <div class="multi-select-input" id="categoryInput">
+                                            <span id="categoryText">Select task category</span>
+                                            <span class="dropdown-arrow" id="categoryArrow">▼</span>
+                                        </div>
+                                        <div class="multi-select-dropdown hidden" id="categoryDropdown">
+                                            <div class="category-option" data-value="user">User Story</div>
+                                            <div class="category-option" data-value="tech">Technical Task</div>
+                                        </div>
                                     </div>
+                                    <input type="hidden" id="category" value="">
 
                                     <label for="subtasks">Subtasks</label>
                                     <div class="subtasks-input">

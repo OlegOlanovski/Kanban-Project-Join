@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initPriorityButtons();
   initSubtasks();
   initAssignedDropdown();
+  initCategoryDropdown();
   initValidationModal();
 
   const root = getAddTaskRoot();
@@ -366,31 +367,116 @@ function initAssignedDropdown() {
   const dropdown = document.getElementById("assignedDropdown");
   const arrow = document.getElementById("dropdownArrow");
   if (!input || !dropdown || !arrow) return;
+  const wrapper = input.closest(".multi-select");
 
-  input.onclick = (e) => {
-    e.stopPropagation();
+  const open = () => {
     dropdown.classList.remove("hidden");
     arrow.classList.add("open");
   };
 
+  const close = () => {
+    dropdown.classList.add("hidden");
+    arrow.classList.remove("open");
+  };
+
+  const toggle = () => {
+    if (dropdown.classList.contains("hidden")) open();
+    else close();
+  };
+
+  input.onclick = (e) => {
+    e.stopPropagation();
+    toggle();
+  };
+
   arrow.onclick = (e) => {
     e.stopPropagation();
-    const isHidden = dropdown.classList.contains("hidden");
-    if (isHidden) {
-      dropdown.classList.remove("hidden");
-      arrow.classList.add("open");
-    } else {
-      dropdown.classList.add("hidden");
-      arrow.classList.remove("open");
-    }
+    toggle();
   };
 
   document.addEventListener("click", (e) => {
-    if (!e.target.closest(".multi-select")) {
-      dropdown.classList.add("hidden");
-      arrow.classList.remove("open");
-    }
+    if (wrapper && wrapper.contains(e.target)) return;
+    close();
   });
+}
+
+// ------------------ CATEGORY SELECT ------------------
+
+/**
+ * Initializes dropdown behavior for the category selector.
+ */
+function initCategoryDropdown() {
+  const input = document.getElementById("categoryInput");
+  const dropdown = document.getElementById("categoryDropdown");
+  const arrow = document.getElementById("categoryArrow");
+  const hidden = document.getElementById("category");
+  if (!input || !dropdown || !arrow || !hidden) return;
+
+  const wrapper = input.closest(".category-select") || input.parentElement;
+
+  const open = () => {
+    dropdown.classList.remove("hidden");
+    arrow.classList.add("open");
+  };
+
+  const close = () => {
+    dropdown.classList.add("hidden");
+    arrow.classList.remove("open");
+  };
+
+  const toggle = () => {
+    if (dropdown.classList.contains("hidden")) open();
+    else close();
+  };
+
+  input.onclick = (e) => {
+    e.stopPropagation();
+    toggle();
+  };
+
+  arrow.onclick = (e) => {
+    e.stopPropagation();
+    toggle();
+  };
+
+  dropdown.addEventListener("click", (e) => {
+    const option = e.target.closest(".category-option");
+    if (!option) return;
+    const value = option.dataset.value || "";
+    setCategorySelection(value);
+    close();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (wrapper && wrapper.contains(e.target)) return;
+    close();
+  });
+
+  setCategorySelection(hidden.value || "");
+}
+
+/**
+ * Applies the category selection to hidden input and UI.
+ * @param {string} value
+ */
+function setCategorySelection(value) {
+  const hidden = document.getElementById("category");
+  const text = document.getElementById("categoryText");
+  const dropdown = document.getElementById("categoryDropdown");
+  if (!hidden || !text || !dropdown) return;
+
+  const options = dropdown.querySelectorAll(".category-option");
+  let label = "Select task category";
+
+  options.forEach((option) => {
+    const isSelected = option.dataset.value === value;
+    if (isSelected) label = option.textContent.trim();
+    option.classList.toggle("selected", isSelected);
+  });
+
+  hidden.value = value || "";
+  text.textContent = label;
+  text.classList.toggle("placeholder", !value);
 }
 
 // ------------------ TASK CREATE ------------------
@@ -645,6 +731,8 @@ function clearForm() {
   if (category) category.value = "";
   if (assigned) assigned.value = "";
   if (subtaskInput) subtaskInput.value = "";
+
+  setCategorySelection("");
 
   if (selectedContacts) selectedContacts.clear();
 
