@@ -583,13 +583,14 @@ label .label-star {
   .priority-section {
     justify-content: center;
     flex-direction: row;
-    gap: 9px;
+    gap: 6px;
   }
 
   .priority-section li {
     width: 100%;
     height: 46px;
     font-size: 14px;
+    gap: 5px;
   }
 
   .create-task-button {
