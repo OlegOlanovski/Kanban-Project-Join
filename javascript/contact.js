@@ -388,11 +388,9 @@ function validateEmail() {
   if (isValid) {
     email.classList.remove("isInvaled");
     email.classList.add("isValidate");
-    setInfoState(infoEmail, false);
   } else {
     email.classList.add("isInvaled");
     email.classList.remove("isValidate");
-    setInfoState(infoEmail, true);
   }
 
   return isValid;

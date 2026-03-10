@@ -6,22 +6,12 @@ html, body{
   padding: 0;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background: #F6F7F8;
-  scrollbar-width: none;
-  overscroll-behavior-x: none !important;
-  
-  
-  
 }
-
-/* .d-none{ display:none !important; } */
 
 .layout{
   display:flex;
   min-height:100dvh;
   width:100%;
-  
-  
-  
 }
 
 .cantainer, .container{
@@ -45,9 +35,6 @@ html, body{
   margin:0 auto;
   padding:32px 24px;
   min-width:0;
-
-
- 
 }
 
 .sidebar{
@@ -58,8 +45,6 @@ html, body{
   display:flex;
   flex-direction:column;
   padding:64px 0 64px 0;
- 
- 
 }
 
 .logo{
