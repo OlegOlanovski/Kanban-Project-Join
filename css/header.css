@@ -451,7 +451,7 @@ html, body{
   }
 }
 @media (max-width: 360px){
-  .menu a{ font-size:11px; }
+  .menu a{ font-size:16px; }
   .menu ul{ padding:0 6px; }
   .menu a{ padding:8px 6px; gap:4px; }
   .menu img{ width:20px; height:20px; }
