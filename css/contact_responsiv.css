@@ -576,8 +576,13 @@
   }
 
   .input-icon {
+    position: absolute;
     right: 14px;
+    top: 21px;
+    transform: translateY(-50%);
     width: 18px;
+    opacity: 0.6;
+    
   }
 
   .modal-actions {
@@ -693,6 +698,16 @@
     border-radius: 50%;
     z-index: 0;
     pointer-events: auto;
+  }
+
+  .input-icon {
+    position: absolute;
+    right: 14px;
+    top: 15px;
+    transform: translateY(-50%);
+    width: 18px;
+    opacity: 0.6;
+    
   }
 
 }
