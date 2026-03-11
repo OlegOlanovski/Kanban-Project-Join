@@ -93,6 +93,7 @@
   min-height: 40px;
   border-radius: 8px;
   background: #fff;
+  color: #999;
 }
 
 .task-overlay-edit .multi-select-dropdown {
@@ -340,6 +341,7 @@
   border-radius: 6px;
   padding: 6px 10px;
   font-size: 14px;
+  color: #999;
 }
 
 .subtasks-actions {
