@@ -222,17 +222,21 @@ function renderDetails() {
 function clearContactErrors() {
   let nameError = document.getElementById("nameError");
   let emailError = document.getElementById("emailError");
+  let phoneError = document.getElementById("phoneError");
 
   if (nameError) nameError.textContent = "";
   if (emailError) emailError.textContent = "";
+  if (phoneError) phoneError.textContent = "";
 }
 
 function validateContactForm() {
   let name = normalize(document.getElementById("contactName")?.value);
   let email = normalize(document.getElementById("contactEmail")?.value).toLowerCase();
+  let phone = normalize(document.getElementById("contactPhone")?.value);
 
   let nameError = document.getElementById("nameError");
   let emailError = document.getElementById("emailError");
+  let phoneError = document.getElementById("phoneError");
 
   clearContactErrors();
 
@@ -245,6 +249,11 @@ function validateContactForm() {
 
   if (!email) {
     if (emailError) emailError.textContent = "Please enter an email";
+    valid = false;
+  }
+
+  if (phone && !/^\+?\d+$/.test(phone)) {
+    if (phoneError) phoneError.textContent = "Please enter a valid phone number";
     valid = false;
   }
 

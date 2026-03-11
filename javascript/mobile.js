@@ -55,6 +55,7 @@ window.showMobileList = function () {
 
 window.toggleMobileMenu = function () {
   const menu = menuEl();
+  const btn = btnEl();
   if (!menu) return;
 
   syncMenuIds();
@@ -64,14 +65,21 @@ window.toggleMobileMenu = function () {
   } else {
     menu.classList.remove("d-none");
     menu.classList.add("is-open");
+    if (btn) btn.classList.add("d-none");
   }
 };
 
 window.closeMobileMenu = function () {
   const menu = menuEl();
+  const btn = btnEl();
   if (!menu) return;
+
   menu.classList.remove("is-open");
   menu.classList.add("d-none");
+
+  if (btn && document.body.classList.contains("show-contact-details")) {
+    btn.classList.remove("d-none");
+  }
 };
 
 window.handleOutsideMobileMenuClick = function (e) {
@@ -179,4 +187,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-

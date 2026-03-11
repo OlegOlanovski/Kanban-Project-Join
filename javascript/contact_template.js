@@ -147,6 +147,7 @@ function modalFormTemplate(mode, data) {
                placeholder="Phone"
                value="${(data && data.phone) ? data.phone : ""}">
         <img src="../assets/icons/call.svg" class="input-icon" alt="">
+        <div class="input-error-message" id="phoneError"></div>
       </div>
 
       ${modalActionsTemplate(mode, data)}

@@ -200,7 +200,6 @@
     box-sizing: border-box;
   }
 
-
   body.show-contact-details .contacts-sidebar {
     display: none;
   }
@@ -208,7 +207,6 @@
   body.show-contact-details .contacts-main {
     display: block;
   }
-
 
   .contacts-header {
     margin: 6px 0 0;
@@ -222,7 +220,6 @@
     padding: 0;
     position: relative;
     left: 5px;
-
   }
 
   .contacts-header h1 {
@@ -288,7 +285,6 @@
     width: calc(100% - 30px);
     margin-right: 16px;
   }
-
 
   #mobileBackBtn img,
   #contactsBackBtn img,
@@ -372,7 +368,7 @@
   #mobileMenuBtn {
     position: fixed;
     right: 20px;
-    bottom: 120px;
+    bottom: 98px !important;
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -387,6 +383,7 @@
     z-index: 99999;
     pointer-events: auto;
   }
+
 
   #mobileMenuBtn:hover {
     background: #29ABE2;
@@ -429,7 +426,7 @@
     padding: 12px 12px;
     border-radius: 12px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     color: #2a3647;
   }
 
@@ -447,8 +444,6 @@
     display: none;
   }
 
-
-
   #addContactModal {
     position: fixed;
     inset: 0;
@@ -460,8 +455,8 @@
   }
 
   .modal {
-    width: 396px;
-    max-width: 100%;
+    width: 100%;
+    max-width: 396px;
     height: auto;
     margin: 0;
     display: flex;
@@ -530,7 +525,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
   }
 
   .modal-person img {
@@ -544,20 +538,20 @@
   #contactsMoreBtn {
     position: fixed;
     right: 20px;
-    bottom: 120px;
+    bottom: 112px;
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    z-index: 999999;
+    z-index: 10;
     pointer-events: auto;
   }
 
   #mobileActionsMenu,
   #contactsMoreMenu {
     position: fixed;
-    right: 18px;
+    right: 10px;
     bottom: 155px;
-    z-index: 1000000;
+    z-index: 100000;
     pointer-events: auto;
   }
 
@@ -567,22 +561,19 @@
 
   #addContactForm {
     max-width: 100%;
-    margin: 50px 0 0;
-    gap: 12px;
-    margin-top: 10px;
+    margin: 10px 0 0;
+    gap: 10px;
   }
 
   .input-wrapper input {
     width: 100%;
-    height: 30px;
+    height: 41px;
     border: 1px solid #d1d1d1;
-    border-radius: 6px;
-    padding: 0 36px 0 12px;
+    border-radius: 10px;
+    padding: 13px 21px;
     font-size: 16px;
     background: white;
-
   }
-
 
   .input-icon {
     right: 14px;
@@ -607,8 +598,8 @@
     padding: 0 24px;
     border-radius: 6px;
     justify-content: center;
+    font-size: 16px;
   }
-
 
   #mobileMenuBtn,
   .contact-more-btn,
@@ -620,7 +611,7 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    z-index: 999999;
+    z-index: 10;
     pointer-events: auto;
   }
 
@@ -658,7 +649,6 @@
     max-width: 280px;
     text-align: center;
   }
-
 }
 
 @media (max-width: 460px) {
@@ -667,13 +657,12 @@
   }
 
   .contact-action {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .contacts-scroll {
     max-height: calc(100vh - 210px);
   }
-
 
   .letter-group {
     width: 100%;
@@ -683,8 +672,15 @@
     color: #2a3647;
     background: transparent;
     position: relative;
-    left: 5px;
+    left: 10px;
     border-bottom: 0;
+  }
+
+  .input-wrapper input {
+    width: 100%;
+    height: 30px;
+    border: 1px solid #d1d1d1;
+    border-radius: 6px;
   }
 
 }
