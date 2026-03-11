@@ -397,6 +397,7 @@
     align-items: stretch;
     gap: 12px;
     -webkit-overflow-scrolling: touch;
+    overflow: scroll;
     padding-bottom: 8px;
   }
 
