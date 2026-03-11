@@ -1,6 +1,7 @@
 *, *::before, *::after {
   box-sizing: border-box;
   scroll-behavior: auto;
+  scrollbar-width: none;
 }
 
 .cantainer, .container {
