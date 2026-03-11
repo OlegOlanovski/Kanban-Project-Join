@@ -107,7 +107,7 @@
   border-radius: 8px;
   background: #ffffff;
   color: #a8a8a8;
-  font-size: 14px;
+  font-size: 16px;
   white-space: nowrap;
 }
 
@@ -165,7 +165,7 @@
   max-width: 100%;
   padding: 4px 16px;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   color: #fff;
   margin-bottom: 10px;
@@ -226,7 +226,7 @@
 }
 
 .card-progress-text {
-  font-size: 12px;
+  font-size: 16px;
   color: #a8a8a8;
   min-width: 36px;
   text-align: right;
@@ -252,7 +252,7 @@
   display: grid;
   place-items: center;
   color: #fff;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 700;
   border: 1px solid #ffffff;
   margin-left: -8px;

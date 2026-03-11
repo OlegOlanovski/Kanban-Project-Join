@@ -109,7 +109,7 @@
 }
 
 .task-overlay-edit .dropdown-arrow {
-  font-size: 12px;
+  font-size: 16px;
   transition: transform 0.2s ease;
 }
 
@@ -340,7 +340,7 @@
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   padding: 6px 10px;
-  font-size: 14px;
+  font-size: 16px;
   color: #999;
 }
 
