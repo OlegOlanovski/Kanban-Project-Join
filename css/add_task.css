@@ -192,10 +192,12 @@
   pointer-events: none;
 }
 
-.subtasks-input input {
+.subtasks-input input[type="text"] {
   width: 100%;
-  padding-right: 80px;
+  padding-left: 10px;
+  padding-right: 96px;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 .form-details input::placeholder,

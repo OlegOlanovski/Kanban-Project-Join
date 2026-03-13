@@ -330,10 +330,12 @@ body.no-scroll {
   pointer-events: none;
 }
 
-.add-task-overlay .subtasks-input input {
+.add-task-overlay .subtasks-input input[type="text"] {
   width: 100%;
-  padding-right: 80px;
+  padding-left: 10px;
+  padding-right: 96px;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 .add-task-overlay .form-details input::placeholder,

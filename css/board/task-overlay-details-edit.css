@@ -276,9 +276,11 @@
   pointer-events: none;
 }
 
-.task-overlay-edit .subtasks-input input {
+.task-overlay-edit .subtasks-input input[type="text"] {
   width: 100%;
-  padding-right: 80px;
+  padding-left: 10px;
+  padding-right: 96px;
+  box-sizing: border-box;
 }
 
 .task-overlay-edit .subtasks-add-btn {
