@@ -447,7 +447,7 @@ async function getContactsListFromStorage() {
  * Append assigned contact row.
  */
 function appendAssignedContactRow(dropdown, contact) {
-  if (!contact?.id || !contact?.name) return;
+  if (!contact?.id) return;
   dropdown.appendChild(buildAssignedContactRow(contact));
 }
 
@@ -470,11 +470,12 @@ function buildAssignedContactRow(contact) {
  * Get assigned contact row HTML.
  */
 function getAssignedContactRowHtml(contact) {
+  const name = getContactLabel(contact);
   const colorClass = getContactColorClass(contact);
-  const checked = selectedContacts.has(contact.id) ? "checked" : "";
+  const checked = selectedContacts.has(normalizeContactId(contact.id)) ? "checked" : "";
   return (
-    `<div class="contact-avatar ${colorClass}">${getInitials(contact.name)}</div>` +
-    `<span>${contact.name}</span>` +
+    `<div class="contact-avatar ${colorClass}">${getInitials(name)}</div>` +
+    `<span>${name}</span>` +
     `<input type="checkbox" ${checked}>`
   );
 }
@@ -487,7 +488,8 @@ function getAssignedContactRowHtml(contact) {
  * Toggle contact.
  */
 function toggleContact(id) {
-  selectedContacts.has(id) ? selectedContacts.delete(id) : selectedContacts.add(id);
+  const key = normalizeContactId(id);
+  selectedContacts.has(key) ? selectedContacts.delete(key) : selectedContacts.add(key);
   updateAssignedCheckboxes();
   renderSelectedContacts();
 }
@@ -560,10 +562,33 @@ function buildContactAvatarsHtml(list, ids) {
  * Build single avatar HTML.
  */
 function buildSingleAvatarHtml(list, id) {
-  const c = list.find((x) => x.id === id);
+  const c = findContactById(list, id);
   if (!c) return "";
   const colorClass = getContactColorClass(c || {});
-  return `<span class="contact-avatar ${colorClass}">${getInitials(c?.name || "")}</span>`;
+  const label = getContactLabel(c);
+  return `<span class="contact-avatar ${colorClass}">${getInitials(label)}</span>`;
+}
+
+/**
+ * Normalize contact id.
+ */
+function normalizeContactId(id) {
+  return String(id);
+}
+
+/**
+ * Find contact by id.
+ */
+function findContactById(list, id) {
+  const key = normalizeContactId(id);
+  return list.find((x) => normalizeContactId(x.id) === key);
+}
+
+/**
+ * Get contact label.
+ */
+function getContactLabel(contact) {
+  return contact?.name || contact?.email || contact?.id || "";
 }
 
 /**
