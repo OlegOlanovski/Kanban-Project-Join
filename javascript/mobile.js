@@ -1,32 +1,42 @@
+/** Breakpoint used to detect mobile devices */
 const MOBILE_BP = 680;
 
+/**
+ * Checks if the current viewport matches the mobile breakpoint.
+ * @returns {boolean}
+ */
 window.isMobile = function () {
   return window.matchMedia && window.matchMedia(`(max-width: ${MOBILE_BP}px)`).matches;
 };
 
 /**
- * El.
+ * Returns a DOM element by id.
+ * @param {string} id
+ * @returns {HTMLElement|null}
  */
 function el(id) {
   return document.getElementById(id);
 }
 
 /**
- * Menu el.
+ * Returns the mobile actions menu element.
+ * @returns {HTMLElement|null}
  */
 function menuEl() {
   return el("mobileActionsMenu");
 }
 
 /**
- * Btn el.
+ * Returns the floating mobile menu button.
+ * @returns {HTMLElement|null}
  */
 function btnEl() {
   return el("mobileMenuBtn");
 }
 
 /**
- * Get selected id.
+ * Gets the currently selected contact id.
+ * @returns {string}
  */
 function getSelectedId() {
   try {
@@ -37,7 +47,8 @@ function getSelectedId() {
 }
 
 /**
- * Sync menu ids.
+ * Updates dataset ids for edit and delete buttons in the mobile menu.
+ * @returns {void}
  */
 function syncMenuIds() {
   const menu = menuEl();
@@ -52,6 +63,10 @@ function syncMenuIds() {
   if (delBtn) delBtn.dataset.id = id || "";
 }
 
+/**
+ * Shows the contact details view on mobile.
+ * @returns {void}
+ */
 window.showMobileDetails = function () {
   if (!window.isMobile()) return;
   document.body.classList.add("show-contact-details");
@@ -61,6 +76,10 @@ window.showMobileDetails = function () {
   window.closeMobileMenu();
 };
 
+/**
+ * Switches back to the contact list view on mobile.
+ * @returns {void}
+ */
 window.showMobileList = function () {
   document.body.classList.remove("show-contact-details");
   const btn = btnEl();
@@ -68,6 +87,10 @@ window.showMobileList = function () {
   window.closeMobileMenu();
 };
 
+/**
+ * Toggles the mobile actions menu.
+ * @returns {void}
+ */
 window.toggleMobileMenu = function () {
   const menu = menuEl();
   if (!menu) return;
@@ -82,6 +105,10 @@ window.toggleMobileMenu = function () {
   }
 };
 
+/**
+ * Closes the mobile actions menu.
+ * @returns {void}
+ */
 window.closeMobileMenu = function () {
   const menu = menuEl();
   if (!menu) return;
@@ -89,6 +116,11 @@ window.closeMobileMenu = function () {
   menu.classList.add("d-none");
 };
 
+/**
+ * Handles clicks outside the mobile menu.
+ * @param {MouseEvent} e
+ * @returns {void}
+ */
 window.handleOutsideMobileMenuClick = function (e) {
   if (!window.isMobile()) return;
 
@@ -102,7 +134,9 @@ window.handleOutsideMobileMenuClick = function (e) {
 };
 
 /**
- * Handle mobile buttons click.
+ * Handles mobile navigation buttons.
+ * @param {MouseEvent} e
+ * @returns {void}
  */
 function handleMobileButtonsClick(e) {
   if (!window.isMobile()) return;
@@ -125,6 +159,9 @@ document.addEventListener("click", function (e) {
   window.handleOutsideMobileMenuClick && window.handleOutsideMobileMenuClick(e);
 });
 
+/**
+ * Adjusts layout when the viewport size changes.
+ */
 window.addEventListener("resize", () => {
   if (!window.isMobile()) window.showMobileList();
 });
@@ -142,6 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
   syncMenuIds();
 });
 
+/**
+ * Extends renderDetails to update the mobile menu.
+ */
 (function () {
   if (typeof window.renderDetails !== "function") return;
 
@@ -152,54 +192,3 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.isMobile()) window.showMobileDetails();
   };
 })();
-
-document.addEventListener("DOMContentLoaded", () => {
-  const guest = document.querySelector(".header-guest");
-  const menu = document.getElementById("userMenu");
-
-  if (!guest || !menu) return;
-
-  /**
-   * Close menu.
-   */
-  function closeMenu() {
-    menu.classList.add("d-none");
-  }
-
-  /**
-   * Toggle menu.
-   */
-  function toggleMenu() {
-    menu.classList.toggle("d-none");
-  }
-
-  guest.addEventListener("click", (e) => {
-    e.stopPropagation();
-    toggleMenu();
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!menu.contains(e.target) && !guest.contains(e.target)) {
-      closeMenu();
-    }
-  });
-
-  window.addEventListener("resize", closeMenu);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const links = document.querySelectorAll(".menu a[href]");
-  const current = location.pathname.split("/").pop();
-
-  links.forEach((a) => {
-    const target = new URL(a.getAttribute("href"), location.href).pathname.split("/").pop();
-    a.classList.toggle("active", target === current);
-  });
-
-  links.forEach((a) => {
-    a.addEventListener("click", () => {
-      links.forEach((x) => x.classList.remove("active"));
-      a.classList.add("active");
-    });
-  });
-});
