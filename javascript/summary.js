@@ -16,28 +16,75 @@ function goToBoard() {window.location.href = BOARD_PAGE_URL;}
  * Fetch dbnode.
  */
 async function fetchDBNode(nodeName) {
-  try { const resp = await fetch(DB_TASK_URL + nodeName + ".json"); const data = await resp.json();
-    if (data != null) return data; } catch (e) {}
+  const direct = await tryFetchNode(nodeName);
+  if (direct != null) return direct;
+  return fetchNodeFromRoot(nodeName);
+}
 
-  try {const r = await fetch(DB_TASK_URL + ".json"); const root = await r.json();
+/**
+ * Try fetch node.
+ */
+async function tryFetchNode(nodeName) {
+  try {
+    const resp = await fetch(DB_TASK_URL + nodeName + ".json");
+    const data = await resp.json();
+    return data != null ? data : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * Fetch node from root.
+ */
+async function fetchNodeFromRoot(nodeName) {
+  try {
+    const r = await fetch(DB_TASK_URL + ".json");
+    const root = await r.json();
     if (!root) return null;
- if (Array.isArray(root)) { const entry = root.find((e) => e && e.id === nodeName);
-      if (entry) {const clone = Object.assign({}, entry); delete clone.id;
-        if (clone.hasOwnProperty(nodeName)) return clone[nodeName];
-        const keys = Object.keys(clone);
-        if (keys.length) return clone;}
-    } else if (typeof root === "object") {
-      const vals = Object.values(root);
-      for (let i = 0; i < vals.length; i++) {
-        const e = vals[i];
-        if (e && e.id === nodeName) {const clone = Object.assign({}, e);delete clone.id;
-          if (clone.hasOwnProperty(nodeName)) return clone[nodeName];
-          const keys = Object.keys(clone);
-          if (keys.length) return clone;}}
-      if (root[nodeName] !== undefined) return root[nodeName];
-    }
-  } catch (e) {}
+    return extractNodeFromRoot(root, nodeName);
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * Extract node from root.
+ */
+function extractNodeFromRoot(root, nodeName) {
+  if (Array.isArray(root)) return extractNodeFromArray(root, nodeName);
+  if (typeof root === "object") return extractNodeFromObject(root, nodeName);
   return null;
+}
+
+/**
+ * Extract node from array.
+ */
+function extractNodeFromArray(root, nodeName) {
+  const entry = root.find((e) => e && e.id === nodeName);
+  return entry ? extractNodeFromEntry(entry, nodeName) : null;
+}
+
+/**
+ * Extract node from object.
+ */
+function extractNodeFromObject(root, nodeName) {
+  const vals = Object.values(root);
+  for (let i = 0; i < vals.length; i++) {
+    if (vals[i] && vals[i].id === nodeName) return extractNodeFromEntry(vals[i], nodeName);
+  }
+  return root[nodeName] !== undefined ? root[nodeName] : null;
+}
+
+/**
+ * Extract node from entry.
+ */
+function extractNodeFromEntry(entry, nodeName) {
+  const clone = Object.assign({}, entry);
+  delete clone.id;
+  if (clone.hasOwnProperty(nodeName)) return clone[nodeName];
+  const keys = Object.keys(clone);
+  return keys.length ? clone : null;
 }
 
 

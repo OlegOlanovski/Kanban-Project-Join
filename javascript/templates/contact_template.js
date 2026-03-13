@@ -48,6 +48,17 @@ function contactActionsTemplate(c) {
  * Contact details template.
  */
 function contactDetailsTemplate(c) {
+  return [
+    contactDetailsTopbarTemplate(),
+    contactDetailsHeaderTemplate(c),
+    contactDetailsInfoTemplate(c),
+  ].join("");
+}
+
+/**
+ * Contact details topbar template.
+ */
+function contactDetailsTopbarTemplate() {
   return `
     <div class="contact-detail-topbar">
       <button class="mobile-back-btn" id="mobileBackBtn" type="button">
@@ -55,7 +66,14 @@ function contactDetailsTemplate(c) {
       </button>
       <div class="contact-detail-topbar-spacer"></div>
     </div>
+  `;
+}
 
+/**
+ * Contact details header template.
+ */
+function contactDetailsHeaderTemplate(c) {
+  return `
     <div class="contact-detail-header">
       <div class="avatar big ${c.colorClass}">
         ${c.initials}
@@ -65,7 +83,14 @@ function contactDetailsTemplate(c) {
         ${contactActionsTemplate(c)}
       </div>
     </div>
+  `;
+}
 
+/**
+ * Contact details info template.
+ */
+function contactDetailsInfoTemplate(c) {
+  return `
     <div class="contact-info">
       <h3>Contact Information</h3>
       <p>
@@ -118,21 +143,36 @@ function modalAvatarTemplate(mode, data) {
  * Modal actions template.
  */
 function modalActionsTemplate(mode) {
-  return `
-    <div class="modal-actions">
-      <button type="button"
-              class="btn-cancel"
-              id="modalSecondaryBtn"
-              data-action="${String(mode || "").trim().toLowerCase() === "edit" ? "delete" : "cancel"}">
-        ${String(mode || "").trim().toLowerCase() === "edit" ? "Delete" : "Cancel"}
-        <img src="../assets/icons/${String(mode || "").trim().toLowerCase() === "edit" ? "delete.svg" : "iconoir_cancel.svg"}" alt="">
-      </button>
+  const edit = isEditMode(mode);
+  return [
+    '<div class="modal-actions">',
+    buildModalSecondaryAction(edit),
+    buildModalPrimaryAction(edit),
+    "</div>",
+  ].join("");
+}
 
-      <button type="submit" class="btn-create">
-        ${String(mode || "").trim().toLowerCase() === "edit" ? "Save" : "Create contact"}
-        <img src="../assets/icons/check-white.svg" alt="">
-      </button>
-    </div>
+/**
+ * Build modal secondary action.
+ */
+function buildModalSecondaryAction(edit) {
+  return `
+    <button type="button" class="btn-cancel" id="modalSecondaryBtn" data-action="${edit ? "delete" : "cancel"}">
+      ${edit ? "Delete" : "Cancel"}
+      <img src="../assets/icons/${edit ? "delete.svg" : "iconoir_cancel.svg"}" alt="">
+    </button>
+  `;
+}
+
+/**
+ * Build modal primary action.
+ */
+function buildModalPrimaryAction(edit) {
+  return `
+    <button type="submit" class="btn-create">
+      ${edit ? "Save" : "Create contact"}
+      <img src="../assets/icons/check-white.svg" alt="">
+    </button>
   `;
 }
 
@@ -140,40 +180,66 @@ function modalActionsTemplate(mode) {
  * Modal form template.
  */
 function modalFormTemplate(mode, data) {
+  const modeValue = normalizeMode(mode);
+  const editId = data && data.id ? data.id : "";
+  return [
+    `<form id="addContactForm" data-mode="${modeValue}" data-edit-id="${editId}">`,
+    modalNameFieldTemplate(data),
+    modalEmailFieldTemplate(data),
+    modalPhoneFieldTemplate(data),
+    modalActionsTemplate(mode),
+    "</form>",
+  ].join("");
+}
+
+/**
+ * Modal name field template.
+ */
+function modalNameFieldTemplate(data) {
   return `
-    <form id="addContactForm"
-          data-mode="${String(mode || "").trim().toLowerCase()}"
-          data-edit-id="${(data && data.id) ? data.id : ""}">
-      
-      <div class="input-wrapper">
-        <input id="contactName"
-               type="text"
-               placeholder="Name"
-               required
-               value="${(data && data.name) ? data.name : ""}">
-        <img src="../assets/icons/person.png" class="input-icon" alt="">
-      </div>
-
-      <div class="input-wrapper">
-        <input id="contactEmail"
-               type="email"
-               placeholder="Email"
-               required
-               value="${(data && data.email) ? data.email : ""}">
-        <img src="../assets/icons/mail.png" class="input-icon" alt="">
-      </div>
-
-      <div class="input-wrapper">
-        <input id="contactPhone"
-               type="text"
-               placeholder="Phone"
-               value="${(data && data.phone) ? data.phone : ""}">
-        <img src="../assets/icons/call.svg" class="input-icon" alt="">
-      </div>
-
-      ${modalActionsTemplate(mode)}
-    </form>
+    <div class="input-wrapper">
+      <input id="contactName" type="text" placeholder="Name" required value="${data?.name || ""}">
+      <img src="../assets/icons/person.png" class="input-icon" alt="">
+    </div>
   `;
+}
+
+/**
+ * Modal email field template.
+ */
+function modalEmailFieldTemplate(data) {
+  return `
+    <div class="input-wrapper">
+      <input id="contactEmail" type="email" placeholder="Email" required value="${data?.email || ""}">
+      <img src="../assets/icons/mail.png" class="input-icon" alt="">
+    </div>
+  `;
+}
+
+/**
+ * Modal phone field template.
+ */
+function modalPhoneFieldTemplate(data) {
+  return `
+    <div class="input-wrapper">
+      <input id="contactPhone" type="text" placeholder="Phone" value="${data?.phone || ""}">
+      <img src="../assets/icons/call.svg" class="input-icon" alt="">
+    </div>
+  `;
+}
+
+/**
+ * Normalize mode.
+ */
+function normalizeMode(mode) {
+  return String(mode || "").trim().toLowerCase();
+}
+
+/**
+ * Check edit mode.
+ */
+function isEditMode(mode) {
+  return normalizeMode(mode) === "edit";
 }
 
 /**

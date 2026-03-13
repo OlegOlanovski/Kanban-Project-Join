@@ -173,20 +173,53 @@ function initValidation() {
  */
 function openModal(mode, contact) {
   removeModalNow();
-  document.body.insertAdjacentHTML("beforeend", contactModalTemplate(mode, buildModalData(mode, contact)));
-  let m = document.getElementById("addContactModal");
-  let form = document.getElementById("addContactForm");
-  if (!m) return;
-  m.setAttribute("data-mode", mode);
-  if (form) {
-    form.dataset.mode = mode;
-    form.dataset.editId = mode === "edit" && contact ? contact.id : "";
-  }
-  m.classList.remove("d-none");
-  requestAnimationFrame(function () {
-    m.classList.add("is-open");
-    initValidation();
-  });
+  insertContactModal(mode, contact);
+  const modal = getContactModal();
+  if (!modal) return;
+  configureContactModal(modal, mode, contact);
+  openContactModal(modal);
+}
+
+/**
+ * Insert contact modal.
+ */
+function insertContactModal(mode, contact) {
+  const html = contactModalTemplate(mode, buildModalData(mode, contact));
+  document.body.insertAdjacentHTML("beforeend", html);
+}
+
+/**
+ * Get contact modal.
+ */
+function getContactModal() {
+  return document.getElementById("addContactModal");
+}
+
+/**
+ * Configure contact modal.
+ */
+function configureContactModal(modal, mode, contact) {
+  const form = document.getElementById("addContactForm");
+  modal.setAttribute("data-mode", mode);
+  if (!form) return;
+  form.dataset.mode = mode;
+  form.dataset.editId = mode === "edit" && contact ? contact.id : "";
+}
+
+/**
+ * Open contact modal.
+ */
+function openContactModal(modal) {
+  modal.classList.remove("d-none");
+  requestAnimationFrame(() => finalizeContactModalOpen(modal));
+}
+
+/**
+ * Finalize contact modal open.
+ */
+function finalizeContactModalOpen(modal) {
+  modal.classList.add("is-open");
+  initValidation();
 }
 
 /**
@@ -230,22 +263,51 @@ function buildModalData(mode, contact) {
 function renderContactsList() {
   let list = document.getElementById("contactsList");
   if (!list) return;
-  let sorted = [...contacts].sort(sortContacts), html = "", current = "";
-  for (let c of sorted) {
-    let g = groupKey(c.name);
-    if (g && g !== current) {
-      current = g;
-      html += letterGroupTemplate(current);
-    }
-    html += contactListItemTemplate({
-      id: c.id,
-      name: c.name,
-      email: c.email,
-      initials: getInitials(c.name),
-      colorClass: c.colorClass
-    }, c.id === selectedId);
+  list.innerHTML = buildContactsListHtml();
+}
+
+/**
+ * Build contacts list HTML.
+ */
+function buildContactsListHtml() {
+  const sorted = getSortedContacts();
+  const state = { current: "", html: "" };
+  for (let i = 0; i < sorted.length; i++) {
+    appendContactListHtml(state, sorted[i]);
   }
-  list.innerHTML = html;
+  return state.html;
+}
+
+/**
+ * Get sorted contacts.
+ */
+function getSortedContacts() {
+  return [...contacts].sort(sortContacts);
+}
+
+/**
+ * Append contact list HTML.
+ */
+function appendContactListHtml(state, contact) {
+  const g = groupKey(contact.name);
+  if (g && g !== state.current) {
+    state.current = g;
+    state.html += letterGroupTemplate(g);
+  }
+  state.html += buildContactListItem(contact);
+}
+
+/**
+ * Build contact list item.
+ */
+function buildContactListItem(c) {
+  return contactListItemTemplate({
+    id: c.id,
+    name: c.name,
+    email: c.email,
+    initials: getInitials(c.name),
+    colorClass: c.colorClass
+  }, c.id === selectedId);
 }
 
 /**
@@ -254,21 +316,46 @@ function renderContactsList() {
 function renderDetails() {
   let d = document.getElementById("contactDetails");
   if (!d) return;
-  if (!selectedId) {
-    d.innerHTML = "";
-    return;
-  }
-  let c = contacts.find(x => x.id === selectedId);
+  if (!selectedId) return clearContactDetails(d);
+  let c = getSelectedContact();
   if (!c) return;
-  d.innerHTML = contactDetailsTemplate({
+  renderContactDetails(d, c);
+  if (isMobile()) showMobileDetails();
+}
+
+/**
+ * Clear contact details.
+ */
+function clearContactDetails(el) {
+  el.innerHTML = "";
+}
+
+/**
+ * Get selected contact.
+ */
+function getSelectedContact() {
+  return contacts.find(x => x.id === selectedId);
+}
+
+/**
+ * Render contact details.
+ */
+function renderContactDetails(el, contact) {
+  el.innerHTML = contactDetailsTemplate(buildContactDetailsData(contact));
+}
+
+/**
+ * Build contact details data.
+ */
+function buildContactDetailsData(c) {
+  return {
     id: c.id,
     name: c.name,
     email: c.email,
     phone: c.phone || "-",
     initials: getInitials(c.name),
     colorClass: c.colorClass
-  });
-  if (isMobile()) showMobileDetails();
+  };
 }
 
 /**
@@ -418,21 +505,67 @@ function deleteContact(id) {
  * Handle click.
  */
 function handleClick(e) {
-  if (e.target.closest("#openAddContact")) return openModal("create", null);
+  if (handleOpenAddContact(e)) return;
+  if (handleContactItemClick(e)) return;
+  if (handleContactActionClick(e)) return;
+  handleModalCloseClick(e);
+}
+
+/**
+ * Handle open add contact.
+ */
+function handleOpenAddContact(e) {
+  if (!e.target.closest("#openAddContact")) return false;
+  openModal("create", null);
+  return true;
+}
+
+/**
+ * Handle contact item click.
+ */
+function handleContactItemClick(e) {
   let item = e.target.closest(".contact-item");
-  if (item?.dataset.id) {
-    selectedId = item.dataset.id;
-    renderContactsList();
-    renderDetails();
-    return;
-  }
+  if (!item?.dataset.id) return false;
+  selectedId = item.dataset.id;
+  renderContactsList();
+  renderDetails();
+  return true;
+}
+
+/**
+ * Handle contact action click.
+ */
+function handleContactActionClick(e) {
   let act = e.target.closest(".contact-action");
-  if (act?.dataset.action === "delete") { deleteContact(act.dataset.id); closeModal(); return; }
-  if (act?.dataset.action === "edit") {
-    window.closeMobileMenu && window.closeMobileMenu();
-    return openModal("edit", contacts.find(c => c.id === act.dataset.id));
-  }
-  if (e.target.closest("#closeAddContact")) closeModal();
+  if (!act?.dataset.action) return false;
+  if (act.dataset.action === "delete") return handleDeleteAction(act.dataset.id);
+  if (act.dataset.action === "edit") return handleEditAction(act.dataset.id);
+  return false;
+}
+
+/**
+ * Handle delete action.
+ */
+function handleDeleteAction(id) {
+  deleteContact(id);
+  closeModal();
+  return true;
+}
+
+/**
+ * Handle edit action.
+ */
+function handleEditAction(id) {
+  window.closeMobileMenu && window.closeMobileMenu();
+  openModal("edit", contacts.find(c => c.id === id));
+  return true;
+}
+
+/**
+ * Handle modal close click.
+ */
+function handleModalCloseClick(e) {
+  if (e.target.closest("#closeAddContact")) return closeModal();
   let back = document.getElementById("addContactModal");
   if (back && e.target === back) closeModal();
 }

@@ -120,24 +120,45 @@ function validateEmailRegEx(emailInput) {
  */
 function validateEmail() {
   const isValid = validateEmailRegEx(email);
-
-  if (!iconImgMail) {
-    iconImgMail = document.createElement("img");
-    iconImgMail.id = "email-icon";
-    email.appendChild(iconImgMail);
-  }
-
-  if (isValid) {
-    email.classList.remove("isInvaled");
-    email.classList.add("isValidate");
-    setInfoState(infoEmail, false);
-  } else {
-    email.classList.add("isInvaled");
-    email.classList.remove("isValidate");
-    setInfoState(infoEmail, true);
-  }
-
+  ensureEmailIcon();
+  applyEmailValidationState(isValid);
   return isValid;
+}
+
+/**
+ * Ensure email icon.
+ */
+function ensureEmailIcon() {
+  if (iconImgMail) return;
+  iconImgMail = document.createElement("img");
+  iconImgMail.id = "email-icon";
+  email.appendChild(iconImgMail);
+}
+
+/**
+ * Apply email validation state.
+ */
+function applyEmailValidationState(isValid) {
+  if (isValid) return markEmailValid();
+  markEmailInvalid();
+}
+
+/**
+ * Mark email valid.
+ */
+function markEmailValid() {
+  email.classList.remove("isInvaled");
+  email.classList.add("isValidate");
+  setInfoState(infoEmail, false);
+}
+
+/**
+ * Mark email invalid.
+ */
+function markEmailInvalid() {
+  email.classList.add("isInvaled");
+  email.classList.remove("isValidate");
+  setInfoState(infoEmail, true);
 }
 /**
  * Password prüfen
@@ -246,23 +267,43 @@ if (confirmPasswordToggleIcon && confirmPassword) {
  */
 function validatePassword() {
   const ok = password.value.length > 5;
-
-  if (ok) {
-    password.classList.add("isValidate");
-    password.classList.remove("isInvaled");
-    setInfoState(infoPassword, false);
-  } else {
-    setInfoState(infoPassword, true);
-    password.classList.add("isInvaled");
-    password.classList.remove("isValidate");
-    if (iconImg) {
-      setIconSrc(iconImg, "lock.png");
-    }
-
-    updatePasswordIcon();
-  }
-
+  applyPasswordValidationState(ok);
   return ok;
+}
+
+/**
+ * Apply password validation state.
+ */
+function applyPasswordValidationState(ok) {
+  if (ok) return markPasswordValid();
+  markPasswordInvalid();
+}
+
+/**
+ * Mark password valid.
+ */
+function markPasswordValid() {
+  password.classList.add("isValidate");
+  password.classList.remove("isInvaled");
+  setInfoState(infoPassword, false);
+}
+
+/**
+ * Mark password invalid.
+ */
+function markPasswordInvalid() {
+  setInfoState(infoPassword, true);
+  password.classList.add("isInvaled");
+  password.classList.remove("isValidate");
+  resetPasswordIcon();
+}
+
+/**
+ * Reset password icon.
+ */
+function resetPasswordIcon() {
+  if (iconImg) setIconSrc(iconImg, "lock.png");
+  updatePasswordIcon();
 }
 /**
  *  Confirm Password prüfen
@@ -273,20 +314,36 @@ function validatePassword() {
 function validateConfirmPassword() {
   const okPass = validatePassword();
   const ok = okPass && confirmPassword.value !== "" && password.value === confirmPassword.value;
-
-  if (ok) {
-    confirmPassword.classList.add("isValidate");
-    confirmPassword.classList.remove("isInvaled");
-    setInfoState(infoPassword, false);
-    setInfoState(infoConfirmPassword, false);
-  } else {
-    setInfoState(infoPassword, true);
-    setInfoState(infoConfirmPassword, true);
-    confirmPassword.classList.add("isInvaled");
-    confirmPassword.classList.remove("isValidate");
-  }
-
+  applyConfirmPasswordState(ok);
   return ok;
+}
+
+/**
+ * Apply confirm password state.
+ */
+function applyConfirmPasswordState(ok) {
+  if (ok) return markConfirmPasswordValid();
+  markConfirmPasswordInvalid();
+}
+
+/**
+ * Mark confirm password valid.
+ */
+function markConfirmPasswordValid() {
+  confirmPassword.classList.add("isValidate");
+  confirmPassword.classList.remove("isInvaled");
+  setInfoState(infoPassword, false);
+  setInfoState(infoConfirmPassword, false);
+}
+
+/**
+ * Mark confirm password invalid.
+ */
+function markConfirmPasswordInvalid() {
+  setInfoState(infoPassword, true);
+  setInfoState(infoConfirmPassword, true);
+  confirmPassword.classList.add("isInvaled");
+  confirmPassword.classList.remove("isValidate");
 }
 
 /**
@@ -329,22 +386,43 @@ function showAcceptTooltip() {
  * Validate sing up form.
  */
 function validateSingUpForm() {
+  const result = validateSignupFields();
+  if (!result) return disableSignupButton();
+  enableSignupButton();
+  isAcceptPolice.classList.add("accept-police");
+  return true;
+}
+
+/**
+ * Validate signup fields.
+ */
+function validateSignupFields() {
   const okCheckbox = validateCheckbox();
   const okName = validateFullname();
   const okEmail = validateEmail();
   const okPass = validatePassword();
   const okConfirm = validateConfirmPassword();
+  return okCheckbox && okName && okEmail && okPass && okConfirm;
+}
 
-  const allValid = okCheckbox && okName && okEmail && okPass && okConfirm;
-
-  if (!allValid) {
-    document.getElementById("singup-button").disabled = true;
-    document.getElementById("singup-button").classList.add("disebles-singup-button");
-    return false;
+/**
+ * Disable signup button.
+ */
+function disableSignupButton() {
+  const btn = document.getElementById("singup-button");
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add("disebles-singup-button");
   }
-  document.getElementById("singup-button").classList.remove("disebles-singup-button");
-  document.getElementById("singup-button").disabled = false;
-  isAcceptPolice.classList.add("accept-police");
+  return false;
+}
 
-  return true;
+/**
+ * Enable signup button.
+ */
+function enableSignupButton() {
+  const btn = document.getElementById("singup-button");
+  if (!btn) return;
+  btn.classList.remove("disebles-singup-button");
+  btn.disabled = false;
 }
