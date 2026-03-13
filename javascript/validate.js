@@ -69,6 +69,9 @@ function syncSignupButtonState() {
   singupButton.classList.toggle("disebles-singup-button", !ok);
 }
 
+/**
+ * Initialize signup button state syncing.
+ */
 (function initSignupButtonState() {
   if (!singupButton || !full_name || !email || !password || !confirmPassword || !isAccept) return;
   const fields = [full_name, email, password, confirmPassword];
