@@ -148,24 +148,36 @@ function modalAvatarTemplate(mode, data) {
 /**
  * Modal actions template.
  */
-function modalActionsTemplate(mode) {
-  const edit = isEditMode(mode);
+function modalActionsTemplate(mode, data) {
+  const view = buildModalActionsView(mode, data);
   return [
     '<div class="modal-actions">',
-    buildModalSecondaryAction(edit),
-    buildModalPrimaryAction(edit),
+    buildModalSecondaryAction(view),
+    buildModalPrimaryAction(view),
     "</div>",
   ].join("");
 }
 
 /**
+ * Build modal actions view.
+ */
+function buildModalActionsView(mode, data) {
+  const edit = isEditMode(mode);
+  return { edit: edit, id: edit && data ? data.id : "" };
+}
+
+/**
  * Build modal secondary action.
  */
-function buildModalSecondaryAction(edit) {
+function buildModalSecondaryAction(view) {
   return `
-    <button type="button" class="btn-cancel" id="modalSecondaryBtn" data-action="${edit ? "delete" : "cancel"}">
-      ${edit ? "Delete" : "Cancel"}
-      <img src="../assets/icons/${edit ? "delete.svg" : "iconoir_cancel.svg"}" alt="">
+    <button type="button"
+            class="${view.edit ? "btn-cancel contact-action" : "btn-cancel"}"
+            id="${view.edit ? "modalSecondaryBtn" : "closeAddContact"}"
+            data-action="${view.edit ? "delete" : "cancel"}"
+            data-id="${view.id}">
+      ${view.edit ? "Delete" : "Cancel"}
+      <img src="../assets/icons/${view.edit ? "delete.svg" : "iconoir_cancel.svg"}" alt="">
     </button>
   `;
 }
@@ -173,10 +185,10 @@ function buildModalSecondaryAction(edit) {
 /**
  * Build modal primary action.
  */
-function buildModalPrimaryAction(edit) {
+function buildModalPrimaryAction(view) {
   return `
     <button type="submit" class="btn-create">
-      ${edit ? "Save" : "Create contact"}
+      ${view.edit ? "Save" : "Create contact"}
       <img src="../assets/icons/check-white.svg" alt="">
     </button>
   `;
@@ -189,11 +201,11 @@ function modalFormTemplate(mode, data) {
   const modeValue = normalizeMode(mode);
   const editId = data && data.id ? data.id : "";
   return [
-    `<form id="addContactForm" data-mode="${modeValue}" data-edit-id="${editId}">`,
+    `<form id="addContactForm" novalidate data-mode="${modeValue}" data-edit-id="${editId}">`,
     modalNameFieldTemplate(data),
     modalEmailFieldTemplate(data),
     modalPhoneFieldTemplate(data),
-    modalActionsTemplate(mode),
+    modalActionsTemplate(mode, data),
     "</form>",
   ].join("");
 }
@@ -206,6 +218,7 @@ function modalNameFieldTemplate(data) {
     <div class="input-wrapper">
       <input id="contactName" type="text" placeholder="Name" required value="${data?.name || ""}">
       <img src="../assets/icons/person.png" class="input-icon" alt="">
+      <div class="input-error-message" id="nameError"></div>
     </div>
   `;
 }
@@ -218,6 +231,7 @@ function modalEmailFieldTemplate(data) {
     <div class="input-wrapper">
       <input id="contactEmail" type="email" placeholder="Email" required value="${data?.email || ""}">
       <img src="../assets/icons/mail.png" class="input-icon" alt="">
+      <div class="input-error-message" id="emailError"></div>
     </div>
   `;
 }
@@ -230,6 +244,7 @@ function modalPhoneFieldTemplate(data) {
     <div class="input-wrapper">
       <input id="contactPhone" type="text" placeholder="Phone" value="${data?.phone || ""}">
       <img src="../assets/icons/call.svg" class="input-icon" alt="">
+      <div class="input-error-message" id="phoneError"></div>
     </div>
   `;
 }
@@ -281,6 +296,9 @@ function contactModalTemplate(mode, data) {
   return `
     <div class="modal-backdrop d-none" id="addContactModal">
       ${contactModalInnerTemplate(mode, data || {})}
+    </div>
+    <div id="contactSuccessToast" class="contact-toast d-none">
+      Contact successfully created
     </div>
   `;
 }
