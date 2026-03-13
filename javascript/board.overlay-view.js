@@ -1,4 +1,7 @@
 // ---------------- Overlay events ----------------
+/**
+ * Initialize overlay events.
+ */
 function initOverlayEvents() {
   const els = getOverlayElements();
   if (!els) return;
@@ -14,6 +17,9 @@ function initOverlayEvents() {
   bindOverlayOpenByCard();
 }
 
+/**
+ * Get overlay elements.
+ */
 function getOverlayElements() {
   const els = collectOverlayElements();
   if (!els.backdrop || !els.closeBtn) {
@@ -23,6 +29,9 @@ function getOverlayElements() {
   return els;
 }
 
+/**
+ * Collect overlay elements.
+ */
 function collectOverlayElements() {
   return {
     overlay: document.querySelector(".task-overlay"),
@@ -37,10 +46,16 @@ function collectOverlayElements() {
   };
 }
 
+/**
+ * Warn overlay missing.
+ */
 function warnOverlayMissing() {
   console.warn("Overlay elements not found (taskOverlayBackdrop/taskOverlayClose).");
 }
 
+/**
+ * Bind overlay close.
+ */
 function bindOverlayClose(els) {
   els.closeBtn.addEventListener("click", function (e) {
     e.preventDefault();
@@ -49,18 +64,27 @@ function bindOverlayClose(els) {
   });
 }
 
+/**
+ * Bind overlay backdrop.
+ */
 function bindOverlayBackdrop(els) {
   els.backdrop.addEventListener("click", function (e) {
     if (e.target === els.backdrop) closeTaskOverlay();
   });
 }
 
+/**
+ * Bind overlay esc.
+ */
 function bindOverlayEsc(els) {
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && !els.backdrop.hidden) closeTaskOverlay();
   });
 }
 
+/**
+ * Bind overlay delete.
+ */
 function bindOverlayDelete(els) {
   if (!els.delBtn) return;
   els.delBtn.addEventListener("click", function (e) {
@@ -71,6 +95,9 @@ function bindOverlayDelete(els) {
   });
 }
 
+/**
+ * Bind overlay edit.
+ */
 function bindOverlayEdit(els) {
   if (!els.editBtn) return;
   els.editBtn.addEventListener("click", function (e) {
@@ -81,6 +108,9 @@ function bindOverlayEdit(els) {
   });
 }
 
+/**
+ * Bind overlay save.
+ */
 function bindOverlaySave(els) {
   if (!els.saveBtn) return;
   els.saveBtn.addEventListener("click", function (e) {
@@ -91,6 +121,9 @@ function bindOverlaySave(els) {
   });
 }
 
+/**
+ * Bind overlay edit form.
+ */
 function bindOverlayEditForm(els) {
   if (!els.editForm) return;
   els.editForm.addEventListener("submit", function (e) {
@@ -98,6 +131,9 @@ function bindOverlayEditForm(els) {
   });
 }
 
+/**
+ * Bind overlay open by card.
+ */
 function bindOverlayOpenByCard() {
   document.addEventListener("click", function (e) {
     if (isDragging) return;
@@ -109,6 +145,9 @@ function bindOverlayOpenByCard() {
 }
 
 // ---------------- Open / Close overlay ----------------
+/**
+ * Open task overlay.
+ */
 function openTaskOverlay(id) {
   const task = findTaskById(id);
   if (!task) return;
@@ -122,6 +161,9 @@ function openTaskOverlay(id) {
   showOverlay(task);
 }
 
+/**
+ * Find task by id.
+ */
 function findTaskById(id) {
   const tasks = getTasks();
   for (let i = 0; i < tasks.length; i++) {
@@ -130,6 +172,9 @@ function findTaskById(id) {
   return null;
 }
 
+/**
+ * Set overlay category.
+ */
 function setOverlayCategory(task) {
   const chip = document.getElementById("taskOverlayCategory");
   if (!chip) return;
@@ -139,12 +184,18 @@ function setOverlayCategory(task) {
   chip.classList.add(isTech ? "tech" : "user");
 }
 
+/**
+ * Set overlay texts.
+ */
 function setOverlayTexts(task) {
   setText("taskOverlayTitle", task.title || "");
   setText("taskOverlayDesc", task.description || "");
   setText("taskOverlayDue", formatDate(task.dueDate || task.due || ""));
 }
 
+/**
+ * Set overlay priority.
+ */
 function setOverlayPriority(task) {
   const prioEl = document.getElementById("taskOverlayPrio");
   if (!prioEl) return;
@@ -154,6 +205,9 @@ function setOverlayPriority(task) {
   appendOverlayPriorityIcon(prioEl, task, pr);
 }
 
+/**
+ * Render overlay assigned.
+ */
 function renderOverlayAssigned(task) {
   const assignedWrap = document.getElementById("taskOverlayAssigned");
   if (!assignedWrap) return;
@@ -164,6 +218,9 @@ function renderOverlayAssigned(task) {
   }
 }
 
+/**
+ * Get assigned list.
+ */
 function getAssignedList(task) {
   if (typeof resolveAssignedContacts === "function") return resolveAssignedContacts(task);
   const list = resolveAssignedList(task);
@@ -173,6 +230,9 @@ function getAssignedList(task) {
   });
 }
 
+/**
+ * Create person row.
+ */
 function createPersonRow(item, index) {
   const contact = normalizeOverlayContact(item);
   const row = document.createElement("div");
@@ -182,6 +242,9 @@ function createPersonRow(item, index) {
   return row;
 }
 
+/**
+ * Create person badge.
+ */
 function createPersonBadge(contact, index) {
   const badge = document.createElement("div");
   const colorClass = getOverlayViewContactColorClass(contact, index);
@@ -190,18 +253,27 @@ function createPersonBadge(contact, index) {
   return badge;
 }
 
+/**
+ * Create person text.
+ */
 function createPersonText(contact) {
   const text = document.createElement("div");
   text.textContent = String(contact.name || contact.id || "");
   return text;
 }
 
+/**
+ * Normalize overlay contact.
+ */
 function normalizeOverlayContact(item) {
   if (item && typeof item === "object") return item;
   const s = String(item || "");
   return { id: s, name: s };
 }
 
+/**
+ * Get overlay view contact color class.
+ */
 function getOverlayViewContactColorClass(contact, index) {
   if (typeof getContactColorClass === "function") return getContactColorClass(contact);
   if (contact && contact.colorClass) return contact.colorClass;
@@ -209,6 +281,9 @@ function getOverlayViewContactColorClass(contact, index) {
   return "avatar-color-" + (overlayViewHashString(seed) % 12);
 }
 
+/**
+ * Overlay view hash string.
+ */
 function overlayViewHashString(str) {
   let h = 0;
   const s = String(str || "");
@@ -216,6 +291,9 @@ function overlayViewHashString(str) {
   return Math.abs(h);
 }
 
+/**
+ * Render overlay subtasks.
+ */
 function renderOverlaySubtasks(task) {
   const subtasksWrap = document.getElementById("taskOverlaySubtasks");
   if (!subtasksWrap) return;
@@ -227,10 +305,16 @@ function renderOverlaySubtasks(task) {
   }
 }
 
+/**
+ * Show no subtasks.
+ */
 function showNoSubtasks(wrap) {
   wrap.textContent = "No subtasks";
 }
 
+/**
+ * Create subtask row.
+ */
 function createSubtaskRow(subtask, index, taskId) {
   const row = document.createElement("div");
   row.className = "task-overlay-subtask";
@@ -239,6 +323,9 @@ function createSubtaskRow(subtask, index, taskId) {
   return row;
 }
 
+/**
+ * Create subtask checkbox.
+ */
 function createSubtaskCheckbox(subtask, index, taskId) {
   const box = document.createElement("input");
   box.type = "checkbox";
@@ -249,12 +336,18 @@ function createSubtaskCheckbox(subtask, index, taskId) {
   return box;
 }
 
+/**
+ * Create subtask label.
+ */
 function createSubtaskLabel(subtask) {
   const label = document.createElement("span");
   label.textContent = subtask.title || "";
   return label;
 }
 
+/**
+ * Update subtask done.
+ */
 function updateSubtaskDone(taskId, subIndex, done) {
   const tasks = getTasks();
   const idx = findTaskIndexById(taskId, tasks);
@@ -266,6 +359,9 @@ function updateSubtaskDone(taskId, subIndex, done) {
   updateCardSubtaskProgress(task);
 }
 
+/**
+ * Update card subtask progress.
+ */
 function updateCardSubtaskProgress(task) {
   const card = getCardByTaskId(task.id);
   if (!card) return;
@@ -280,22 +376,34 @@ function updateCardSubtaskProgress(task) {
   updateCardProgressDisplay(progress, done, total, percent);
 }
 
+/**
+ * Get task priority.
+ */
 function getTaskPriority(task) {
   return String(task.priority || task.prio || "medium").toLowerCase();
 }
 
+/**
+ * Reset overlay priority el.
+ */
 function resetOverlayPriorityEl(prioEl, pr) {
   prioEl.textContent = "";
   prioEl.classList.remove("urgent", "medium", "low");
   prioEl.classList.add(pr);
 }
 
+/**
+ * Append overlay priority text.
+ */
 function appendOverlayPriorityText(prioEl, pr) {
   const text = document.createElement("span");
   text.textContent = capitalize(pr);
   prioEl.appendChild(text);
 }
 
+/**
+ * Append overlay priority icon.
+ */
 function appendOverlayPriorityIcon(prioEl, task, pr) {
   const icon = getPriorityIcon(task);
   if (!icon) return;
@@ -306,14 +414,23 @@ function appendOverlayPriorityIcon(prioEl, task, pr) {
   prioEl.appendChild(img);
 }
 
+/**
+ * Get card by task id.
+ */
 function getCardByTaskId(id) {
   return document.querySelector('.card[data-id="' + id + '"]');
 }
 
+/**
+ * Remove card progress.
+ */
 function removeCardProgress(existing) {
   if (existing) existing.remove();
 }
 
+/**
+ * Ensure card progress.
+ */
 function ensureCardProgress(card, existing) {
   if (existing) return existing;
   const bottom = card.querySelector(".card-bottom");
@@ -323,6 +440,9 @@ function ensureCardProgress(card, existing) {
   return progress;
 }
 
+/**
+ * Build card progress element.
+ */
 function buildCardProgressElement() {
   const progress = document.createElement("div");
   progress.className = "card-progress";
@@ -332,6 +452,9 @@ function buildCardProgressElement() {
   return progress;
 }
 
+/**
+ * Update card progress display.
+ */
 function updateCardProgressDisplay(progress, done, total, percent) {
   const fill = progress.querySelector(".card-progress-fill");
   const text = progress.querySelector(".card-progress-text");
@@ -339,6 +462,9 @@ function updateCardProgressDisplay(progress, done, total, percent) {
   if (text) text.textContent = done + "/" + total;
 }
 
+/**
+ * Show overlay.
+ */
 function showOverlay() {
   const backdrop = document.getElementById("taskOverlayBackdrop");
   if (!backdrop) return;
@@ -346,6 +472,9 @@ function showOverlay() {
   updateBodyScrollLock();
 }
 
+/**
+ * Close task overlay.
+ */
 function closeTaskOverlay() {
   const backdrop = document.getElementById("taskOverlayBackdrop");
   if (!backdrop) return;
@@ -355,6 +484,9 @@ function closeTaskOverlay() {
   resetOverlayEditMode();
 }
 
+/**
+ * Reset overlay edit mode.
+ */
 function resetOverlayEditMode() {
   const els = getOverlayElements();
   if (!els) return;
@@ -362,6 +494,9 @@ function resetOverlayEditMode() {
   toggleOverlayEditState(els, false);
 }
 
+/**
+ * Enter overlay edit mode.
+ */
 function enterOverlayEditMode(id, els) {
   const task = findTaskById(id);
   if (!task) return;
@@ -371,11 +506,17 @@ function enterOverlayEditMode(id, els) {
   if (els.overlay) els.overlay.scrollTop = 0;
 }
 
+/**
+ * Exit overlay edit mode.
+ */
 function exitOverlayEditMode(els) {
   isEditingOverlay = false;
   toggleOverlayEditState(els, false);
 }
 
+/**
+ * Toggle overlay edit state.
+ */
 function toggleOverlayEditState(els, editing) {
   if (els.view) els.view.hidden = editing;
   if (els.editForm) els.editForm.hidden = !editing;

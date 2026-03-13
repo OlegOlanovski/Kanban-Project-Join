@@ -1,4 +1,7 @@
 // ---------------- Render board ----------------
+/**
+ * Render board from storage.
+ */
 function renderBoardFromStorage() {
   clearAllCards();
   const filtered = getFilteredTasks();
@@ -7,6 +10,9 @@ function renderBoardFromStorage() {
   updateEmptyStates();
 }
 
+/**
+ * Get normalize search fn.
+ */
 function getNormalizeSearchFn() {
   if (typeof normalizeSearchQuery === "function") return normalizeSearchQuery;
   return function (value) {
@@ -14,6 +20,9 @@ function getNormalizeSearchFn() {
   };
 }
 
+/**
+ * Get active search query.
+ */
 function getActiveSearchQuery() {
   if (typeof activeSearchQuery !== "undefined") return activeSearchQuery;
   if (typeof window !== "undefined" && typeof window.activeSearchQuery !== "undefined") {
@@ -22,6 +31,9 @@ function getActiveSearchQuery() {
   return "";
 }
 
+/**
+ * Clear all cards.
+ */
 function clearAllCards() {
   const cardsLists = document.querySelectorAll(".column .cards");
   for (let i = 0; i < cardsLists.length; i++) {
@@ -29,6 +41,9 @@ function clearAllCards() {
   }
 }
 
+/**
+ * Render all tasks.
+ */
 function renderAllTasks(tasks) {
   const list = Array.isArray(tasks) ? tasks : getTasks();
   for (let i = 0; i < list.length; i++) {
@@ -36,6 +51,9 @@ function renderAllTasks(tasks) {
   }
 }
 
+/**
+ * Get filtered tasks.
+ */
 function getFilteredTasks() {
   const tasks = getTasks();
   const normalize = getNormalizeSearchFn();
@@ -48,6 +66,9 @@ function getFilteredTasks() {
   return filtered;
 }
 
+/**
+ * Update search empty state.
+ */
 function updateSearchEmptyState(tasks) {
   const el = document.getElementById("boardSearchEmpty");
   if (!el) return;
@@ -56,16 +77,25 @@ function updateSearchEmptyState(tasks) {
   el.style.display = show ? "block" : "none";
 }
 
+/**
+ * Task matches query.
+ */
 function taskMatchesQuery(task, query) {
   const title = buildTaskSearchTitle(task);
   return title.includes(query);
 }
 
+/**
+ * Build task search title.
+ */
 function buildTaskSearchTitle(task) {
   const normalize = getNormalizeSearchFn();
   return normalize(task && task.title ? task.title : "");
 }
 
+/**
+ * Render task card.
+ */
 function renderTaskCard(task) {
   const cardsContainer = getCardsContainer(task.status);
   if (!cardsContainer) return;
@@ -74,11 +104,17 @@ function renderTaskCard(task) {
   cardsContainer.appendChild(card);
 }
 
+/**
+ * Get cards container.
+ */
 function getCardsContainer(status) {
   const selector = '.column[data-status="' + status + '"] .cards';
   return document.querySelector(selector);
 }
 
+/**
+ * Create card element.
+ */
 function createCardElement(task) {
   const card = document.createElement("div");
   card.className = "card";
@@ -87,6 +123,9 @@ function createCardElement(task) {
   return card;
 }
 
+/**
+ * Build card html.
+ */
 function buildCardHtml(task) {
   const labelText = getLabelText(task);
   const labelClass = getLabelClass(task);
@@ -103,14 +142,23 @@ function buildCardHtml(task) {
   return html;
 }
 
+/**
+ * Get label text.
+ */
 function getLabelText(task) {
   return task.category === "tech" ? "Technical Task" : "User Story";
 }
 
+/**
+ * Get label class.
+ */
 function getLabelClass(task) {
   return task.category === "tech" ? "tech" : "user";
 }
 
+/**
+ * Build card subtask progress html.
+ */
 function buildCardSubtaskProgressHtml(task) {
   const subs = getTaskSubtasks(task);
   const total = subs.length;
@@ -127,6 +175,9 @@ function buildCardSubtaskProgressHtml(task) {
   return html;
 }
 
+/**
+ * Build card footer html.
+ */
 function buildCardFooterHtml(task) {
   const avatars = buildAssignedAvatarsHtml(task);
   const prioIcon = getPriorityIcon(task);
@@ -139,6 +190,9 @@ function buildCardFooterHtml(task) {
   ].join("");
 }
 
+/**
+ * Build assigned avatars html.
+ */
 function buildAssignedAvatarsHtml(task) {
   const list = getAssignedContactsForCard(task);
   if (!list.length) return "";
@@ -148,10 +202,16 @@ function buildAssignedAvatarsHtml(task) {
   return buildAvatarListHtml(list, limit) + buildAvatarRemainderHtml(remaining);
 }
 
+/**
+ * Get assigned contacts for card.
+ */
 function getAssignedContactsForCard(task) {
   return resolveAssignedContacts(task);
 }
 
+/**
+ * Resolve assigned contacts.
+ */
 function resolveAssignedContacts(task) {
   const assignedArr = normalizeAssigned(task.assigned);
   if (!assignedArr.length) return [];
@@ -159,6 +219,9 @@ function resolveAssignedContacts(task) {
   return resolveAssignedFromContacts(assignedArr, contacts);
 }
 
+/**
+ * Get contacts by id.
+ */
 function getContactsById(contacts) {
   if (typeof buildContactsById === "function") return buildContactsById(contacts);
   const map = new Map();
@@ -169,6 +232,9 @@ function getContactsById(contacts) {
   return map;
 }
 
+/**
+ * Get contacts by name.
+ */
 function getContactsByName(contacts) {
   const map = new Map();
   for (let i = 0; i < contacts.length; i++) {
@@ -181,6 +247,9 @@ function getContactsByName(contacts) {
   return map;
 }
 
+/**
+ * Hash string local.
+ */
 function hashStringLocal(str) {
   let h = 0;
   const s = String(str || "");
@@ -188,10 +257,16 @@ function hashStringLocal(str) {
   return Math.abs(h);
 }
 
+/**
+ * Color class for seed.
+ */
 function colorClassForSeed(seed) {
   return "avatar-color-" + (hashStringLocal(seed) % 12);
 }
 
+/**
+ * Get contact color class.
+ */
 function getContactColorClass(contact) {
   if (contact && contact.colorClass) return contact.colorClass;
   const seed = contact?.id || contact?.email || contact?.name || "";
@@ -206,12 +281,18 @@ function getContactColorClass(contact) {
  * @param {Object} task
  * @returns {Array<{title:string, done:boolean}>}
  */
+/**
+ * Get task subtasks.
+ */
 function getTaskSubtasks(task) {
   const subs = getRawSubtasks(task);
   if (!Array.isArray(subs)) return [];
   return normalizeSubtasks(subs);
 }
 
+/**
+ * Build card footer priority html.
+ */
 function buildCardFooterPriorityHtml(prioIcon, prClass) {
   let html = '<div class="card-priority">';
   if (prioIcon) html += buildPriorityIconHtml(prioIcon, prClass);
@@ -219,6 +300,9 @@ function buildCardFooterPriorityHtml(prioIcon, prClass) {
   return html;
 }
 
+/**
+ * Build priority icon html.
+ */
 function buildPriorityIconHtml(prioIcon, prClass) {
   return (
     '<img src="' +
@@ -231,6 +315,9 @@ function buildPriorityIconHtml(prioIcon, prClass) {
   );
 }
 
+/**
+ * Build avatar list html.
+ */
 function buildAvatarListHtml(list, limit) {
   let html = "";
   for (let i = 0; i < limit; i++) {
@@ -239,6 +326,9 @@ function buildAvatarListHtml(list, limit) {
   return html;
 }
 
+/**
+ * Build single avatar html.
+ */
 function buildSingleAvatarHtml(contact) {
   const name = String(contact.name || contact.id || "");
   const initials = getInitials(name);
@@ -246,17 +336,26 @@ function buildSingleAvatarHtml(contact) {
   return '<span class="card-avatar ' + escapeHtml(colorClass) + '">' + escapeHtml(initials) + "</span>";
 }
 
+/**
+ * Build avatar remainder html.
+ */
 function buildAvatarRemainderHtml(remaining) {
   if (remaining > 0) return '<span class="card-avatar card-avatar-more">+' + remaining + "</span>";
   return "";
 }
 
+/**
+ * Normalize assigned.
+ */
 function normalizeAssigned(assigned) {
   if (Array.isArray(assigned)) return assigned;
   if (assigned) return [assigned];
   return [];
 }
 
+/**
+ * Resolve assigned from contacts.
+ */
 function resolveAssignedFromContacts(assignedArr, contacts) {
   const byId = getContactsById(contacts);
   const byName = getContactsByName(contacts);
@@ -268,6 +367,9 @@ function resolveAssignedFromContacts(assignedArr, contacts) {
   return result;
 }
 
+/**
+ * Resolve assigned entry.
+ */
 function resolveAssignedEntry(value, byId, byName) {
   const key = String(value || "").trim();
   if (!key) return null;
@@ -275,6 +377,9 @@ function resolveAssignedEntry(value, byId, byName) {
   return contact ? contact : { id: key, name: key };
 }
 
+/**
+ * Get raw subtasks.
+ */
 function getRawSubtasks(task) {
   if (!task) return [];
   if (Array.isArray(task.subtasks)) return task.subtasks;
@@ -284,6 +389,9 @@ function getRawSubtasks(task) {
   return [];
 }
 
+/**
+ * Normalize subtasks.
+ */
 function normalizeSubtasks(subs) {
   return subs
     .filter(Boolean)
@@ -296,6 +404,9 @@ function normalizeSubtasks(subs) {
     });
 }
 
+/**
+ * Count done subtasks.
+ */
 function countDoneSubtasks(subs) {
   let done = 0;
   for (let i = 0; i < subs.length; i++) {
@@ -304,10 +415,16 @@ function countDoneSubtasks(subs) {
   return done;
 }
 
+/**
+ * Get priority text.
+ */
 function getPriorityText(task) {
   return String(task.priority || task.prio || "").toLowerCase();
 }
 
+/**
+ * Get priority icon.
+ */
 function getPriorityIcon(task) {
   const pr = getPriorityText(task);
   if (pr === "urgent") return "../assets/icons/urgent.svg";

@@ -1,3 +1,6 @@
+/**
+ * Hash password with salt.
+ */
 async function hashPasswordWithSalt(password, saltArray) {
   const encoder = new TextEncoder();
   const data = encoder.encode(password);
@@ -23,6 +26,9 @@ async function hashPasswordWithSalt(password, saltArray) {
     .join("");
 }
 
+/**
+ * Reg data.
+ */
 async function regData(saltArray) {
   const passwordResult = await hashPasswordWithSalt(password.value, saltArray);
   try {
@@ -64,10 +70,16 @@ async function regData(saltArray) {
   }
 }
 
+/**
+ * Registration success redirect.
+ */
 function registrationSuccessRedirect() {
   window.location.href = "../index.html?msg=" + encodeURIComponent("You Signed Up successfully.");
 }
 
+/**
+ * Show reg notice.
+ */
 function showRegNotice(message, type = "info", duration = 4000) {
   const el = document.getElementById("reg-notice");
   if (!el) return;

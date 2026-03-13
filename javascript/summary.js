@@ -7,8 +7,14 @@ let urgent_tasks_day = document.getElementById("day");
 let urgent_tasks_year = document.getElementById("year");
 let Todos_urgent = [];
 let nearestUrgentDate = null;
+/**
+ * Go to board.
+ */
 function goToBoard() {window.location.href = BOARD_PAGE_URL;}
 
+/**
+ * Fetch dbnode.
+ */
 async function fetchDBNode(nodeName) {
   try { const resp = await fetch(DB_TASK_URL + nodeName + ".json"); const data = await resp.json();
     if (data != null) return data; } catch (e) {}
@@ -35,6 +41,9 @@ async function fetchDBNode(nodeName) {
 }
 
 
+/**
+ * Sync tasks from db.
+ */
 async function syncTasksFromDB() {
   try {
     const data = await fetchDBNode("tasks");
@@ -52,12 +61,18 @@ async function syncTasksFromDB() {
 }
 
 
+/**
+ * Initialize.
+ */
 async function init() {
   await (window.idbStorage && window.idbStorage.ready ? window.idbStorage.ready : Promise.resolve());
   try { await syncTasksFromDB(); } catch (e) { console.warn("Initial tasks sync failed, continuing with local cache", e); }
   getCokkieCheck(); greetingText(); getTasksTotal(); getTasksDone(); getTasksProgress(); getAwaitFeedback(); getUrgrentTodo();
 }
 
+/**
+ * Greeting text.
+ */
 function greetingText() {
   const el = document.getElementById("greeting-text"); if (!el) return;
   const h = new Date().getHours();
@@ -73,6 +88,9 @@ function greetingText() {
     el.textContent = `${base}, ${name}!`;
   } catch (e) { el.textContent = base + "!"; }
 }
+/**
+ * Get tasks total.
+ */
 function getTasksTotal() {
   const tasks = (window.idbStorage && typeof window.idbStorage.getTasksSync === "function") ? window.idbStorage.getTasksSync() : [];
   let filteredTasks = tasks.filter(task => task.title !== undefined);
@@ -90,6 +108,9 @@ function getTasksTotal() {
 }
 
 
+/**
+ * Get tasks done.
+ */
 function getTasksDone() {
   let done_tasks = document.getElementById("todos-done");
   let Todos_Done = [];
@@ -104,6 +125,9 @@ function getTasksDone() {
 }
 
 
+/**
+ * Get tasks progress.
+ */
 function getTasksProgress() {
   let pogress_tasks = document.getElementById("task-in-pogress");
   let Todos_pogress = [];
@@ -117,6 +141,9 @@ function getTasksProgress() {
 }
 
 
+/**
+ * Get await feedback.
+ */
 function getAwaitFeedback() {
   let feedback_tasks = document.getElementById("task-in-feedback");
   let Todos_feedback = [];
@@ -130,6 +157,9 @@ function getAwaitFeedback() {
 }
 
 
+/**
+ * Get urgrent todo.
+ */
 function getUrgrentTodo() {
   const tasks = (window.idbStorage && typeof window.idbStorage.getTasksSync === "function") ? window.idbStorage.getTasksSync() : [];
   for (let i = 0; i < tasks.length; i++) {

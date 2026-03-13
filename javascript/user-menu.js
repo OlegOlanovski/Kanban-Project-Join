@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const menu = document.getElementById("userMenu");
   if (!btn || !menu) return;
 
+  /**
+   * Set open.
+   */
   function setOpen(open) {
     menu.classList.toggle("is-open", open);
     btn.setAttribute("aria-expanded", open ? "true" : "false");
@@ -25,7 +28,13 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") setOpen(false);
   });
+  /**
+   * Populate header initials.
+   */
   function populateHeaderInitials() {
+    /**
+     * Cookie to obj.
+     */
     function cookieToObj() {
       return document.cookie.split(";").reduce((acc, cookie) => {
         const [k, ...rest] = cookie.trim().split("=");
@@ -34,6 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }, {});
     }
 
+    /**
+     * Parse logged user.
+     */
     function parseLoggedUser() {
       try {
         const s = sessionStorage.getItem('loggedInUser');
@@ -53,6 +65,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
+    /**
+     * Clean display name.
+     */
     function cleanDisplayName(val) {
       if (!val) return null;
       let s = (typeof val === 'object') ? (val.namen || val.name || val.fullName || val.mail || '') : String(val || '');
@@ -64,6 +79,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return s || null;
     }
 
+    /**
+     * Get initials.
+     */
     function getInitials(name) {
       if (!name) return 'G';
       let s = (typeof name === 'object') ? (name.namen || name.name || name.fullName || name.mail || '') : String(name || '');

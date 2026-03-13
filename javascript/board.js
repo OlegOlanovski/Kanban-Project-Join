@@ -16,6 +16,9 @@ window.activeSearchQuery = activeSearchQuery;
 
 document.addEventListener("DOMContentLoaded", onBoardReady);
 
+/**
+ * On board ready.
+ */
 async function onBoardReady() {
   getCokkieCheck();
   await waitForIdbReady();
@@ -24,23 +27,35 @@ async function onBoardReady() {
   finalizeBoardUi();
 }
 
+/**
+ * Wait for idb ready.
+ */
 async function waitForIdbReady() {
   const ready = window.idbStorage && window.idbStorage.ready;
   if (!ready) return;
   await ready;
 }
 
+/**
+ * Initialize board ui.
+ */
 function initBoardUi() {
   initRedirects();
   initAddTaskOverlay();
   initSearch();
 }
 
+/**
+ * Sync board data.
+ */
 async function syncBoardData() {
   await trySyncTasks();
   await trySyncContacts();
 }
 
+/**
+ * Try sync tasks.
+ */
 async function trySyncTasks() {
   try {
     await syncTasksFromDB();
@@ -49,6 +64,9 @@ async function trySyncTasks() {
   }
 }
 
+/**
+ * Try sync contacts.
+ */
 async function trySyncContacts() {
   try {
     await syncContactsFromDB();
@@ -57,6 +75,9 @@ async function trySyncContacts() {
   }
 }
 
+/**
+ * Finalize board ui.
+ */
 function finalizeBoardUi() {
   renderBoardFromStorage();
   initDragAndDrop();
@@ -66,11 +87,17 @@ function finalizeBoardUi() {
 }
 
 // ---------------- Redirects ----------------
+/**
+ * Initialize redirects.
+ */
 function initRedirects() {
   bindAddCardIcons();
   bindTopAddButton();
 }
 
+/**
+ * Bind add card icons.
+ */
 function bindAddCardIcons() {
   const icons = document.querySelectorAll(".add-card-icon");
   for (let i = 0; i < icons.length; i++) {
@@ -81,6 +108,9 @@ function bindAddCardIcons() {
   }
 }
 
+/**
+ * Bind top add button.
+ */
 function bindTopAddButton() {
   const topBtn = document.querySelector(".add-task-button");
   if (!topBtn) return;
@@ -89,16 +119,25 @@ function bindTopAddButton() {
   });
 }
 
+/**
+ * Get column status.
+ */
 function getColumnStatus(icon) {
   const col = icon.closest(".column");
   return col && col.dataset ? col.dataset.status : "todo";
 }
 
+/**
+ * Go to add task.
+ */
 function goToAddTask(status) {
   openAddTaskOverlay(status);
 }
 
 // ---------------- Search ----------------
+/**
+ * Initialize search.
+ */
 function initSearch() {
   const input = document.querySelector(".search-input");
   if (!input) return;
@@ -108,24 +147,36 @@ function initSearch() {
   bindSearchIcon(icon, input);
 }
 
+/**
+ * Bind search input.
+ */
 function bindSearchInput(input) {
   input.addEventListener("input", function () {
     applySearchQuery(input.value);
   });
 }
 
+/**
+ * Bind search escape.
+ */
 function bindSearchEscape(input) {
   input.addEventListener("keydown", function (e) {
     handleSearchEscape(e, input);
   });
 }
 
+/**
+ * Handle search escape.
+ */
 function handleSearchEscape(e, input) {
   if (e.key !== "Escape") return;
   input.value = "";
   applySearchQuery("");
 }
 
+/**
+ * Bind search icon.
+ */
 function bindSearchIcon(icon, input) {
   if (!icon) return;
   icon.addEventListener("click", function () {
@@ -133,22 +184,34 @@ function bindSearchIcon(icon, input) {
   });
 }
 
+/**
+ * Focus and search.
+ */
 function focusAndSearch(input) {
   input.focus();
   applySearchQuery(input.value);
 }
 
+/**
+ * Apply search query.
+ */
 function applySearchQuery(value) {
   activeSearchQuery = normalizeSearchQuery(value);
   window.activeSearchQuery = activeSearchQuery;
   renderBoardFromStorage();
 }
 
+/**
+ * Normalize search query.
+ */
 function normalizeSearchQuery(value) {
   return String(value || "").trim().toLowerCase();
 }
 
 // ---------------- Add task overlay ----------------
+/**
+ * Initialize add task overlay.
+ */
 function initAddTaskOverlay() {
   const backdrop = document.getElementById("addTaskOverlayBackdrop");
   if (!backdrop) return;
@@ -166,6 +229,9 @@ function initAddTaskOverlay() {
   });
 }
 
+/**
+ * Open add task overlay.
+ */
 function openAddTaskOverlay(status) {
   const backdrop = document.getElementById("addTaskOverlayBackdrop");
   if (!backdrop) return;
@@ -180,6 +246,9 @@ function openAddTaskOverlay(status) {
   if (titleInput) titleInput.focus();
 }
 
+/**
+ * Close add task overlay.
+ */
 function closeAddTaskOverlay() {
   const backdrop = document.getElementById("addTaskOverlayBackdrop");
   if (!backdrop) return;
@@ -189,6 +258,9 @@ function closeAddTaskOverlay() {
 }
 
 // ---------------- Storage ----------------
+/**
+ * Get tasks.
+ */
 function getTasks() {
   try {
     
@@ -200,12 +272,18 @@ function getTasks() {
   }
 }
 
+/**
+ * Save tasks.
+ */
 async function saveTasks(tasks) {
   await persistTasksToIdb(tasks);
   syncTasksToRemote(tasks);
 }
 
 // Sync tasks from Firebase RTDB and save to persistent storage (IndexedDB)
+/**
+ * Fetch dbnode.
+ */
 async function fetchDBNode(nodeName) {
   const direct = await tryFetchNode(nodeName);
   if (direct != null) return direct;
@@ -213,6 +291,9 @@ async function fetchDBNode(nodeName) {
 }
 
 
+/**
+ * Sync tasks from db.
+ */
 async function syncTasksFromDB() {
   try {
     const data = await fetchDBNode("tasks");
@@ -229,6 +310,9 @@ async function syncTasksFromDB() {
 }
 
 
+/**
+ * Sync contacts from db.
+ */
 async function syncContactsFromDB() {
   try {
     const data = await fetchDBNode("contacts");
@@ -241,6 +325,9 @@ async function syncContactsFromDB() {
   }
 }
 
+/**
+ * Persist tasks to idb.
+ */
 async function persistTasksToIdb(tasks) {
   if (!(window.idbStorage && typeof window.idbStorage.saveTasks === "function")) {
     console.warn("idbStorage not available - tasks not persisted");
@@ -253,6 +340,9 @@ async function persistTasksToIdb(tasks) {
   }
 }
 
+/**
+ * Sync tasks to remote.
+ */
 function syncTasksToRemote(tasks) {
   (async function () {
     try {
@@ -264,6 +354,9 @@ function syncTasksToRemote(tasks) {
   })();
 }
 
+/**
+ * Put tasks to remote.
+ */
 async function putTasksToRemote(tasks) {
   const url = getRemoteTasksUrl();
   const map = buildTasksMap(tasks);
@@ -274,11 +367,17 @@ async function putTasksToRemote(tasks) {
   });
 }
 
+/**
+ * Get remote tasks url.
+ */
 function getRemoteTasksUrl() {
   const base = window.DB_TASK_URL || "https://join-da53b-default-rtdb.firebaseio.com/";
   return base + "tasks.json";
 }
 
+/**
+ * Build tasks map.
+ */
 function buildTasksMap(tasks) {
   const map = {};
   for (const t of (tasks || [])) {
@@ -287,11 +386,17 @@ function buildTasksMap(tasks) {
   return map;
 }
 
+/**
+ * Get task id for map.
+ */
 function getTaskIdForMap(task) {
   if (task && task.id) return String(task.id);
   return "tmp_" + Date.now() + "_" + Math.random().toString(16).slice(2);
 }
 
+/**
+ * Try fetch node.
+ */
 async function tryFetchNode(nodeName) {
   try {
     const resp = await fetch(DB_TASK_URL + nodeName + ".json");
@@ -302,6 +407,9 @@ async function tryFetchNode(nodeName) {
   }
 }
 
+/**
+ * Fetch node from root.
+ */
 async function fetchNodeFromRoot(nodeName) {
   try {
     const root = await fetchDbRoot();
@@ -312,22 +420,34 @@ async function fetchNodeFromRoot(nodeName) {
   }
 }
 
+/**
+ * Fetch db root.
+ */
 async function fetchDbRoot() {
   const r = await fetch(DB_TASK_URL + ".json");
   return r.json();
 }
 
+/**
+ * Extract node from root.
+ */
 function extractNodeFromRoot(root, nodeName) {
   if (Array.isArray(root)) return extractNodeFromArray(root, nodeName);
   if (root && typeof root === "object") return extractNodeFromObject(root, nodeName);
   return null;
 }
 
+/**
+ * Extract node from array.
+ */
 function extractNodeFromArray(root, nodeName) {
   const entry = root.find((e) => e && e.id === nodeName);
   return entry ? extractNodeFromEntry(entry, nodeName) : null;
 }
 
+/**
+ * Extract node from object.
+ */
 function extractNodeFromObject(root, nodeName) {
   const vals = Object.values(root);
   for (let i = 0; i < vals.length; i++) {
@@ -338,6 +458,9 @@ function extractNodeFromObject(root, nodeName) {
   return null;
 }
 
+/**
+ * Extract node from entry.
+ */
 function extractNodeFromEntry(entry, nodeName) {
   if (!entry || entry.id !== nodeName) return null;
   const clone = Object.assign({}, entry);
@@ -347,12 +470,18 @@ function extractNodeFromEntry(entry, nodeName) {
   return keys.length ? clone : null;
 }
 
+/**
+ * Normalize contacts data.
+ */
 function normalizeContactsData(data) {
   if (!data) return [];
   if (Array.isArray(data)) return data.filter(Boolean);
   return Object.entries(data).map(([k, v]) => ({ ...(v || {}), id: v && v.id ? v.id : k }));
 }
 
+/**
+ * Try save contacts to idb.
+ */
 async function trySaveContactsToIdb(contacts) {
   if (!(window.idbStorage && typeof window.idbStorage.saveContacts === "function")) return null;
   try {
@@ -364,6 +493,9 @@ async function trySaveContactsToIdb(contacts) {
   return readContactsFromIdb();
 }
 
+/**
+ * Read contacts from idb.
+ */
 function readContactsFromIdb() {
   try {
     return window.idbStorage.getContactsSync ? window.idbStorage.getContactsSync() : null;
@@ -373,6 +505,9 @@ function readContactsFromIdb() {
   }
 }
 
+/**
+ * Load contacts.
+ */
 function loadContacts() {
   try {
     return (window.idbStorage && typeof window.idbStorage.getContactsSync === "function")
@@ -384,6 +519,9 @@ function loadContacts() {
   }
 }
 
+/**
+ * Build contacts by id.
+ */
 function buildContactsById(contacts) {
   const map = new Map();
   for (let i = 0; i < contacts.length; i++) {
@@ -393,6 +531,9 @@ function buildContactsById(contacts) {
   return map;
 }
 
+/**
+ * Resolve assigned list.
+ */
 function resolveAssignedList(task) {
   let assignedArr = [];
   if (Array.isArray(task.assigned)) assignedArr = task.assigned;

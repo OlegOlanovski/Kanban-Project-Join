@@ -15,6 +15,9 @@ let iconImg = document.getElementById("lock-icon");
 let passwordToggleIcon = document.getElementById("password-toggle");
 let confirmPasswordToggleIcon = document.getElementById("confirm-password-toggle");
 
+/**
+ * Set info state.
+ */
 function setInfoState(el, visible) {
   if (!el) return;
   el.style.visibility = visible ? "visible" : "hidden";
@@ -24,6 +27,9 @@ if (full_name) {
   full_name.addEventListener("blur", validateFullname);
 }
 
+/**
+ * Get icon base.
+ */
 function getIconBase(icon) {
   if (icon && icon.src) {
     const idx = icon.src.lastIndexOf("/");
@@ -32,11 +38,17 @@ function getIconBase(icon) {
   return window.location.pathname.includes("/subpages/") ? "../assets/icons/" : "./assets/icons/";
 }
 
+/**
+ * Set icon src.
+ */
 function setIconSrc(icon, filename) {
   if (!icon) return;
   icon.src = getIconBase(icon) + filename;
 }
 
+/**
+ * Is signup form valid.
+ */
 function isSignupFormValid() {
   if (!full_name || !email || !password || !confirmPassword || !isAccept) return false;
   const okName = full_name.value.trim() !== "";
@@ -47,6 +59,9 @@ function isSignupFormValid() {
   return okName && okEmail && okPass && okConfirm && okCheckbox;
 }
 
+/**
+ * Sync signup button state.
+ */
 function syncSignupButtonState() {
   if (!singupButton) return;
   const ok = isSignupFormValid();
@@ -67,6 +82,9 @@ function syncSignupButtonState() {
 /**
  * Input  Name prüfen
  */
+/**
+ * Validate fullname.
+ */
 function validateFullname() {
   const ok = full_name.value.trim() !== "";
 
@@ -85,6 +103,9 @@ function validateFullname() {
 /**
  * Akzeptiert einen String und gibt true/false zurück
  */
+/**
+ * Validate email reg ex.
+ */
 function validateEmailRegEx(emailInput) {
   const value =
     typeof emailInput === "string" ? emailInput : (emailInput && emailInput.value) || "";
@@ -93,6 +114,9 @@ function validateEmailRegEx(emailInput) {
 }
 /**
  * Email prüfen
+ */
+/**
+ * Validate email.
  */
 function validateEmail() {
   const isValid = validateEmailRegEx(email);
@@ -118,6 +142,9 @@ function validateEmail() {
 /**
  * Password prüfen
  */
+/**
+ * Update password icon.
+ */
 function updatePasswordIcon() {
   if (password.value.length === 0) {
     if (!iconImg) return;
@@ -131,6 +158,9 @@ function updatePasswordIcon() {
   );
 }
 
+/**
+ * Update signup toggle icons.
+ */
 function updateSignupToggleIcons() {
   if (passwordToggleIcon && password) {
     setIconSrc(
@@ -172,6 +202,9 @@ function updateSignupToggleIcons() {
     updateSignupToggleIcons();
   });
 
+  /**
+   * Toggle icon state.
+   */
   function toggleIconState() {
     if (password.value.length === 0) {
       password.classList.add("password-empty");
@@ -208,6 +241,9 @@ if (confirmPasswordToggleIcon && confirmPassword) {
 }
 
 
+/**
+ * Validate password.
+ */
 function validatePassword() {
   const ok = password.value.length > 5;
 
@@ -231,6 +267,9 @@ function validatePassword() {
 /**
  *  Confirm Password prüfen
  */
+/**
+ * Validate confirm password.
+ */
 function validateConfirmPassword() {
   const okPass = validatePassword();
   const ok = okPass && confirmPassword.value !== "" && password.value === confirmPassword.value;
@@ -250,6 +289,9 @@ function validateConfirmPassword() {
   return ok;
 }
 
+/**
+ * Validate checkbox.
+ */
 function validateCheckbox() {
   const ok = isAccept.checked;
 
@@ -266,6 +308,9 @@ function validateCheckbox() {
   return ok;
 }
 
+/**
+ * Show accept tooltip.
+ */
 function showAcceptTooltip() {
   if (!isAcceptPolice) return;
   isAcceptPolice.classList.add("show");
@@ -279,6 +324,9 @@ function showAcceptTooltip() {
 /**
  *  Formular Validierung - Alle Felder prüfen
  *  Gibt true zurück, wenn alle Felder gültig sind
+ */
+/**
+ * Validate sing up form.
  */
 function validateSingUpForm() {
   const okCheckbox = validateCheckbox();

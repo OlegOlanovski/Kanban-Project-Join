@@ -7,8 +7,17 @@ let selectedId = null;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?\d+$/;
 
+/**
+ * Is mobile.
+ */
 function isMobile() { return window.isMobile && window.isMobile(); }
+/**
+ * Show mobile list.
+ */
 function showMobileList() { window.showMobileList && window.showMobileList(); }
+/**
+ * Show mobile details.
+ */
 function showMobileDetails() { window.showMobileDetails && window.showMobileDetails(); }
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -16,6 +25,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   await init();
 });
 
+/**
+ * Initialize.
+ */
 async function init() {
   getCokkieCheck();
   removeModalNow();
@@ -27,25 +39,40 @@ async function init() {
   document.addEventListener("submit", handleSubmit);
 }
 
+/**
+ * Normalize.
+ */
 function normalize(str) {
   return (str || "").trim().replace(/\s+/g, " ");
 }
 
+/**
+ * Generate id.
+ */
 function generateId() {
   if (crypto && crypto.randomUUID) return crypto.randomUUID();
   return Date.now() + "_" + Math.random().toString(16).slice(2);
 }
 
+/**
+ * Hash string.
+ */
 function hashString(str) {
   let h = 0, s = String(str || "");
   for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
   return Math.abs(h);
 }
 
+/**
+ * Color class for.
+ */
 function colorClassFor(seed) {
   return "avatar-color-" + (hashString(seed) % 12);
 }
 
+/**
+ * Pick unique color class.
+ */
 function pickUniqueColorClass(seed, usedSet) {
   let start = hashString(seed) % 12;
   for (let i = 0; i < 12; i++) {
@@ -55,6 +82,9 @@ function pickUniqueColorClass(seed, usedSet) {
   return "avatar-color-" + start;
 }
 
+/**
+ * Get initials.
+ */
 function getInitials(fullName) {
   let n = normalize(fullName);
   if (!n) return "";
@@ -64,14 +94,23 @@ function getInitials(fullName) {
   return (f + l).toUpperCase();
 }
 
+/**
+ * Sort contacts.
+ */
 function sortContacts(a, b) {
   return (a.name || "").toLowerCase().localeCompare((b.name || "").toLowerCase());
 }
 
+/**
+ * Group key.
+ */
 function groupKey(name) {
   return (normalize(name)[0] || "").toUpperCase();
 }
 
+/**
+ * Load contacts.
+ */
 async function loadContacts() {
   let data = null;
   try {
@@ -84,6 +123,9 @@ async function loadContacts() {
   ensureUniqueColors();
 }
 
+/**
+ * Save contacts.
+ */
 async function saveContacts() {
   const map = {};
   for (let c of contacts) {
@@ -97,6 +139,9 @@ async function saveContacts() {
   });
 }
 
+/**
+ * Ensure unique colors.
+ */
 function ensureUniqueColors() {
   let used = new Set();
   for (let c of contacts) {
@@ -106,17 +151,26 @@ function ensureUniqueColors() {
   }
 }
 
+/**
+ * Remove modal now.
+ */
 function removeModalNow() {
   let m = document.getElementById("addContactModal");
   if (m) m.remove();
 }
 
+/**
+ * Initialize validation.
+ */
 function initValidation() {
   document.getElementById("contactName")?.addEventListener("blur", validateNameField);
   document.getElementById("contactEmail")?.addEventListener("blur", validateEmailField);
   document.getElementById("contactPhone")?.addEventListener("blur", validatePhoneField);
 }
 
+/**
+ * Open modal.
+ */
 function openModal(mode, contact) {
   removeModalNow();
   document.body.insertAdjacentHTML("beforeend", contactModalTemplate(mode, buildModalData(mode, contact)));
@@ -135,6 +189,9 @@ function openModal(mode, contact) {
   });
 }
 
+/**
+ * Close modal.
+ */
 function closeModal() {
   let m = document.getElementById("addContactModal");
   if (!m) return;
@@ -142,6 +199,9 @@ function closeModal() {
   setTimeout(removeModalNow, 300);
 }
 
+/**
+ * Show contact toast.
+ */
 function showContactToast() {
   let toast = document.getElementById("contactSuccessToast");
   if (!toast) return;
@@ -149,6 +209,9 @@ function showContactToast() {
   setTimeout(function () { toast.classList.add("d-none"); }, 2000);
 }
 
+/**
+ * Build modal data.
+ */
 function buildModalData(mode, contact) {
   if (!contact) return {};
   return {
@@ -161,6 +224,9 @@ function buildModalData(mode, contact) {
   };
 }
 
+/**
+ * Render contacts list.
+ */
 function renderContactsList() {
   let list = document.getElementById("contactsList");
   if (!list) return;
@@ -182,6 +248,9 @@ function renderContactsList() {
   list.innerHTML = html;
 }
 
+/**
+ * Render details.
+ */
 function renderDetails() {
   let d = document.getElementById("contactDetails");
   if (!d) return;
@@ -202,42 +271,66 @@ function renderDetails() {
   if (isMobile()) showMobileDetails();
 }
 
+/**
+ * Clear error.
+ */
 function clearError(inputId, errorId) {
   document.getElementById(inputId)?.classList.remove("input-error");
   let e = document.getElementById(errorId);
   if (e) e.textContent = "";
 }
 
+/**
+ * Set error.
+ */
 function setError(inputId, errorId, msg) {
   document.getElementById(inputId)?.classList.add("input-error");
   let e = document.getElementById(errorId);
   if (e) e.textContent = msg;
 }
 
+/**
+ * Clear contact errors.
+ */
 function clearContactErrors() {
   clearError("contactName", "nameError");
   clearError("contactEmail", "emailError");
   clearError("contactPhone", "phoneError");
 }
 
+/**
+ * Is valid name.
+ */
 function isValidName(name) {
   return /^[A-Za-zÀ-ÿ\s]+$/.test(name) && name.trim().length >= 2;
 }
 
+/**
+ * Is valid email.
+ */
 function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
+/**
+ * Is valid phone.
+ */
 function isValidPhone(phone) {
   return !phone || phoneRegex.test(phone);
 }
 
+/**
+ * Validate name field.
+ */
 function validateNameField() {
   let name = normalize(document.getElementById("contactName")?.value);
   clearError("contactName", "nameError");
   if (!isValidName(name)) setError("contactName", "nameError", "Please enter a valid name");
 }
 
+/**
+ * Validate email field.
+ */
 function validateEmailField() {
   let email = normalize(document.getElementById("contactEmail")?.value).toLowerCase();
   clearError("contactEmail", "emailError");
@@ -245,12 +338,18 @@ function validateEmailField() {
   else if (!isValidEmail(email)) setError("contactEmail", "emailError", "Please enter a valid email");
 }
 
+/**
+ * Validate phone field.
+ */
 function validatePhoneField() {
   let phone = normalize(document.getElementById("contactPhone")?.value);
   clearError("contactPhone", "phoneError");
   if (!isValidPhone(phone)) setError("contactPhone", "phoneError", "Please enter a valid phone number");
 }
 
+/**
+ * Validate contact form.
+ */
 function validateContactForm() {
   let name = normalize(document.getElementById("contactName")?.value);
   let email = normalize(document.getElementById("contactEmail")?.value).toLowerCase();
@@ -264,6 +363,9 @@ function validateContactForm() {
   return valid;
 }
 
+/**
+ * Form data.
+ */
 function formData() {
   return {
     name: normalize(document.getElementById("contactName")?.value),
@@ -272,6 +374,9 @@ function formData() {
   };
 }
 
+/**
+ * Create from form.
+ */
 function createFromForm() {
   if (!validateContactForm()) return;
   let id = generateId(), data = formData();
@@ -284,6 +389,9 @@ function createFromForm() {
   showContactToast();
 }
 
+/**
+ * Save edit.
+ */
 function saveEdit(editId) {
   let idx = contacts.findIndex(c => c.id === editId);
   if (idx === -1 || !validateContactForm()) return;
@@ -295,6 +403,9 @@ function saveEdit(editId) {
   closeModal();
 }
 
+/**
+ * Delete contact.
+ */
 function deleteContact(id) {
   contacts = contacts.filter(c => c.id !== id);
   selectedId = null;
@@ -303,6 +414,9 @@ function deleteContact(id) {
   renderDetails();
 }
 
+/**
+ * Handle click.
+ */
 function handleClick(e) {
   if (e.target.closest("#openAddContact")) return openModal("create", null);
   let item = e.target.closest(".contact-item");
@@ -323,6 +437,9 @@ function handleClick(e) {
   if (back && e.target === back) closeModal();
 }
 
+/**
+ * Handle submit.
+ */
 function handleSubmit(e) {
   if (e.target.id !== "addContactForm") return;
   e.preventDefault();

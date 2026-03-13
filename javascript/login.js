@@ -8,6 +8,9 @@ let info = document.getElementById("noMatsh");
  * @async
  * @returns {Promise<Object|null>} The register data or null if not found.
  */
+/**
+ * Fetch register node.
+ */
 async function fetchRegisterNode() {
   const db = "https://join-da53b-default-rtdb.firebaseio.com/";
   try {
@@ -21,6 +24,9 @@ async function fetchRegisterNode() {
     const root = await (await fetch(db + ".json")).json();
     if (!root) return null;
 
+    /**
+     * Pick.
+     */
     const pick = (o) => {
       const c = Object.assign({}, o);
       delete c.id;
@@ -51,6 +57,9 @@ async function fetchRegisterNode() {
  *
  * @returns {void}
  */
+/**
+ * Guast login.
+ */
 function guastLogin() {
   const payload = encodeURIComponent(JSON.stringify("Guest"));
   document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
@@ -71,6 +80,9 @@ function guastLogin() {
  * @param {string} storedSalt - The stored salt value.
  * @returns {Promise<boolean>} True if the password is valid.
  */
+/**
+ * Verify password.
+ */
 async function verifyPassword(inputPassword, storedHash, storedSalt) {
   const result = await hashPasswordWithSalt(inputPassword, storedSalt);
   return result === storedHash;
@@ -83,6 +95,9 @@ async function verifyPassword(inputPassword, storedHash, storedSalt) {
  *
  * @async
  * @returns {Promise<void>}
+ */
+/**
+ * Log in.
  */
 async function logIn() {
   const loginData = await fetchRegisterNode();
@@ -140,7 +155,13 @@ async function logIn() {
  *
  * @returns {void}
  */
+/**
+ * Logout.
+ */
 function logout() {
+  /**
+   * Clear cookie.
+   */
   const clearCookie = (name) => { document.cookie = `${name}=; path=/; max-age=0`;};
   clearCookie("loggedInUser"); clearCookie("session"); clearCookie("sessionId"); clearCookie("accessToken"); clearCookie("auth"); clearCookie("token");
 
@@ -158,6 +179,9 @@ function logout() {
  * Redirects the user to the login page if not.
  *
  * @returns {string|null} The stored username or null.
+ */
+/**
+ * Get cokkie check.
  */
 function getCokkieCheck() {
   const cookies = document.cookie.split(";").reduce((acc, cookie) => {
@@ -179,6 +203,9 @@ function getCokkieCheck() {
  * changes the navigation and login button visibility based on the login state.
  *
  * @returns {string|null} The stored username or null.
+ */
+/**
+ * Get cokkie check helper.
  */
 function getCokkieCheckHelper() {
   const cookies = document.cookie.split(";").reduce((acc, cookie) => { const [key, value] = cookie.trim().split("="); acc[key] = decodeURIComponent(value || ""); return acc;}, {});
@@ -213,6 +240,9 @@ function getCokkieCheckHelper() {
  * @param {number} [duration=4000] Duration the message is visible in ms.
  * @returns {void}
  */
+/**
+ * Show please login message from query.
+ */
 function showPleaseLoginMessageFromQuery(duration = 4000) {
   const params = new URLSearchParams(window.location.search);
   const notice = params.get("notice");
@@ -243,6 +273,9 @@ showPleaseLoginMessageFromQuery();
  *
  * @param {number} [duration=4000] Duration the message is visible in ms.
  * @returns {void}
+ */
+/**
+ * Show registration message from query.
  */
 function showRegistrationMessageFromQuery(duration = 4000) {
   const params = new URLSearchParams(window.location.search);

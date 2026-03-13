@@ -51,6 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
  * Returns today's date in local YYYY-MM-DD format for date inputs.
  * @param {Date} [date]
  */
+/**
+ * Get local date input value.
+ */
 function getLocalDateInputValue(date = new Date()) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -63,6 +66,9 @@ function getLocalDateInputValue(date = new Date()) {
 /**
  * Initializes priority buttons and click behavior.
  * Ensures only one priority can be selected.
+ */
+/**
+ * Initialize priority buttons.
  */
 function initPriorityButtons() {
   const buttons = getAddTaskRoot().querySelectorAll(
@@ -83,6 +89,9 @@ function initPriorityButtons() {
 /**
  * Sets the default priority (medium) if available.
  */
+/**
+ * Set default priority.
+ */
 function setDefaultPriority() {
   const root = getAddTaskRoot();
   const defaultBtn = root.querySelector(".priority-btn.medium");
@@ -101,12 +110,18 @@ function setDefaultPriority() {
 /**
  * Initializes subtask input behavior and remove handling.
  */
+/**
+ * Initialize subtasks.
+ */
 function initSubtasks() {
   const input = document.getElementById("subtasks");
   const btn = document.getElementById("addSubtaskBtn");
   const clearBtn = document.getElementById("clearSubtaskBtn");
   const list = document.getElementById("subtasksList");
 
+  /**
+   * Sync subtask buttons.
+   */
   const syncSubtaskButtons = () => {
     if (!input) return;
     const wrap = input.closest(".subtasks-input");
@@ -188,6 +203,9 @@ function initSubtasks() {
  * Reads subtasks from the input field and adds them to the temporary list.
  * Supports comma, semicolon, or newline separation.
  */
+/**
+ * Add subtasks from input.
+ */
 function addSubtasksFromInput() {
   const input = document.getElementById("subtasks");
   if (!input || !input.value.trim()) return;
@@ -206,6 +224,9 @@ function addSubtasksFromInput() {
 
 /**
  * Renders the current list of subtasks in the UI.
+ */
+/**
+ * Render subtasks.
  */
 function renderSubtasks() {
   const list = document.getElementById("subtasksList");
@@ -230,6 +251,9 @@ function renderSubtasks() {
  * @param {HTMLElement} item
  * @param {number} index
  * @param {string} title
+ */
+/**
+ * Start inline subtask edit.
  */
 function startInlineSubtaskEdit(item, index, title) {
   if (!item) return;
@@ -273,6 +297,9 @@ function startInlineSubtaskEdit(item, index, title) {
 /**
  * Loads contacts and populates the assign dropdown.
  */
+/**
+ * Populate assigned contacts.
+ */
 async function populateAssignedContacts() {
   const dropdown = document.getElementById("assignedDropdown");
   if (!dropdown) return;
@@ -311,6 +338,9 @@ async function populateAssignedContacts() {
  * Toggles selection state of a contact.
  * @param {string} id Contact ID
  */
+/**
+ * Toggle contact.
+ */
 function toggleContact(id) {
   selectedContacts.has(id) ? selectedContacts.delete(id) : selectedContacts.add(id);
   updateAssignedCheckboxes();
@@ -320,6 +350,9 @@ function toggleContact(id) {
 /**
  * Updates the checked state of checkboxes in the existing
  * dropdown without rebuilding all rows.
+ */
+/**
+ * Update assigned checkboxes.
  */
 function updateAssignedCheckboxes() {
   const dropdown = document.getElementById("assignedDropdown");
@@ -336,6 +369,9 @@ function updateAssignedCheckboxes() {
 
 /**
  * Renders selected contacts as avatars.
+ */
+/**
+ * Render selected contacts.
  */
 async function renderSelectedContacts() {
   const text = document.getElementById("assignedText");
@@ -373,6 +409,9 @@ async function renderSelectedContacts() {
 /**
  * Initializes dropdown behavior for the contact selector.
  */
+/**
+ * Initialize assigned dropdown.
+ */
 function initAssignedDropdown() {
   const input = document.getElementById("assignedInput");
   const dropdown = document.getElementById("assignedDropdown");
@@ -380,16 +419,25 @@ function initAssignedDropdown() {
   if (!input || !dropdown || !arrow) return;
   const wrapper = input.closest(".multi-select");
 
+  /**
+   * Open.
+   */
   const open = () => {
     dropdown.classList.remove("hidden");
     arrow.classList.add("open");
   };
 
+  /**
+   * Close.
+   */
   const close = () => {
     dropdown.classList.add("hidden");
     arrow.classList.remove("open");
   };
 
+  /**
+   * Toggle.
+   */
   const toggle = () => {
     if (dropdown.classList.contains("hidden")) open();
     else close();
@@ -416,6 +464,9 @@ function initAssignedDropdown() {
 /**
  * Initializes dropdown behavior for the category selector.
  */
+/**
+ * Initialize category dropdown.
+ */
 function initCategoryDropdown() {
   const input = document.getElementById("categoryInput");
   const dropdown = document.getElementById("categoryDropdown");
@@ -425,16 +476,25 @@ function initCategoryDropdown() {
 
   const wrapper = input.closest(".category-select") || input.parentElement;
 
+  /**
+   * Open.
+   */
   const open = () => {
     dropdown.classList.remove("hidden");
     arrow.classList.add("open");
   };
 
+  /**
+   * Close.
+   */
   const close = () => {
     dropdown.classList.add("hidden");
     arrow.classList.remove("open");
   };
 
+  /**
+   * Toggle.
+   */
   const toggle = () => {
     if (dropdown.classList.contains("hidden")) open();
     else close();
@@ -470,6 +530,9 @@ function initCategoryDropdown() {
  * Applies the category selection to hidden input and UI.
  * @param {string} value
  */
+/**
+ * Set category selection.
+ */
 function setCategorySelection(value) {
   const hidden = document.getElementById("category");
   const text = document.getElementById("categoryText");
@@ -495,6 +558,9 @@ function setCategorySelection(value) {
 /**
  * Creates a new task and saves it to Firebase.
  * Also reloads tasks from the database and updates the board.
+ */
+/**
+ * Create task.
  */
 async function createTask() {
   const titleEl =
@@ -591,6 +657,9 @@ async function createTask() {
  * Includes multiple fallback strategies in case the structure differs.
  * @returns {Promise<Object[]>}
  */
+/**
+ * Load contacts from storage.
+ */
 async function loadContactsFromStorage() {
   const dbTask = "https://join-da53b-default-rtdb.firebaseio.com/";
 
@@ -677,6 +746,9 @@ async function loadContactsFromStorage() {
  * @param {string} name
  * @returns {string}
  */
+/**
+ * Get initials.
+ */
 function getInitials(name) {
   return name
     .split(" ")
@@ -690,6 +762,9 @@ function getInitials(name) {
  * Used to create consistent avatar colors.
  * @param {string} str
  * @returns {number}
+ */
+/**
+ * Hash string.
  */
 function hashString(str) {
   let h = 0;
@@ -705,6 +780,9 @@ function hashString(str) {
  * @param {string} seed
  * @returns {string}
  */
+/**
+ * Color class for.
+ */
 function colorClassFor(seed) {
   return "avatar-color-" + (hashString(seed) % 12);
 }
@@ -713,6 +791,9 @@ function colorClassFor(seed) {
  * Determines the avatar color class for a contact.
  * @param {{id?:string,email?:string,name?:string,colorClass?:string}} contact
  * @returns {string}
+ */
+/**
+ * Get contact color class.
  */
 function getContactColorClass(contact) {
   if (contact && contact.colorClass) return contact.colorClass;
@@ -725,6 +806,9 @@ function getContactColorClass(contact) {
 
 /**
  * Clears the entire add task form and resets internal state.
+ */
+/**
+ * Clear form.
  */
 function clearForm() {
   const root = getAddTaskRoot();
@@ -764,6 +848,9 @@ function clearForm() {
 /**
  * Resets the add task form.
  */
+/**
+ * Reset add task form.
+ */
 function resetAddTaskForm() {
   clearForm();
 }
@@ -772,6 +859,9 @@ function resetAddTaskForm() {
  * Returns the root container for the add task page.
  * Falls back to the document if the container is not found.
  * @returns {HTMLElement|Document}
+ */
+/**
+ * Get add task root.
  */
 function getAddTaskRoot() {
   return document.getElementById("addTaskRoot") || document;
@@ -783,6 +873,9 @@ function getAddTaskRoot() {
  * Determines the task status based on overlay data
  * or URL query parameters.
  * @returns {string}
+ */
+/**
+ * Get add task status.
  */
 function getAddTaskStatus() {
   const overlay = document.getElementById("addTaskOverlayBackdrop");
@@ -798,6 +891,9 @@ function getAddTaskStatus() {
 
 /**
  * Initializes validation modal behavior.
+ */
+/**
+ * Initialize validation modal.
  */
 function initValidationModal() {
   const modal = document.getElementById("validationModal");
@@ -817,6 +913,9 @@ function initValidationModal() {
 /**
  * Opens the validation modal.
  */
+/**
+ * Open validation modal.
+ */
 function openValidationModal() {
   const modal = document.getElementById("validationModal");
   if (!modal) return;
@@ -828,6 +927,9 @@ function openValidationModal() {
 /**
  * Closes the validation modal.
  */
+/**
+ * Close validation modal.
+ */
 function closeValidationModal() {
   const modal = document.getElementById("validationModal");
   if (!modal) return;
@@ -838,6 +940,9 @@ function closeValidationModal() {
 
 
 // addTasks.html Select fild Aniemation
+/**
+ * Select animate.
+ */
 function selectAnimate() {
   const wrapper = document.querySelector(".select-wrapper");
   wrapper.classList.toggle("open");

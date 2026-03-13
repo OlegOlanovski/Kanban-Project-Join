@@ -12,25 +12,40 @@
     let maxScrollTop = 0;
     let thumbHeight = 0;
   
+    /**
+     * Clamp.
+     */
     function clamp(v, min, max) {
       return Math.max(min, Math.min(max, v));
     }
   
+    /**
+     * Get client y.
+     */
     function getClientY(e) {
       if (e.touches && e.touches.length) return e.touches[0].clientY;
       return e.clientY;
     }
   
+    /**
+     * Get thumb top.
+     */
     function getThumbTop() {
       const tr = thumb.style.transform || "";
       const m = tr.match(/translateY\(([-0-9.]+)px\)/);
       return m ? parseFloat(m[1]) : 0;
     }
   
+    /**
+     * Set thumb top.
+     */
     function setThumbTop(top) {
       thumb.style.transform = "translateY(" + top + "px)";
     }
   
+    /**
+     * Update thumb from scroll.
+     */
     function updateThumbFromScroll() {
       if (maxScrollTop <= 0) {
         setThumbTop(0);
@@ -41,12 +56,18 @@
       setThumbTop(top);
     }
   
+    /**
+     * Update scroll from thumb top.
+     */
     function updateScrollFromThumbTop(top) {
       if (maxThumbTop <= 0) return;
       const progress = top / maxThumbTop;
       scrollEl.scrollTop = progress * maxScrollTop;
     }
   
+    /**
+     * Recalc.
+     */
     function recalc() {
       const trackHeight = track.clientHeight;
       const viewHeight = scrollEl.clientHeight;
@@ -70,6 +91,9 @@
       updateThumbFromScroll();
     }
   
+    /**
+     * On down.
+     */
     function onDown(e) {
       dragging = true;
       startY = getClientY(e);
@@ -82,6 +106,9 @@
       e.preventDefault();
     }
   
+    /**
+     * On move.
+     */
     function onMove(e) {
       if (!dragging) return;
   
@@ -95,6 +122,9 @@
       e.preventDefault();
     }
   
+    /**
+     * On up.
+     */
     function onUp() {
       dragging = false;
       document.documentElement.style.userSelect = "";

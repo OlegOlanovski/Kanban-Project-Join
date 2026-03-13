@@ -1,3 +1,6 @@
+/**
+ * Letter group template.
+ */
 function letterGroupTemplate(letter) {
   return `
     <div class="letter-group">
@@ -6,6 +9,9 @@ function letterGroupTemplate(letter) {
   `;
 }
 
+/**
+ * Contact list item template.
+ */
 function contactListItemTemplate(c, isActive) {
   return `
     <div class="contact-item ${isActive ? "active" : ""}" data-id="${c.id}">
@@ -20,6 +26,9 @@ function contactListItemTemplate(c, isActive) {
   `;
 }
 
+/**
+ * Contact actions template.
+ */
 function contactActionsTemplate(c) {
   return `
     <div class="contact-actions">
@@ -35,6 +44,9 @@ function contactActionsTemplate(c) {
   `;
 }
 
+/**
+ * Contact details template.
+ */
 function contactDetailsTemplate(c) {
   return `
     <div class="contact-detail-topbar">
@@ -68,6 +80,9 @@ function contactDetailsTemplate(c) {
   `;
 }
 
+/**
+ * Modal left template.
+ */
 function modalLeftTemplate(mode) {
   return `
     <div class="modal-left">
@@ -82,6 +97,9 @@ function modalLeftTemplate(mode) {
   `;
 }
 
+/**
+ * Modal avatar template.
+ */
 function modalAvatarTemplate(mode, data) {
   return String(mode || "").trim().toLowerCase() === "edit"
     ? `
@@ -96,6 +114,9 @@ function modalAvatarTemplate(mode, data) {
     `;
 }
 
+/**
+ * Modal actions template.
+ */
 function modalActionsTemplate(mode) {
   return `
     <div class="modal-actions">
@@ -115,6 +136,9 @@ function modalActionsTemplate(mode) {
   `;
 }
 
+/**
+ * Modal form template.
+ */
 function modalFormTemplate(mode, data) {
   return `
     <form id="addContactForm"
@@ -152,6 +176,9 @@ function modalFormTemplate(mode, data) {
   `;
 }
 
+/**
+ * Modal right template.
+ */
 function modalRightTemplate(mode, data) {
   return `
     <div class="modal-right">
@@ -161,6 +188,9 @@ function modalRightTemplate(mode, data) {
   `;
 }
 
+/**
+ * Contact modal inner template.
+ */
 function contactModalInnerTemplate(mode, data) {
   return `
     <div class="modal">
@@ -170,6 +200,9 @@ function contactModalInnerTemplate(mode, data) {
   `;
 }
 
+/**
+ * Contact modal template.
+ */
 function contactModalTemplate(mode, data) {
   return `
     <div class="modal-backdrop d-none" id="addContactModal">
