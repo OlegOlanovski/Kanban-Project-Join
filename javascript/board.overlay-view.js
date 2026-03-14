@@ -1,7 +1,8 @@
+/** @typedef {{overlay: HTMLElement|null, backdrop: HTMLElement|null, top: HTMLElement|null, closeBtn: HTMLElement|null, delBtn: HTMLElement|null, editBtn: HTMLElement|null, saveBtn: HTMLElement|null, view: HTMLElement|null, editForm: HTMLElement|null}} OverlayViewElements */
+/** @typedef {{id?: string|number, name?: string, email?: string, colorClass?: string}} OverlayViewContact */
+
 // ---------------- Overlay events ----------------
-/**
- * Initialize overlay events.
- */
+/** Initializes task-overlay listeners and edit widgets. @returns {void} */
 function initOverlayEvents() {
   const els = getOverlayElements();
   if (!els) return;
@@ -17,9 +18,7 @@ function initOverlayEvents() {
   bindOverlayOpenByCard();
 }
 
-/**
- * Get overlay elements.
- */
+/** @returns {OverlayViewElements|null} Required overlay element references. */
 function getOverlayElements() {
   const els = collectOverlayElements();
   if (!els.backdrop || !els.closeBtn) {
@@ -29,9 +28,7 @@ function getOverlayElements() {
   return els;
 }
 
-/**
- * Collect overlay elements.
- */
+/** @returns {OverlayViewElements} All known task-overlay element references. */
 function collectOverlayElements() {
   return {
     overlay: document.querySelector(".task-overlay"),
@@ -46,16 +43,12 @@ function collectOverlayElements() {
   };
 }
 
-/**
- * Warn overlay missing.
- */
+/** Logs a warning when critical overlay elements are missing. @returns {void} */
 function warnOverlayMissing() {
   console.warn("Overlay elements not found (taskOverlayBackdrop/taskOverlayClose).");
 }
 
-/**
- * Bind overlay close.
- */
+/** @param {OverlayViewElements} els Overlay element references. @returns {void} */
 function bindOverlayClose(els) {
   els.closeBtn.addEventListener("click", function (e) {
     e.preventDefault();
@@ -64,27 +57,21 @@ function bindOverlayClose(els) {
   });
 }
 
-/**
- * Bind overlay backdrop.
- */
+/** @param {OverlayViewElements} els Overlay element references. @returns {void} */
 function bindOverlayBackdrop(els) {
   els.backdrop.addEventListener("click", function (e) {
     if (e.target === els.backdrop) closeTaskOverlay();
   });
 }
 
-/**
- * Bind overlay esc.
- */
+/** @param {OverlayViewElements} els Overlay element references. @returns {void} */
 function bindOverlayEsc(els) {
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && !els.backdrop.hidden) closeTaskOverlay();
   });
 }
 
-/**
- * Bind overlay delete.
- */
+/** @param {OverlayViewElements} els Overlay element references. @returns {void} */
 function bindOverlayDelete(els) {
   if (!els.delBtn) return;
   els.delBtn.addEventListener("click", function (e) {
@@ -95,9 +82,7 @@ function bindOverlayDelete(els) {
   });
 }
 
-/**
- * Bind overlay edit.
- */
+/** @param {OverlayViewElements} els Overlay element references. @returns {void} */
 function bindOverlayEdit(els) {
   if (!els.editBtn) return;
   els.editBtn.addEventListener("click", function (e) {
@@ -108,9 +93,7 @@ function bindOverlayEdit(els) {
   });
 }
 
-/**
- * Bind overlay save.
- */
+/** @param {OverlayViewElements} els Overlay element references. @returns {void} */
 function bindOverlaySave(els) {
   if (!els.saveBtn) return;
   els.saveBtn.addEventListener("click", function (e) {
@@ -121,9 +104,7 @@ function bindOverlaySave(els) {
   });
 }
 
-/**
- * Bind overlay edit form.
- */
+/** @param {OverlayViewElements} els Overlay element references. @returns {void} */
 function bindOverlayEditForm(els) {
   if (!els.editForm) return;
   els.editForm.addEventListener("submit", function (e) {
@@ -131,9 +112,7 @@ function bindOverlayEditForm(els) {
   });
 }
 
-/**
- * Bind overlay open by card.
- */
+/** Opens the task overlay when a board card is clicked. @returns {void} */
 function bindOverlayOpenByCard() {
   document.addEventListener("click", function (e) {
     if (isDragging) return;
@@ -145,9 +124,7 @@ function bindOverlayOpenByCard() {
 }
 
 // ---------------- Open / Close overlay ----------------
-/**
- * Open task overlay.
- */
+/** @param {string|number} id Task ID to open. @returns {void} */
 function openTaskOverlay(id) {
   const task = findTaskById(id);
   if (!task) return;
@@ -161,9 +138,7 @@ function openTaskOverlay(id) {
   showOverlay(task);
 }
 
-/**
- * Find task by id.
- */
+/** @param {string|number} id Task ID to find. @returns {BoardTask|null} Matching task or `null`. */
 function findTaskById(id) {
   const tasks = getTasks();
   for (let i = 0; i < tasks.length; i++) {
@@ -172,9 +147,7 @@ function findTaskById(id) {
   return null;
 }
 
-/**
- * Set overlay category.
- */
+/** @param {BoardTask} task Task to reflect in the category chip. @returns {void} */
 function setOverlayCategory(task) {
   const chip = document.getElementById("taskOverlayCategory");
   if (!chip) return;
@@ -184,18 +157,14 @@ function setOverlayCategory(task) {
   chip.classList.add(isTech ? "tech" : "user");
 }
 
-/**
- * Set overlay texts.
- */
+/** @param {BoardTask} task Task to reflect in title, description, and due date. @returns {void} */
 function setOverlayTexts(task) {
   setText("taskOverlayTitle", task.title || "");
   setText("taskOverlayDesc", task.description || "");
   setText("taskOverlayDue", formatDate(task.dueDate || task.due || ""));
 }
 
-/**
- * Set overlay priority.
- */
+/** @param {BoardTask} task Task to reflect in the priority row. @returns {void} */
 function setOverlayPriority(task) {
   const prioEl = document.getElementById("taskOverlayPrio");
   if (!prioEl) return;
@@ -205,9 +174,7 @@ function setOverlayPriority(task) {
   appendOverlayPriorityIcon(prioEl, task, pr);
 }
 
-/**
- * Render overlay assigned.
- */
+/** @param {BoardTask} task Task whose assignees should be rendered. @returns {void} */
 function renderOverlayAssigned(task) {
   const assignedWrap = document.getElementById("taskOverlayAssigned");
   if (!assignedWrap) return;
@@ -218,9 +185,7 @@ function renderOverlayAssigned(task) {
   }
 }
 
-/**
- * Get assigned list.
- */
+/** @param {BoardTask} task Task whose assignees should be normalized. @returns {OverlayViewContact[]} Overlay-ready contact list. */
 function getAssignedList(task) {
   if (typeof resolveAssignedContacts === "function") return resolveAssignedContacts(task);
   const list = resolveAssignedList(task);
@@ -230,9 +195,7 @@ function getAssignedList(task) {
   });
 }
 
-/**
- * Create person row.
- */
+/** @param {OverlayViewContact|string} item Contact-like value to render. @param {number} index Fallback position for color hashing. @returns {HTMLDivElement} Assignee row element. */
 function createPersonRow(item, index) {
   const contact = normalizeOverlayContact(item);
   const row = document.createElement("div");
@@ -242,9 +205,7 @@ function createPersonRow(item, index) {
   return row;
 }
 
-/**
- * Create person badge.
- */
+/** @param {OverlayViewContact} contact Contact-like object. @param {number} index Fallback position for color hashing. @returns {HTMLDivElement} Avatar badge element. */
 function createPersonBadge(contact, index) {
   const badge = document.createElement("div");
   const colorClass = getOverlayViewContactColorClass(contact, index);
@@ -253,27 +214,21 @@ function createPersonBadge(contact, index) {
   return badge;
 }
 
-/**
- * Create person text.
- */
+/** @param {OverlayViewContact} contact Contact-like object. @returns {HTMLDivElement} Assignee name element. */
 function createPersonText(contact) {
   const text = document.createElement("div");
   text.textContent = String(contact.name || contact.id || "");
   return text;
 }
 
-/**
- * Normalize overlay contact.
- */
+/** @param {OverlayViewContact|string} item Raw assignee value. @returns {OverlayViewContact} Normalized contact-like object. */
 function normalizeOverlayContact(item) {
   if (item && typeof item === "object") return item;
   const s = String(item || "");
   return { id: s, name: s };
 }
 
-/**
- * Get overlay view contact color class.
- */
+/** @param {OverlayViewContact} contact Contact-like object. @param {number} index Fallback position for color hashing. @returns {string} Avatar color class. */
 function getOverlayViewContactColorClass(contact, index) {
   if (typeof getContactColorClass === "function") return getContactColorClass(contact);
   if (contact && contact.colorClass) return contact.colorClass;
@@ -281,9 +236,7 @@ function getOverlayViewContactColorClass(contact, index) {
   return "avatar-color-" + (overlayViewHashString(seed) % 12);
 }
 
-/**
- * Overlay view hash string.
- */
+/** @param {string} str Seed string. @returns {number} Stable positive hash value. */
 function overlayViewHashString(str) {
   let h = 0;
   const s = String(str || "");
@@ -291,9 +244,7 @@ function overlayViewHashString(str) {
   return Math.abs(h);
 }
 
-/**
- * Render overlay subtasks.
- */
+/** @param {BoardTask} task Task whose subtasks should be rendered. @returns {void} */
 function renderOverlaySubtasks(task) {
   const subtasksWrap = document.getElementById("taskOverlaySubtasks");
   if (!subtasksWrap) return;
@@ -305,16 +256,12 @@ function renderOverlaySubtasks(task) {
   }
 }
 
-/**
- * Show no subtasks.
- */
+/** @param {HTMLElement} wrap Subtask container element. @returns {void} */
 function showNoSubtasks(wrap) {
   wrap.textContent = "No subtasks";
 }
 
-/**
- * Create subtask row.
- */
+/** @param {{title?: string, done?: boolean}} subtask Subtask payload. @param {number} index Subtask index. @param {string|number} taskId Parent task ID. @returns {HTMLDivElement} Subtask row element. */
 function createSubtaskRow(subtask, index, taskId) {
   const row = document.createElement("div");
   row.className = "task-overlay-subtask";
@@ -323,9 +270,7 @@ function createSubtaskRow(subtask, index, taskId) {
   return row;
 }
 
-/**
- * Create subtask checkbox.
- */
+/** @param {{title?: string, done?: boolean}} subtask Subtask payload. @param {number} index Subtask index. @param {string|number} taskId Parent task ID. @returns {HTMLInputElement} Checkbox element. */
 function createSubtaskCheckbox(subtask, index, taskId) {
   const box = document.createElement("input");
   box.type = "checkbox";
@@ -336,18 +281,14 @@ function createSubtaskCheckbox(subtask, index, taskId) {
   return box;
 }
 
-/**
- * Create subtask label.
- */
+/** @param {{title?: string}} subtask Subtask payload. @returns {HTMLSpanElement} Subtask label element. */
 function createSubtaskLabel(subtask) {
   const label = document.createElement("span");
   label.textContent = subtask.title || "";
   return label;
 }
 
-/**
- * Update subtask done.
- */
+/** @param {string|number} taskId Parent task ID. @param {number} subIndex Subtask index. @param {boolean} done Next completion state. @returns {void} */
 function updateSubtaskDone(taskId, subIndex, done) {
   const tasks = getTasks();
   const idx = findTaskIndexById(taskId, tasks);
@@ -359,9 +300,7 @@ function updateSubtaskDone(taskId, subIndex, done) {
   updateCardSubtaskProgress(task);
 }
 
-/**
- * Update card subtask progress.
- */
+/** @param {BoardTask} task Updated task whose card progress should be refreshed. @returns {void} */
 function updateCardSubtaskProgress(task) {
   const card = getCardByTaskId(task.id);
   if (!card) return;
@@ -376,34 +315,26 @@ function updateCardSubtaskProgress(task) {
   updateCardProgressDisplay(progress, done, total, percent);
 }
 
-/**
- * Get task priority.
- */
+/** @param {BoardTask} task Task whose priority should be normalized. @returns {string} Lowercase priority value. */
 function getTaskPriority(task) {
   return String(task.priority || task.prio || "medium").toLowerCase();
 }
 
-/**
- * Reset overlay priority el.
- */
+/** @param {HTMLElement} prioEl Priority container element. @param {string} pr Normalized priority value. @returns {void} */
 function resetOverlayPriorityEl(prioEl, pr) {
   prioEl.textContent = "";
   prioEl.classList.remove("urgent", "medium", "low");
   prioEl.classList.add(pr);
 }
 
-/**
- * Append overlay priority text.
- */
+/** @param {HTMLElement} prioEl Priority container element. @param {string} pr Normalized priority value. @returns {void} */
 function appendOverlayPriorityText(prioEl, pr) {
   const text = document.createElement("span");
   text.textContent = capitalize(pr);
   prioEl.appendChild(text);
 }
 
-/**
- * Append overlay priority icon.
- */
+/** @param {HTMLElement} prioEl Priority container element. @param {BoardTask} task Task to derive the icon from. @param {string} pr Normalized priority value. @returns {void} */
 function appendOverlayPriorityIcon(prioEl, task, pr) {
   const icon = getPriorityIcon(task);
   if (!icon) return;
@@ -414,23 +345,17 @@ function appendOverlayPriorityIcon(prioEl, task, pr) {
   prioEl.appendChild(img);
 }
 
-/**
- * Get card by task id.
- */
+/** @param {string|number} id Task ID to match. @returns {HTMLElement|null} Matching board card element. */
 function getCardByTaskId(id) {
   return document.querySelector('.card[data-id="' + id + '"]');
 }
 
-/**
- * Remove card progress.
- */
+/** @param {Element|null} existing Existing progress element. @returns {void} */
 function removeCardProgress(existing) {
   if (existing) existing.remove();
 }
 
-/**
- * Ensure card progress.
- */
+/** @param {HTMLElement} card Board card element. @param {Element|null} existing Existing progress element. @returns {HTMLElement|null} Progress element to update. */
 function ensureCardProgress(card, existing) {
   if (existing) return existing;
   const bottom = card.querySelector(".card-bottom");
@@ -440,9 +365,7 @@ function ensureCardProgress(card, existing) {
   return progress;
 }
 
-/**
- * Build card progress element.
- */
+/** @returns {HTMLDivElement} Card progress wrapper element. */
 function buildCardProgressElement() {
   const progress = document.createElement("div");
   progress.className = "card-progress";
@@ -452,9 +375,7 @@ function buildCardProgressElement() {
   return progress;
 }
 
-/**
- * Update card progress display.
- */
+/** @param {HTMLElement} progress Progress wrapper element. @param {number} done Completed subtasks. @param {number} total Total subtasks. @param {number} percent Completion percent. @returns {void} */
 function updateCardProgressDisplay(progress, done, total, percent) {
   const fill = progress.querySelector(".card-progress-fill");
   const text = progress.querySelector(".card-progress-text");
@@ -462,9 +383,7 @@ function updateCardProgressDisplay(progress, done, total, percent) {
   if (text) text.textContent = done + "/" + total;
 }
 
-/**
- * Show overlay.
- */
+/** Shows the task overlay and locks body scrolling. @returns {void} */
 function showOverlay() {
   const backdrop = document.getElementById("taskOverlayBackdrop");
   if (!backdrop) return;
@@ -472,9 +391,7 @@ function showOverlay() {
   updateBodyScrollLock();
 }
 
-/**
- * Close task overlay.
- */
+/** Hides the task overlay and resets overlay edit state. @returns {void} */
 function closeTaskOverlay() {
   const backdrop = document.getElementById("taskOverlayBackdrop");
   if (!backdrop) return;
@@ -484,9 +401,7 @@ function closeTaskOverlay() {
   resetOverlayEditMode();
 }
 
-/**
- * Reset overlay edit mode.
- */
+/** Resets the overlay back to view mode. @returns {void} */
 function resetOverlayEditMode() {
   const els = getOverlayElements();
   if (!els) return;
@@ -494,9 +409,7 @@ function resetOverlayEditMode() {
   toggleOverlayEditState(els, false);
 }
 
-/**
- * Enter overlay edit mode.
- */
+/** @param {string|number} id Task ID to edit. @param {OverlayViewElements} els Overlay element references. @returns {void} */
 function enterOverlayEditMode(id, els) {
   const task = findTaskById(id);
   if (!task) return;
@@ -506,17 +419,13 @@ function enterOverlayEditMode(id, els) {
   if (els.overlay) els.overlay.scrollTop = 0;
 }
 
-/**
- * Exit overlay edit mode.
- */
+/** @param {OverlayViewElements} els Overlay element references. @returns {void} */
 function exitOverlayEditMode(els) {
   isEditingOverlay = false;
   toggleOverlayEditState(els, false);
 }
 
-/**
- * Toggle overlay edit state.
- */
+/** @param {OverlayViewElements} els Overlay element references. @param {boolean} editing Whether edit mode should be active. @returns {void} */
 function toggleOverlayEditState(els, editing) {
   if (els.view) els.view.hidden = editing;
   if (els.editForm) els.editForm.hidden = !editing;
