@@ -186,7 +186,6 @@ function updateSignupToggleIcons() {
   confirmPassword.addEventListener("input", toggleIconState);
   confirmPassword.addEventListener("click", onConfirmPasswordClick);
 })();
-
 /**
  * Handle password click on icon area.
  */
@@ -195,7 +194,6 @@ function onPasswordClick(e) {
   if (!isClickOnIcon(password, e)) return;
   togglePasswordVisibility();
 }
-
 /**
  * Handle confirm password click on icon area.
  */
@@ -204,14 +202,12 @@ function onConfirmPasswordClick(e) {
   if (!isClickOnIcon(confirmPassword, e)) return;
   toggleConfirmPasswordVisibility();
 }
-
 /**
  * Check if click was on the visibility icon.
  */
 function isClickOnIcon(field, e) {
   return e.offsetX > field.offsetWidth - 35;
 }
-
 /**
  * Toggle main password visibility and icons.
  */
@@ -221,7 +217,6 @@ function togglePasswordVisibility() {
   updatePasswordIcon();
   updateSignupToggleIcons();
 }
-
 /**
  * Toggle confirm password visibility and icons.
  */
@@ -231,7 +226,6 @@ function toggleConfirmPasswordVisibility() {
   confirmPassword.classList.toggle("show-password", hidden);
   updateSignupToggleIcons();
 }
-
 /**
  * Toggle icon state.
  */
