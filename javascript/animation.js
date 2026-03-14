@@ -1,3 +1,5 @@
+/** * Animation for login page and select field.
+ */
 const visitedBefore = localStorage.getItem("visited_before");
 const loginForm = document.querySelector(".login-form");
 window.addEventListener("load", () => {
