@@ -1,17 +1,14 @@
 // ================== ADD TASK → SAVE TO STORAGE ==================
-
 /**
  * Currently selected priority value.
  * @type {string|null}
  */
 let selectedPriority = null;
-
 /**
  * Temporary list of subtasks before the task is saved.
  * @type {{title:string, done:boolean}[]}
  */
 let pendingSubtasks = [];
-
 /**
  * Stores selected contact IDs.
  * @type {Set<string>}
@@ -22,15 +19,12 @@ const selectedContacts = new Set();
  * @type {Array}
  */
 let cachedContacts = [];
-
 // ------------------ INIT ------------------
-
 /**
  * Initializes the add task page once the DOM is loaded.
  * Sets up UI, listeners and loads contacts.
  */
 document.addEventListener("DOMContentLoaded", initAddTaskPage);
-
 /**
  * Initialize add task page.
  */
@@ -40,7 +34,6 @@ function initAddTaskPage() {
   bindAddTaskButtons();
   setAddTaskDateMin();
 }
-
 /**
  * Initialize add task UI.
  */
@@ -52,7 +45,6 @@ function initAddTaskUi() {
   initCategoryDropdown();
   initValidationModal();
 }
-
 /**
  * Bind add task buttons.
  */
@@ -63,7 +55,6 @@ function bindAddTaskButtons() {
   if (createBtn) createBtn.addEventListener("click", createTask);
   if (clearBtn) clearBtn.addEventListener("click", clearForm);
 }
-
 /**
  * Set add task date minimum.
  */
@@ -72,7 +63,6 @@ function setAddTaskDateMin() {
   if (!dateInput) return;
   dateInput.setAttribute("min", getLocalDateInputValue());
 }
-
 /**
  * Returns today's date in local YYYY-MM-DD format for date inputs.
  * @param {Date} [date]
@@ -86,15 +76,10 @@ function getLocalDateInputValue(date = new Date()) {
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
-
 // ------------------ PRIORITY ------------------
-
 /**
  * Initializes priority buttons and click behavior.
  * Ensures only one priority can be selected.
- */
-/**
- * Initialize priority buttons.
  */
 function initPriorityButtons() {
   const buttons = getAddTaskRoot().querySelectorAll(
@@ -111,12 +96,8 @@ function initPriorityButtons() {
 
   setDefaultPriority();
 }
-
 /**
  * Sets the default priority (medium) if available.
- */
-/**
- * Set default priority.
  */
 function setDefaultPriority() {
   const root = getAddTaskRoot();
@@ -131,12 +112,8 @@ function setDefaultPriority() {
   selectedPriority = defaultBtn.textContent.trim();
 }
 // ------------------ SUBTASKS ------------------
-
 /**
  * Initializes subtask input behavior and remove handling.
- */
-/**
- * Initialize subtasks.
  */
 function initSubtasks() {
   const els = getSubtaskEls();
@@ -146,7 +123,6 @@ function initSubtasks() {
   bindSubtaskList(els);
   syncSubtaskButtons(els.input);
 }
-
 /**
  * Get subtask elements.
  */
@@ -160,7 +136,6 @@ function getSubtaskEls() {
     list: document.getElementById("subtasksList"),
   };
 }
-
 /**
  * Bind subtask input.
  */
@@ -169,7 +144,6 @@ function bindSubtaskInput(els) {
   els.input.onkeydown = (e) => handleSubtaskEnter(e);
   els.input.addEventListener("input", () => syncSubtaskButtons(els.input));
 }
-
 /**
  * Handle subtask enter.
  */
@@ -178,7 +152,6 @@ function handleSubtaskEnter(e) {
   e.preventDefault();
   addSubtasksFromInput();
 }
-
 /**
  * Bind subtask clear.
  */
@@ -186,7 +159,6 @@ function bindSubtaskClear(els) {
   if (!els.clearBtn) return;
   els.clearBtn.onclick = () => clearSubtaskInput(els.input);
 }
-
 /**
  * Clear subtask input.
  */
@@ -195,7 +167,6 @@ function clearSubtaskInput(input) {
   input.focus();
   syncSubtaskButtons(input);
 }
-
 /**
  * Sync subtask buttons.
  */
@@ -205,7 +176,6 @@ function syncSubtaskButtons(input) {
   const hasValue = !!input.value.trim();
   wrap.classList.toggle("is-empty", !hasValue);
 }
-
 /**
  * Bind subtask list.
  */
@@ -213,7 +183,6 @@ function bindSubtaskList(els) {
   if (!els.list) return;
   els.list.onclick = (e) => handleSubtaskListClick(e);
 }
-
 /**
  * Handle subtask list click.
  */
@@ -225,7 +194,6 @@ function handleSubtaskListClick(e) {
   if (handleSubtaskSave(e, item)) return;
   handleSubtaskCancel(e);
 }
-
 /**
  * Handle subtask remove.
  */
@@ -239,7 +207,6 @@ function handleSubtaskRemove(e) {
   }
   return true;
 }
-
 /**
  * Handle subtask edit.
  */
@@ -252,7 +219,6 @@ function handleSubtaskEdit(e, item) {
   startInlineSubtaskEdit(item, index, currentTitle);
   return true;
 }
-
 /**
  * Handle subtask save.
  */
@@ -265,7 +231,6 @@ function handleSubtaskSave(e, item) {
   if (!input) return true;
   return commitSubtaskTitle(index, input.value);
 }
-
 /**
  * Commit subtask title.
  */
@@ -276,7 +241,6 @@ function commitSubtaskTitle(index, value) {
   renderSubtasks();
   return true;
 }
-
 /**
  * Handle subtask cancel.
  */
@@ -286,13 +250,9 @@ function handleSubtaskCancel(e) {
   renderSubtasks();
   return true;
 }
-
 /**
  * Reads subtasks from the input field and adds them to the temporary list.
  * Supports comma, semicolon, or newline separation.
- */
-/**
- * Add subtasks from input.
  */
 function addSubtasksFromInput() {
   const input = document.getElementById("subtasks");
@@ -309,12 +269,8 @@ function addSubtasksFromInput() {
   input.value = "";
   renderSubtasks();
 }
-
 /**
  * Renders the current list of subtasks in the UI.
- */
-/**
- * Render subtasks.
  */
 function renderSubtasks() {
   const list = document.getElementById("subtasksList");
@@ -332,16 +288,12 @@ function renderSubtasks() {
       </div></li>`;
   });
 }
-
 /**
  * Switches a subtask list item into inline edit mode
  * using an input field instead of a prompt.
  * @param {HTMLElement} item
  * @param {number} index
  * @param {string} title
- */
-/**
- * Start inline subtask edit.
  */
 function startInlineSubtaskEdit(item, index, title) {
   if (!item) return;
@@ -352,7 +304,6 @@ function startInlineSubtaskEdit(item, index, title) {
   item.appendChild(actions);
   focusSubtaskEditInput(input);
 }
-
 /**
  * Create subtask edit input.
  */
@@ -363,7 +314,6 @@ function createSubtaskEditInput(title) {
   input.value = title || "";
   return input;
 }
-
 /**
  * Create subtask edit actions.
  */
@@ -375,7 +325,6 @@ function createSubtaskEditActions(index) {
   actions.appendChild(createSubtaskCancelBtn(index));
   return actions;
 }
-
 /**
  * Create subtask save button.
  */
@@ -386,7 +335,6 @@ function createSubtaskSaveBtn(index) {
   saveBtn.innerHTML = '<img src="../assets/icons/check-black.svg" alt="Save subtask">';
   return saveBtn;
 }
-
 /**
  * Create subtask separator.
  */
@@ -395,7 +343,6 @@ function createSubtaskSeparator() {
   sep.className = "subtasks-separator";
   return sep;
 }
-
 /**
  * Create subtask cancel button.
  */
@@ -406,7 +353,6 @@ function createSubtaskCancelBtn(index) {
   cancelBtn.innerHTML = '<img src="../assets/icons/iconoir_cancel.svg" alt="Cancel edit">';
   return cancelBtn;
 }
-
 /**
  * Focus subtask edit input.
  */
