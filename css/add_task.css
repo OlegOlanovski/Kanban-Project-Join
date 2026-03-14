@@ -253,8 +253,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  max-height: 100px;
-  overflow-x: auto;
+  max-height: 125px;
+  overflow-y: auto;
   gap: 6px;
 }
 
