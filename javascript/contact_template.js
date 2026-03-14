@@ -1,5 +1,5 @@
-/**
- * Creates the letter separator in the contact list.
+ /**
+ * Creates a letter group header.
  * @param {string} letter
  * @returns {string}
  */
@@ -12,7 +12,7 @@ function letterGroupTemplate(letter) {
 }
 
 /**
- * Builds the HTML for a single contact list item.
+ * Creates one contact list item.
  * @param {Object} c
  * @param {boolean} isActive
  * @returns {string}
@@ -52,11 +52,23 @@ function contactActionsTemplate(c) {
 }
 
 /**
- * Creates the detailed contact view.
+ * Creates the full contact details view.
  * @param {Object} c
  * @returns {string}
  */
 function contactDetailsTemplate(c) {
+  return `
+    ${contactDetailsTopbarTemplate()}
+    ${contactDetailsHeaderTemplate(c)}
+    ${contactDetailsInfoTemplate(c)}
+  `;
+}
+
+/**
+ * Creates the contact details top bar.
+ * @returns {string}
+ */
+function contactDetailsTopbarTemplate() {
   return `
     <div class="contact-detail-topbar">
       <button class="mobile-back-btn" id="mobileBackBtn" type="button">
@@ -64,7 +76,16 @@ function contactDetailsTemplate(c) {
       </button>
       <div class="contact-detail-topbar-spacer"></div>
     </div>
+  `;
+}
 
+/**
+ * Creates the header section of the details view.
+ * @param {Object} c
+ * @returns {string}
+ */
+function contactDetailsHeaderTemplate(c) {
+  return `
     <div class="contact-detail-header">
       <div class="avatar big ${c.colorClass}">
         ${c.initials}
@@ -74,7 +95,16 @@ function contactDetailsTemplate(c) {
         ${contactActionsTemplate(c)}
       </div>
     </div>
+  `;
+}
 
+/**
+ * Creates the info section of the details view.
+ * @param {Object} c
+ * @returns {string}
+ */
+function contactDetailsInfoTemplate(c) {
+  return `
     <div class="contact-info">
       <h3>Contact Information</h3>
       <p>
@@ -90,7 +120,7 @@ function contactDetailsTemplate(c) {
 }
 
 /**
- * Creates the left side of the contact modal.
+ * Creates the left side of the modal.
  * @param {string} mode
  * @returns {string}
  */
@@ -99,7 +129,11 @@ function modalLeftTemplate(mode) {
     <div class="modal-left">
       <button class="modal-close" id="closeAddContact" type="button">×</button>
       <img src="../assets/icons/logo-white.svg" class="modal-logo" alt="">
-      <h2 class="modal-title">${String(mode || "").trim().toLowerCase() === "edit" ? "Edit contact" : "Add contact"}</h2>
+      <h2 class="modal-title">${
+        String(mode || "").trim().toLowerCase() === "edit"
+          ? "Edit contact"
+          : "Add contact"
+      }</h2>
       <p class="modal-subtitle">Tasks are better with a team!</p>
       <div class="modal-line"></div>
     </div>
@@ -115,8 +149,8 @@ function modalLeftTemplate(mode) {
 function modalAvatarTemplate(mode, data) {
   return String(mode || "").trim().toLowerCase() === "edit"
     ? `
-      <div class="modal-person ${(data && data.colorClass) ? data.colorClass : ""}">
-        <span class="modal-initials">${(data && data.initials) ? data.initials : ""}</span>
+      <div class="modal-person ${data && data.colorClass ? data.colorClass : ""}">
+        <span class="modal-initials">${data && data.initials ? data.initials : ""}</span>
       </div>
     `
     : `
@@ -127,7 +161,7 @@ function modalAvatarTemplate(mode, data) {
 }
 
 /**
- * Creates the action buttons inside the modal.
+ * Creates the modal action buttons.
  * @param {string} mode
  * @param {Object} data
  * @returns {string}
@@ -135,25 +169,59 @@ function modalAvatarTemplate(mode, data) {
 function modalActionsTemplate(mode, data) {
   return `
     <div class="modal-actions">
-      <button type="button"
-              class="${String(mode || "").trim().toLowerCase() === "edit" ? "btn-cancel contact-action" : "btn-cancel"}"
-              id="${String(mode || "").trim().toLowerCase() === "edit" ? "modalSecondaryBtn" : "closeAddContact"}"
-              data-action="${String(mode || "").trim().toLowerCase() === "edit" ? "delete" : "cancel"}"
-              data-id="${String(mode || "").trim().toLowerCase() === "edit" && data ? data.id : ""}">
-        ${String(mode || "").trim().toLowerCase() === "edit" ? "Delete" : "Cancel"}
-        <img src="../assets/icons/${String(mode || "").trim().toLowerCase() === "edit" ? "delete.svg" : "iconoir_cancel.svg"}" alt="">
-      </button>
-
-      <button type="submit" class="btn-create">
-        ${String(mode || "").trim().toLowerCase() === "edit" ? "Save" : "Create contact"}
-        <img src="../assets/icons/check-white.svg" alt="">
-      </button>
+      ${buildModalSecondaryAction(buildModalActionsView(mode, data))}
+      ${buildModalPrimaryAction(buildModalActionsView(mode, data))}
     </div>
   `;
 }
 
 /**
- * Creates the form inside the modal.
+ * Builds the action state for the modal.
+ * @param {string} mode
+ * @param {Object} data
+ * @returns {{edit:boolean,id:string}}
+ */
+function buildModalActionsView(mode, data) {
+  return {
+    edit: isEditMode(mode),
+    id: isEditMode(mode) && data ? data.id : ""
+  };
+}
+
+/**
+ * Creates the secondary modal action button.
+ * @param {{edit:boolean,id:string}} view
+ * @returns {string}
+ */
+function buildModalSecondaryAction(view) {
+  return `
+    <button type="button"
+            class="${view.edit ? "btn-cancel contact-action" : "btn-cancel"}"
+            id="${view.edit ? "modalSecondaryBtn" : "closeAddContact"}"
+            data-action="${view.edit ? "delete" : "cancel"}"
+            data-id="${view.id}">
+      ${view.edit ? "Delete" : "Cancel"}
+      <img src="../assets/icons/${view.edit ? "delete.svg" : "iconoir_cancel.svg"}" alt="">
+    </button>
+  `;
+}
+
+/**
+ * Creates the primary modal action button.
+ * @param {{edit:boolean,id:string}} view
+ * @returns {string}
+ */
+function buildModalPrimaryAction(view) {
+  return `
+    <button type="submit" class="btn-create">
+      ${view.edit ? "Save" : "Create contact"}
+      <img src="../assets/icons/check-white.svg" alt="">
+    </button>
+  `;
+}
+
+/**
+ * Creates the form section of the modal.
  * @param {string} mode
  * @param {Object} data
  * @returns {string}
@@ -162,16 +230,81 @@ function modalFormTemplate(mode, data) {
   return `
     <form id="addContactForm"
           novalidate
-          data-mode="${String(mode || "").trim().toLowerCase()}"
-          data-edit-id="${(data && data.id) ? data.id : ""}">
-      ...
+          data-mode="${normalizeMode(mode)}"
+          data-edit-id="${data && data.id ? data.id : ""}">
+      ${modalNameFieldTemplate(data)}
+      ${modalEmailFieldTemplate(data)}
+      ${modalPhoneFieldTemplate(data)}
       ${modalActionsTemplate(mode, data)}
     </form>
   `;
 }
 
 /**
- * Builds the right side of the modal.
+ * Creates the name input field.
+ * @param {Object} data
+ * @returns {string}
+ */
+function modalNameFieldTemplate(data) {
+  return `
+    <div class="input-wrapper">
+      <input id="contactName" type="text" placeholder="Name" required value="${data?.name || ""}">
+      <img src="../assets/icons/person.png" class="input-icon" alt="">
+      <div class="input-error-message" id="nameError"></div>
+    </div>
+  `;
+}
+
+/**
+ * Creates the email input field.
+ * @param {Object} data
+ * @returns {string}
+ */
+function modalEmailFieldTemplate(data) {
+  return `
+    <div class="input-wrapper">
+      <input id="contactEmail" type="email" placeholder="Email" required value="${data?.email || ""}">
+      <img src="../assets/icons/mail.png" class="input-icon" alt="">
+      <div class="input-error-message" id="emailError"></div>
+    </div>
+  `;
+}
+
+/**
+ * Creates the phone input field.
+ * @param {Object} data
+ * @returns {string}
+ */
+function modalPhoneFieldTemplate(data) {
+  return `
+    <div class="input-wrapper">
+      <input id="contactPhone" type="text" placeholder="Phone" value="${data?.phone || ""}">
+      <img src="../assets/icons/call.svg" class="input-icon" alt="">
+      <div class="input-error-message" id="phoneError"></div>
+    </div>
+  `;
+}
+
+/**
+ * Normalizes the modal mode value.
+ * @param {string} mode
+ * @returns {string}
+ */
+function normalizeMode(mode) {
+  return String(mode || "").trim().toLowerCase();
+}
+
+/**
+ * Checks whether the modal is in edit mode.
+ * @param {string} mode
+ * @returns {boolean}
+ */
+function isEditMode(mode) {
+  return normalizeMode(mode) === "edit";
+}
+
+/**
+ * Creates the right side of the modal.
  * @param {string} mode
  * @param {Object} data
  * @returns {string}
@@ -186,12 +319,11 @@ function modalRightTemplate(mode, data) {
 }
 
 /**
- * Creates the modal container structure.
+ * Creates the inner modal structure.
  * @param {string} mode
  * @param {Object} data
  * @returns {string}
  */
-
 function contactModalInnerTemplate(mode, data) {
   return `
     <div class="modal">
@@ -202,7 +334,7 @@ function contactModalInnerTemplate(mode, data) {
 }
 
 /**
- * Creates the full modal including backdrop and toast.
+ * Creates the full contact modal.
  * @param {string} mode
  * @param {Object} data
  * @returns {string}
