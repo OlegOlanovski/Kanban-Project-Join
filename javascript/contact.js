@@ -1,5 +1,5 @@
 /** Storage key and Firebase endpoint for contact data. */
-const STORAGE_KEY = "join_contacts_v1", dbTask = "https://join-da53b-default-rtdb.firebaseio.com/";
+const STORAGE_KEY = "join_contacts_v1", dbTask = window.getAppDbUrl ? window.getAppDbUrl() : window.DB_TASK_URL;
 
 /** Array containing all contact objects. */
 let contacts = [];

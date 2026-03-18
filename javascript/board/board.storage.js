@@ -109,7 +109,7 @@ async function putTasksToRemote(tasks) {
  * @returns {string} Fully qualified tasks endpoint URL.
  */
 function getRemoteTasksUrl() {
-  const base = window.DB_TASK_URL || "https://join-da53b-default-rtdb.firebaseio.com/";
+  const base = window.getAppDbUrl ? window.getAppDbUrl() : window.DB_TASK_URL;
   return base + "tasks.json";
 }
 

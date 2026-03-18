@@ -150,7 +150,7 @@ async function putTaskRemote(task) {
  * Get DB task URL.
  */
 function getDbTaskUrl() {
-  return "https://join-da53b-default-rtdb.firebaseio.com/";
+  return window.getAppDbUrl ? window.getAppDbUrl() : window.DB_TASK_URL;
 }
 
 /**

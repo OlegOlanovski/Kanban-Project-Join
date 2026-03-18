@@ -18,7 +18,7 @@ async function fetchRegisterNode() {
  * Get login DB URL.
  */
 function getLoginDbUrl() {
-  return "https://join-da53b-default-rtdb.firebaseio.com/";
+  return window.getAppDbUrl ? window.getAppDbUrl() : window.DB_TASK_URL;
 }
 /**
  * Try fetch register direct.
