@@ -178,12 +178,7 @@ async function fetchTasksFromRemote() {
  * Normalize tasks data.
  */
 function normalizeTasksData(data) {
-  if (!data) return [];
-  if (Array.isArray(data)) return data.filter(Boolean);
-  return Object.entries(data).map(([key, val]) => ({
-    ...(val || {}),
-    id: val && val.id ? val.id : key,
-  }));
+  return window.normalizeTaskCollection ? window.normalizeTaskCollection(data) : [];
 }
 
 /**

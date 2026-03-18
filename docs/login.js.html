@@ -37,7 +37,7 @@
  * @returns {Promise&lt;Object|null>} The register data or null if not found.
  */
 async function fetchRegisterNode() {
-  const db = "https://join-da53b-default-rtdb.firebaseio.com/";
+  const db = "https://remotestorage-706e3-default-rtdb.europe-west1.firebasedatabase.app/";
   try {
     const r = await (await fetch(db + "register.json")).json();
     if (r != null) return r;

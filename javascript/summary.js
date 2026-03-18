@@ -13,6 +13,17 @@ let nearestUrgentDate = null;
 function goToBoard() {window.location.href = BOARD_PAGE_URL;}
 
 /**
+ * Returns normalized tasks from local cache.
+ * @returns {Array<Object<string, *>>}
+ */
+function getSummaryTasks() {
+  const tasks = (window.idbStorage && typeof window.idbStorage.getTasksSync === "function")
+    ? window.idbStorage.getTasksSync()
+    : [];
+  return window.normalizeTaskCollection ? window.normalizeTaskCollection(tasks) : tasks;
+}
+
+/**
  * Fetch dbnode.
  */
 async function fetchDBNode(nodeName) {
@@ -94,10 +105,7 @@ function extractNodeFromEntry(entry, nodeName) {
 async function syncTasksFromDB() {
   try {
     const data = await fetchDBNode("tasks");
-    let tasks = [];
-    if (!data) tasks = [];
-    else if (Array.isArray(data)) tasks = data.filter(Boolean);
-    else tasks = Object.entries(data).map(([k, v]) => ({ ...(v || {}), id: v && v.id ? v.id : k }));
+    const tasks = window.normalizeTaskCollection ? window.normalizeTaskCollection(data) : [];
     if (window.idbStorage && typeof window.idbStorage.saveTasks === "function") {
       try {await window.idbStorage.saveTasks(tasks);
         try {const local = window.idbStorage.getTasksSync ? window.idbStorage.getTasksSync() : null;} catch (readErr) {console.warn("syncTasksFromDB: saved to IDB but failed to read back:", readErr);}
@@ -139,8 +147,8 @@ function greetingText() {
  * Get tasks total.
  */
 function getTasksTotal() {
-  const tasks = (window.idbStorage && typeof window.idbStorage.getTasksSync === "function") ? window.idbStorage.getTasksSync() : [];
-  let filteredTasks = tasks.filter(task => task.title !== undefined);
+  const tasks = getSummaryTasks();
+  let filteredTasks = tasks.filter(task => String(task.title || "").trim() !== "");
   let tasks_to_board = document.getElementById("task-in-board");
   let todo_tasks = document.getElementById("todos-total");
   let Todos = [];
@@ -161,7 +169,7 @@ function getTasksTotal() {
 function getTasksDone() {
   let done_tasks = document.getElementById("todos-done");
   let Todos_Done = [];
-  const tasks = (window.idbStorage && typeof window.idbStorage.getTasksSync === "function") ? window.idbStorage.getTasksSync() : [];
+  const tasks = getSummaryTasks();
 
   for (let i = 0; i < tasks.length; i++) {
     const element = tasks[i];
@@ -178,7 +186,7 @@ function getTasksDone() {
 function getTasksProgress() {
   let pogress_tasks = document.getElementById("task-in-pogress");
   let Todos_pogress = [];
-  const tasks = (window.idbStorage && typeof window.idbStorage.getTasksSync === "function") ? window.idbStorage.getTasksSync() : [];
+  const tasks = getSummaryTasks();
   for (let i = 0; i < tasks.length; i++) {
     const pogress = tasks[i];
     let status = pogress.status;
@@ -194,7 +202,7 @@ function getTasksProgress() {
 function getAwaitFeedback() {
   let feedback_tasks = document.getElementById("task-in-feedback");
   let Todos_feedback = [];
-  const tasks = (window.idbStorage && typeof window.idbStorage.getTasksSync === "function") ? window.idbStorage.getTasksSync() : [];
+  const tasks = getSummaryTasks();
   for (let i = 0; i < tasks.length; i++) {
     const feedback = tasks[i];
     let status = feedback.status;
@@ -208,7 +216,9 @@ function getAwaitFeedback() {
  * Get urgrent todo.
  */
 function getUrgrentTodo() {
-  const tasks = (window.idbStorage && typeof window.idbStorage.getTasksSync === "function") ? window.idbStorage.getTasksSync() : [];
+  const tasks = getSummaryTasks();
+  Todos_urgent = [];
+  nearestUrgentDate = null;
   for (let i = 0; i < tasks.length; i++) {
     const urgent = tasks[i];
     let priority = String(urgent.priority || "").toLowerCase();

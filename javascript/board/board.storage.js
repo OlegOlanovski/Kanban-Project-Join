@@ -5,9 +5,10 @@
  */
 function getTasks() {
   try {
-    return (window.idbStorage && typeof window.idbStorage.getTasksSync === "function")
+    const tasks = (window.idbStorage && typeof window.idbStorage.getTasksSync === "function")
       ? window.idbStorage.getTasksSync()
       : [];
+    return window.normalizeTaskCollection ? window.normalizeTaskCollection(tasks) : tasks;
   } catch (e) {
     console.error("Storage access error:", e);
     return [];
@@ -42,12 +43,7 @@ async function fetchDBNode(nodeName) {
 async function syncTasksFromDB() {
   try {
     const data = await fetchDBNode("tasks");
-    let tasks = [];
-    if (!data) tasks = [];
-    else if (Array.isArray(data)) tasks = data.filter(Boolean);
-    else tasks = Object.entries(data).map(function ([k, v]) {
-      return { ...(v || {}), id: v && v.id ? v.id : k };
-    });
+    const tasks = window.normalizeTaskCollection ? window.normalizeTaskCollection(data) : [];
     await saveTasks(tasks);
     return tasks;
   } catch (e) {
