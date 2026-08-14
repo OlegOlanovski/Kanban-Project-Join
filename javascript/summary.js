@@ -132,16 +132,38 @@ function greetingText() {
   const el = document.getElementById("greeting-text"); if (!el) return;
   const h = new Date().getHours();
   const base = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+  let displayName = "";
   try {
     const cookieMatch = document.cookie.split(";").map(c => c.trim()).find(c => c.startsWith("loggedInUser="));
     if (cookieMatch) {
       const cookieValue = cookieMatch.split("=")[1];
-      name = JSON.parse(decodeURIComponent(cookieValue));
+      displayName = normalizeGreetingName(JSON.parse(decodeURIComponent(cookieValue)));
     } else if (sessionStorage.getItem("loggedInUser")) {
-      name = JSON.parse(sessionStorage.getItem("loggedInUser"));
+      displayName = normalizeGreetingName(JSON.parse(sessionStorage.getItem("loggedInUser")));
     }
-    el.textContent = `${base}, ${name}!`;
-  } catch (e) { el.textContent = base + "!"; }
+  } catch (e) {}
+  renderGreeting(el, base, displayName);
+}
+
+/**
+ * Normalize the stored user value for the greeting.
+ */
+function normalizeGreetingName(value) {
+  if (typeof value === "string") return value.trim();
+  if (!value || typeof value !== "object") return "";
+  return String(value.namen || value.name || "").trim();
+}
+
+/**
+ * Render the greeting with a separately styled user name.
+ */
+function renderGreeting(el, base, displayName) {
+  el.textContent = displayName ? `${base}, ` : `${base}!`;
+  if (!displayName) return;
+  const nameEl = document.createElement("span");
+  nameEl.className = "greeting-name";
+  nameEl.textContent = `${displayName}!`;
+  el.appendChild(nameEl);
 }
 /**
  * Get tasks total.

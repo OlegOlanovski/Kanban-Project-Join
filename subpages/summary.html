@@ -96,29 +96,36 @@
               </div>
 
               
-              <div class="kpi-card kpi-card--wide" onclick="goToBoard()">
+              <div class="kpi-middle">
+                <div class="kpi-card kpi-card--wide" onclick="goToBoard()">
 
-                <div class="kpi-urgent-left">
-                  <div class="kpi-urgent-icon">
-                    <img src="../assets/icons/urgent-white.png" alt="">
+                  <div class="kpi-urgent-left">
+                    <div class="kpi-urgent-icon">
+                      <img src="../assets/icons/urgent-white.png" alt="">
+                    </div>
+                    <div class="kpi-info">
+                      <div id="todo-status-urgent" class="kpi-number">1</div>
+                      <div class="kpi-label">Urgent</div>
+                    </div>
                   </div>
-                  <div class="kpi-info">
-                    <div id="todo-status-urgent" class="kpi-number">1</div>
-                    <div class="kpi-label">Urgent</div>
+
+                  <div class="kpi-divider"></div>
+
+                  <div class="kpi-urgent-right">
+                    <div id="due-date" class="kpi-date">
+                      <span id="months"></span>
+                      <span id="day"></span>,
+                      <span id="year"></span>
+                    </div>
+                    <div class="kpi-date-sub">Upcoming Deadline</div>
                   </div>
+
                 </div>
 
-                <div class="kpi-divider"></div>
-
-                <div class="kpi-urgent-right">
-                  <div id="due-date" class="kpi-date">
-                    <span id="months"></span>
-                    <span id="day"></span>,
-                    <span id="year"></span>
-                  </div>
-                  <div class="kpi-date-sub">Upcoming Deadline</div>
+                <div class="kpi-card kpi-card--email" aria-label="4 email requests">
+                  <span class="kpi-number kpi-number--accent">4</span>
+                  <span class="kpi-label">Email requests</span>
                 </div>
-
               </div>
 
               

@@ -357,6 +357,12 @@ body {
   gap: 20px;
 }
 
+.kpi-middle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 156px;
+  gap: 20px;
+}
+
 .kpi-bottom {
   display: grid;
   grid-template-columns: repeat(3, 156px);
@@ -390,6 +396,13 @@ body {
   column-gap: 16px;
 }
 
+.kpi-middle .kpi-card--wide {
+  width: 100%;
+  padding: 22px 20px;
+  grid-template-columns: minmax(110px, 0.8fr) 2px minmax(145px, 1fr);
+  column-gap: 10px;
+}
+
 .kpi-divider {
   width: 2px;
   background: #d1d1d1;
@@ -409,6 +422,17 @@ body {
   border-radius: 30px;
   padding: 10px;
   background-color: #ffffff;
+}
+
+.kpi-card--email {
+  width: 156px;
+  height: 150px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .kpi-icon {
@@ -443,11 +467,15 @@ body {
 }
 
 .kpi-number {
-  font-size: 47px;
+  font-size: 64px;
   font-weight: 600;
   line-height: 120%;
   color: #000;
   text-align: center;
+}
+
+.kpi-card--email .kpi-number--accent {
+  color: #5c67e8;
 }
 
 .kpi-label {
@@ -514,12 +542,22 @@ body {
 
 .good-morning {
   width: 100%;
-  height: 73px;
+  height: auto;
   text-align: start;
-  font-weight: 400;
-  font-size: 28px;
-  color: #2a3647;
+  font-weight: 500;
+  font-size: 47px;
+  line-height: 120%;
+  color: #2A3647;
 }
+
+.greeting-name {
+  display: block;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 120%;
+  color: #177da8;
+}
+
 @media (max-width: 1200px) {
   .summary-section {
     margin-left: 20px;
@@ -563,6 +601,22 @@ body {
     padding: 18px 32px;
     border-radius: 26px;
     grid-template-columns: 48% 2px 50%;
+  }
+
+  .kpi-middle {
+    grid-template-columns: minmax(0, 1fr) 145px;
+    gap: 21px;
+  }
+
+  .kpi-middle .kpi-card--wide {
+    width: 100%;
+    padding: 18px;
+    grid-template-columns: minmax(105px, 0.8fr) 2px minmax(130px, 1fr);
+  }
+
+  .kpi-card--email {
+    width: 145px;
+    height: 135px;
   }
 
   .kpi-card--small {
@@ -752,6 +806,16 @@ body {
 
   .kpi-card--wide {
     width: 100%;
+  }
+
+  .kpi-middle {
+    grid-template-columns: minmax(0, 1fr) 156px;
+    gap: 20px;
+  }
+
+  .kpi-card--email {
+    width: 100%;
+    height: 150px;
   }
 
   .kpi-card--half {
@@ -1099,6 +1163,11 @@ body {
     gap: 14px;
   }
 
+  .kpi-middle {
+    grid-template-columns: minmax(0, 1fr) 140px;
+    gap: 14px;
+  }
+
   .kpi-card--half {
     height: 130px;
     padding: 14px 16px;
@@ -1111,6 +1180,10 @@ body {
 
   .kpi-card--small {
     height: 120px;
+  }
+
+  .kpi-card--email {
+    height: 130px;
   }
 
   .kpi-icon,
@@ -1168,6 +1241,22 @@ body {
   .header-logo {
     width: 56px;
     height: 64px;
+  }
+}
+
+@media (max-width: 600px) {
+  .kpi-middle {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-card--email {
+    height: 110px;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .kpi-card--email .kpi-label {
+    max-width: none;
   }
 }
 
