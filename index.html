@@ -45,9 +45,8 @@
                             </svg>
                             <span>Are you a stakeholder?</span>
                         </div>
-                        <a class="welcome-button welcome-button--primary"
-                            href="mailto:info@oleg-olanovski.de?subject=New%20stakeholder%20request"><span
-                                class="welcome-button-label">Create request</span></a>
+                        <button class="welcome-button welcome-button--primary" id="createRequestButton"
+                            type="button"><span class="welcome-button-label">Create request</span></button>
                     </div>
 
                     <div class="welcome-option welcome-option--member">
@@ -67,6 +66,60 @@
             </div>
 
             <nav class="welcome-footer" aria-label="Legal information">
+                <a href="./subpages/privacy_policy.html">Privacy Policy</a>
+                <a href="./subpages/legal_notice.html">Legal notice</a>
+            </nav>
+        </section>
+
+        <section class="stakeholder-screen" id="stakeholderScreen" aria-labelledby="stakeholderTitle"
+            aria-hidden="true">
+            <img class="stakeholder-brand" src="./assets/icons/logo.svg" alt="Join">
+
+            <div class="stakeholder-layout">
+                <div class="stakeholder-toolbar">
+                    <button class="stakeholder-back" id="stakeholderBackButton" type="button"
+                        aria-label="Back to role selection">
+                        <svg viewBox="0 0 32 32" aria-hidden="true">
+                            <path d="M25 16H7M14 9l-7 7 7 7" />
+                        </svg>
+                    </button>
+
+                    <p class="stakeholder-counter"><strong>0 of 10</strong><span>requests used today</span></p>
+                </div>
+
+                <div class="stakeholder-main">
+                    <h1 id="stakeholderTitle">Welcome</h1>
+
+                    <div class="stakeholder-info">
+                        <div class="stakeholder-hero">
+                            <div class="stakeholder-copy">
+                                <p class="stakeholder-lead">Easily create a ticket by sending an email — no extra steps
+                                    needed.</p>
+                                <div class="stakeholder-description">
+                                    <p>On this platform, you can submit your feature requests via email. Our AI system
+                                        will automatically generate a ticket with a deadline and priority level.</p>
+                                    <p>A total of 10 requests can be created per day. After this limit, emails can still
+                                        be sent, but they will be manually reviewed by our team instead of generating AI
+                                        tickets.</p>
+                                </div>
+                            </div>
+
+                            <img class="stakeholder-illustration" src="./assets/images/stakeholder-kanban-v3.png"
+                                alt="A stakeholder reviewing tasks on a Kanban board">
+                        </div>
+
+                        <a class="stakeholder-request-button"
+                            href="mailto:info@oleg-olanovski.de?subject=New%20feature%20request">
+                            <span>Create Email Request</span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="m5 12 4 4 10-10" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="stakeholder-footer" aria-label="Legal information">
                 <a href="./subpages/privacy_policy.html">Privacy Policy</a>
                 <a href="./subpages/legal_notice.html">Legal notice</a>
             </nav>

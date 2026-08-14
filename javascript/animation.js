@@ -9,8 +9,13 @@ window.addEventListener("load", () => {
 
 const welcomeScreen = document.getElementById("welcomeScreen");
 const memberLoginButton = document.getElementById("memberLoginButton");
+const createRequestButton = document.getElementById("createRequestButton");
+const stakeholderScreen = document.getElementById("stakeholderScreen");
+const stakeholderBackButton = document.getElementById("stakeholderBackButton");
 
 if (memberLoginButton) memberLoginButton.addEventListener("click", showMemberLogin);
+if (createRequestButton) createRequestButton.addEventListener("click", showStakeholderScreen);
+if (stakeholderBackButton) stakeholderBackButton.addEventListener("click", showWelcomeFromStakeholder);
 
 /**
  * Show the role selection after the logo animation.
@@ -32,6 +37,32 @@ function showMemberLogin() {
   setTimeout(() => {
     const emailInput = document.getElementById("mail");
     if (emailInput) emailInput.focus();
+  }, 400);
+}
+
+/**
+ * Open the stakeholder information step.
+ */
+function showStakeholderScreen() {
+  document.body.classList.remove("welcome-visible");
+  document.body.classList.add("stakeholder-visible");
+  if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "true");
+  if (stakeholderScreen) stakeholderScreen.setAttribute("aria-hidden", "false");
+  setTimeout(() => {
+    if (stakeholderBackButton) stakeholderBackButton.focus();
+  }, 400);
+}
+
+/**
+ * Return from the stakeholder step to role selection.
+ */
+function showWelcomeFromStakeholder() {
+  document.body.classList.remove("stakeholder-visible");
+  document.body.classList.add("welcome-visible");
+  if (stakeholderScreen) stakeholderScreen.setAttribute("aria-hidden", "true");
+  if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "false");
+  setTimeout(() => {
+    if (createRequestButton) createRequestButton.focus();
   }, 400);
 }
 
