@@ -561,7 +561,7 @@ body.stakeholder-visible .stakeholder-screen {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 10px;
   border-radius: 10px;
   background: #177da8;
   color: #ffffff;
@@ -596,6 +596,132 @@ body.stakeholder-visible .stakeholder-screen {
   stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.stakeholder-limit-info {
+  width: 100%;
+  min-height: 283px;
+  display: none;
+}
+
+.stakeholder-screen.is-limit-reached .stakeholder-info--available {
+  display: none;
+}
+
+.stakeholder-screen.is-limit-reached .stakeholder-limit-info {
+  display: block;
+}
+
+.stakeholder-screen.is-limit-reached .stakeholder-counter {
+  color: #ff3d00;
+}
+
+.stakeholder-screen.is-limit-reached .stakeholder-layout {
+  min-height: 501px;
+}
+
+.stakeholder-screen.is-limit-reached .stakeholder-main {
+  min-height: 408px;
+}
+
+.stakeholder-limit-hero {
+  width: 100%;
+  min-height: 283px;
+  display: grid;
+  grid-template-columns: minmax(0, 502px) minmax(320px, 416px);
+  align-items: start;
+  gap: 48px;
+}
+
+.stakeholder-limit-copy {
+  width: 100%;
+  min-height: 259px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #2a3647;
+}
+
+.stakeholder-limit-message {
+  width: 100%;
+  min-height: 56px;
+  margin-bottom: 24px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 210, 210, 0.52);
+  font-family: Inter, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 120%;
+  text-align: center;
+}
+
+.stakeholder-limit-copy > p {
+  width: 100%;
+  min-height: 71px;
+  margin: 0 0 48px;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+  letter-spacing: 0;
+  text-align: justify;
+}
+
+.stakeholder-limit-button {
+  width: 216px;
+  height: 60px;
+  padding: 16px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 10px;
+  background: #177da8;
+  color: #ffffff;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+  letter-spacing: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stakeholder-limit-button:hover {
+  background: #29abe2;
+  box-shadow: 0 4px 10px rgba(23, 125, 168, 0.25);
+}
+
+.stakeholder-limit-button span {
+  width: 152px;
+  height: 28px;
+  text-align: center;
+}
+
+.stakeholder-limit-button svg {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stakeholder-limit-illustration {
+  width: 416px;
+  max-width: 100%;
+  height: 283px;
+  display: block;
+  object-fit: contain;
 }
 
 .stakeholder-footer {
@@ -864,7 +990,10 @@ footer .links:hover {
   .stakeholder-main,
   .stakeholder-info,
   .stakeholder-hero,
-  .stakeholder-copy {
+  .stakeholder-copy,
+  .stakeholder-limit-info,
+  .stakeholder-limit-hero,
+  .stakeholder-limit-copy {
     width: 100%;
   }
 
@@ -877,6 +1006,11 @@ footer .links:hover {
   }
 
   .stakeholder-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 416px);
+    gap: 32px;
+  }
+
+  .stakeholder-limit-hero {
     grid-template-columns: minmax(0, 1fr) minmax(320px, 416px);
     gap: 32px;
   }
@@ -1060,10 +1194,41 @@ footer .links:hover {
     gap: 32px;
   }
 
+  .stakeholder-screen.is-limit-reached .stakeholder-layout,
+  .stakeholder-screen.is-limit-reached .stakeholder-main,
+  .stakeholder-limit-info,
+  .stakeholder-limit-hero,
+  .stakeholder-limit-copy {
+    min-height: 0;
+  }
+
   .stakeholder-hero {
     min-height: 0;
     grid-template-columns: 1fr;
     gap: 28px;
+  }
+
+  .stakeholder-limit-hero {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .stakeholder-limit-copy {
+    align-items: center;
+  }
+
+  .stakeholder-limit-message {
+    min-height: 0;
+    margin-bottom: 24px;
+    padding: 14px 16px;
+    font-size: 18px;
+  }
+
+  .stakeholder-limit-copy > p {
+    min-height: 0;
+    margin-bottom: 32px;
+    font-size: 17px;
+    text-align: left;
   }
 
   .stakeholder-copy {
@@ -1087,6 +1252,12 @@ footer .links:hover {
   }
 
   .stakeholder-illustration {
+    max-width: 416px;
+    height: auto;
+    justify-self: center;
+  }
+
+  .stakeholder-limit-illustration {
     max-width: 416px;
     height: auto;
     justify-self: center;

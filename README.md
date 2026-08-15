@@ -15,6 +15,7 @@ Join is a responsive Kanban application for organizing tasks, contacts and proje
 - Subtasks with completion tracking
 - Contact management and task assignments
 - Search and filtering on the board
+- Stakeholder email-request flow with a daily 10-request limit
 - Responsive layouts for desktop, tablet and mobile devices
 - Persistent data storage with Firebase Realtime Database
 - Local task and contact cache with IndexedDB
@@ -50,6 +51,7 @@ The application uses these database nodes:
 register/
 tasks/
 contacts/
+stakeholderEmailRequests/
 ```
 
 Configure appropriate Firebase Security Rules before publishing the application. Do not use an unrestricted database for real user data.
@@ -82,7 +84,7 @@ Kanban-Project-Join/
 
 ## Data Storage
 
-Join stores account records, contacts and tasks in Firebase Realtime Database. The currently configured database is located in the `europe-west1` region. Tasks and contacts can additionally be cached in the browser using IndexedDB, while technically necessary login state is stored in cookies or Session Storage.
+Join stores account records, contacts, tasks and the daily stakeholder request counter in Firebase Realtime Database. The currently configured database is located in the `europe-west1` region. Tasks and contacts can additionally be cached in the browser using IndexedDB, while the request counter uses Local Storage as an offline fallback and technically necessary login state is stored in cookies or Session Storage.
 
 More details are available in the project's [Privacy Policy](subpages/privacy_policy.html).
 

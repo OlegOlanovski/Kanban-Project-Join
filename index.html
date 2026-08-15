@@ -84,13 +84,16 @@
                         </svg>
                     </button>
 
-                    <p class="stakeholder-counter"><strong>0 of 10</strong><span>requests used today</span></p>
+                    <p class="stakeholder-counter" aria-live="polite">
+                        <strong id="stakeholderRequestCount">0 of 10</strong>
+                        <span>requests used today</span>
+                    </p>
                 </div>
 
                 <div class="stakeholder-main">
                     <h1 id="stakeholderTitle">Welcome</h1>
 
-                    <div class="stakeholder-info">
+                    <div class="stakeholder-info stakeholder-info--available" id="stakeholderAvailableState">
                         <div class="stakeholder-hero">
                             <div class="stakeholder-copy">
                                 <p class="stakeholder-lead">Easily create a ticket by sending an email — no extra steps
@@ -108,13 +111,36 @@
                                 alt="A stakeholder reviewing tasks on a Kanban board">
                         </div>
 
-                        <a class="stakeholder-request-button"
+                        <a class="stakeholder-request-button" id="stakeholderCreateEmailButton"
                             href="mailto:info@oleg-olanovski.de?subject=New%20feature%20request">
                             <span>Create Email Request</span>
                             <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="m5 12 4 4 10-10" />
                             </svg>
                         </a>
+                    </div>
+
+                    <div class="stakeholder-limit-info" id="stakeholderLimitState" aria-hidden="true">
+                        <div class="stakeholder-limit-hero">
+                            <div class="stakeholder-limit-copy">
+                                <div class="stakeholder-limit-message" role="status">
+                                    The daily 10-request limit has been reached!
+                                </div>
+                                <p>Need more? No worries — you can still send emails, but our team will review them
+                                    manually instead of using AI to create tickets.</p>
+
+                                <a class="stakeholder-limit-button"
+                                    href="mailto:info@oleg-olanovski.de?subject=Manual%20feature%20request">
+                                    <span>Send an email</span>
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="m5 12 4 4 10-10" />
+                                    </svg>
+                                </a>
+                            </div>
+
+                            <img class="stakeholder-limit-illustration" src="./assets/images/stakeholder-limit.svg"
+                                alt="A stakeholder pointing at a Kanban board">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -162,6 +188,7 @@
     </footer>
 </div>
 <script src="./javascript/firebase-config.js"></script>
+<script src="./javascript/stakeholder-requests.js"></script>
 <script src="./javascript/validate.js"></script>
 <script src="./javascript/animation.js"></script>
 <script src="./javascript/login.js"></script>
