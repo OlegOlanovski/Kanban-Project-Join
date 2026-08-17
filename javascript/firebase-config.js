@@ -32,18 +32,19 @@ function normalizeDbUrl(url) {
 }
 
 /**
- * Normalizes task status values to the four board columns.
+ * Normalizes task status values to the five board columns.
  * @param {string} status Raw task status value.
  * @returns {string} Supported board status.
  */
 function normalizeTaskStatus(status) {
   const value = String(status || "").trim().toLowerCase();
-  if (!value) return "todo";
+  if (!value) return "triage";
+  if (value === "triage") return "triage";
   if (value === "todo" || value === "to do" || value === "to-do") return "todo";
   if (value === "progress" || value === "in progress" || value === "in-progress" || value === "inprogress") return "progress";
   if (value === "feedback" || value === "await feedback" || value === "await-feedback" || value === "awaitfeedback") return "feedback";
   if (value === "done") return "done";
-  return "todo";
+  return "triage";
 }
 
 /**

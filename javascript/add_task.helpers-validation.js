@@ -186,7 +186,7 @@ function getAddTaskStatus() {
     return overlay.dataset.status;
   }
 
-  return new URLSearchParams(location.search).get("status") || "todo";
+  return new URLSearchParams(location.search).get("status") || "triage";
 }
 
 // ------------------ VALIDATION MODAL ------------------

@@ -30,18 +30,18 @@ function bindTopAddButton() {
   const topBtn = document.querySelector(".add-task-button");
   if (!topBtn) return;
   topBtn.addEventListener("click", function () {
-    goToAddTask("todo");
+    goToAddTask("triage");
   });
 }
 
 /**
  * Resolves the target board status for a column action button.
  * @param {Element} icon Column action icon.
- * @returns {string} Column status or `todo` as a fallback.
+ * @returns {string} Column status or `triage` as a fallback.
  */
 function getColumnStatus(icon) {
   const col = icon.closest(".column");
-  return col && col.dataset ? col.dataset.status : "todo";
+  return col && col.dataset && col.dataset.status ? col.dataset.status : "triage";
 }
 
 /**
@@ -174,7 +174,7 @@ function initAddTaskOverlay() {
 function openAddTaskOverlay(status) {
   const backdrop = document.getElementById("addTaskOverlayBackdrop");
   if (!backdrop) return;
-  backdrop.dataset.status = status || "todo";
+  backdrop.dataset.status = status || "triage";
   backdrop.hidden = false;
   updateBodyScrollLock();
 

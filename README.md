@@ -9,7 +9,7 @@ Join is a responsive Kanban application for organizing tasks, contacts and proje
 
 - User registration, login and guest access
 - Dashboard with task statistics and upcoming deadlines
-- Kanban board with the columns **To Do**, **In Progress**, **Await Feedback** and **Done**
+- Kanban board with the columns **Triage**, **To Do**, **In Progress**, **Await Feedback** and **Done**; new tasks enter **Triage** by default
 - Task creation and editing with due dates, categories and priorities
 - Drag-and-drop and touch controls for moving tasks between columns
 - Subtasks with completion tracking

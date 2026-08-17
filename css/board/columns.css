@@ -3,14 +3,30 @@
 ====================== */
 .board {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: flex-start;
   column-gap: 24px;
-  padding: 0 0px 0px 64px;
+  padding: 0 64px 24px;
   width: 100%;
   position: relative;
   height: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #a8a8a8 transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.board::-webkit-scrollbar {
+  height: 8px;
+}
+
+.board::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.board::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: #a8a8a8;
 }
 
 .column {
