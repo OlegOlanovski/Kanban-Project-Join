@@ -68,9 +68,46 @@ function buildTaskPayload(values) {
     category: values.category,
     priority: selectedPriority,
     status: getAddTaskStatus(),
+    creator: getCurrentTaskCreator(),
     subtasks: [...pendingSubtasks],
     assigned: [...selectedContacts],
   };
+}
+
+/**
+ * Builds creator metadata for a task made inside the authenticated app.
+ * @returns {{type:string,name:string,email:string,source:string}} Creator payload.
+ */
+function getCurrentTaskCreator() {
+  const user = getCurrentTaskUser();
+  const name = getCurrentTaskCreatorName(user);
+  const email = String((user && (user.mail || user.email)) || "").trim();
+  return {
+    type: "member",
+    name: name || "Guest",
+    email: email,
+    source: "profile",
+  };
+}
+
+/** @returns {Object<string, *>|null} Current user normalized from shared session helpers. */
+function getCurrentTaskUser() {
+  if (typeof getLoggedUser === "function") return getLoggedUser();
+  try {
+    const raw = sessionStorage.getItem("loggedInUser");
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : { namen: String(parsed || "") };
+  } catch (error) {
+    return null;
+  }
+}
+
+/** @param {Object<string, *>|null} user Current user. @returns {string} Display name. */
+function getCurrentTaskCreatorName(user) {
+  if (!user) return "";
+  if (typeof getDisplayName === "function") return getDisplayName(user) || "";
+  return String(user.namen || user.name || user.fullName || user.mail || user.email || "").trim();
 }
 
 /**

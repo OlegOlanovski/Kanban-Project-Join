@@ -165,6 +165,7 @@ function readOverlayEditForm() {
 /** @param {BoardTask} t Original task. @param {OverlayEditValues} values Normalized form values. @returns {BoardTask} Updated task payload. */
 function buildEditedTaskFromForm(t, values) {
   return {
+    ...t,
     title: values.title,
     description: values.description,
     id: t.id,
@@ -205,6 +206,8 @@ function exitOverlayEditModeSafe(els) {
 /** @param {BoardTask} task Updated task to re-render in the overlay. @returns {void} */
 function refreshOverlayView(task) {
   if (typeof setOverlayCategory === "function") setOverlayCategory(task);
+  if (typeof renderOverlayCreator === "function") renderOverlayCreator(task);
+  if (typeof setOverlayAiBadge === "function") setOverlayAiBadge(task);
   if (typeof setOverlayTexts === "function") setOverlayTexts(task);
   if (typeof setOverlayPriority === "function") setOverlayPriority(task);
   if (typeof renderOverlayAssigned === "function") renderOverlayAssigned(task);

@@ -56,6 +56,21 @@ stakeholderEmailRequests/
 
 Configure appropriate Firebase Security Rules before publishing the application. Do not use an unrestricted database for real user data.
 
+Tasks created inside Join receive a `creator` object automatically. An email/AI integration should use the same shape so the Board can identify an external sender:
+
+```json
+{
+  "status": "triage",
+  "aiGenerated": true,
+  "creator": {
+    "type": "external",
+    "source": "email",
+    "name": "Sender name",
+    "email": "sender@example.com"
+  }
+}
+```
+
 ### 3. Start a local server
 
 For example, with Python:

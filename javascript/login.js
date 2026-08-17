@@ -164,7 +164,11 @@ async function verifyLoginPassword(user, value) {
  * Handle login success.
  */
 function handleLoginSuccess(user, infoEl) {
-  sessionStorage.setItem("loggedInUser", JSON.stringify(user.namen));
+  const sessionUser = {
+    namen: user.namen || user.name || "Guest",
+    mail: user.mail || user.email || "",
+  };
+  sessionStorage.setItem("loggedInUser", JSON.stringify(sessionUser));
   const payload = encodeURIComponent(JSON.stringify(user.namen || "Guest"));
   document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
   hideInfoNoMatch(infoEl);

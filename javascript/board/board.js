@@ -10,6 +10,8 @@
  * @property {string} [priority] Priority label.
  * @property {string} [prio] Legacy priority field used by older task payloads.
  * @property {string} [status] Board column status.
+ * @property {{type?:string,name?:string,email?:string,source?:string}} [creator] Task creator metadata.
+ * @property {boolean} [aiGenerated] Whether an external service generated the ticket.
  * @property {Array<{title:string, done:boolean}>} [subtasks] Task subtasks.
  * @property {string|string[]} [assigned] Assigned contact IDs or names.
  */
