@@ -168,14 +168,18 @@ function updateStatusAfterDrop(col, id) {
  * Updates the task status in storage after a drag-and-drop action.
  * @param {string} id Task identifier to update.
  * @param {string} status New board status for the task.
- * @returns {void}
+ * @returns {Promise<void>}
  */
-function updateTaskStatus(id, status) {
+async function updateTaskStatus(id, status) {
   const tasks = getTasks();
   const idx = findTaskIndexById(id, tasks);
   if (idx === -1) return;
   tasks[idx].status = status;
-  saveTasks(tasks);
+  try {
+    await saveTaskUpdate(tasks, tasks[idx]);
+  } catch (error) {
+    console.warn("Failed to persist task status:", error);
+  }
 }
 
 /**

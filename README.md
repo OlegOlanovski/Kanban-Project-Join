@@ -16,6 +16,7 @@ Join is a responsive Kanban application for organizing tasks, contacts and proje
 - Contact management and task assignments
 - Search and filtering on the board
 - Stakeholder email-request flow with a daily 10-request limit
+- Credential-free n8n workflow export for the Gmail-to-Triage integration
 - Responsive layouts for desktop, tablet and mobile devices
 - Persistent data storage with Firebase Realtime Database
 - Local task and contact cache with IndexedDB
@@ -54,6 +55,10 @@ contacts/
 stakeholderEmailRequests/
 ```
 
+The dedicated stakeholder alias is `8245oleg+join@gmail.com`; Gmail delivers it
+to the underlying demo inbox `8245oleg@gmail.com`. The
+legal contact address remains `info@oleg-olanovski.de`.
+
 Configure appropriate Firebase Security Rules before publishing the application. Do not use an unrestricted database for real user data.
 
 Tasks created inside Join receive a `creator` object automatically. An email/AI integration should use the same shape so the Board can identify an external sender:
@@ -71,7 +76,15 @@ Tasks created inside Join receive a `creator` object automatically. An email/AI 
 }
 ```
 
-### 3. Start a local server
+### 3. Configure n8n
+
+The first credential-free workflow export and its setup instructions are in
+[`n8n/README.md`](n8n/README.md). Import the JSON file into n8n, connect Gmail
+through OAuth2 and select the Gmail labels documented there. Never commit Gmail
+tokens, Firebase service-account files, OpenAI API keys or the n8n encryption
+key.
+
+### 4. Start a local server
 
 For example, with Python:
 

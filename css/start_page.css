@@ -545,6 +545,16 @@ body.stakeholder-visible .stakeholder-screen {
   text-align: justify;
 }
 
+.stakeholder-description a {
+  color: #177da8;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.stakeholder-description a:hover {
+  color: #29abe2;
+}
+
 .stakeholder-illustration {
   width: 416px;
   max-width: 100%;

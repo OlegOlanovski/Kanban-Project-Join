@@ -85,10 +85,10 @@ function closeDeleteConfirm() {
   pendingDeleteId = null;
 }
 
-/** Deletes the pending task after confirmation. @returns {void} */
-function handleDeleteConfirmOk() {
+/** Deletes the pending task after confirmation. @returns {Promise<void>} */
+async function handleDeleteConfirmOk() {
   if (!pendingDeleteId) return closeDeleteConfirm();
-  removeTaskById(pendingDeleteId);
+  await removeTaskById(pendingDeleteId);
   closeDeleteConfirm();
   closeTaskOverlay();
   renderBoardFromStorage();
@@ -105,14 +105,18 @@ function deleteTask(id) {
   openDeleteConfirm(id);
 }
 
-/** @param {string|number} id Task ID to remove from storage. @returns {void} */
-function removeTaskById(id) {
+/** @param {string|number} id Task ID to remove from storage. @returns {Promise<void>} */
+async function removeTaskById(id) {
   const tasks = getTasks();
   const next = [];
   for (let i = 0; i < tasks.length; i++) {
     if (String(tasks[i].id) !== String(id)) next.push(tasks[i]);
   }
-  saveTasks(next);
+  try {
+    await saveTaskDeletion(next, id);
+  } catch (error) {
+    console.warn("Failed to delete task:", error);
+  }
 }
 
 /** @param {string|number} id Task ID to find. @param {BoardTask[]} tasks Task list to search. @returns {number} Matching index or `-1`. */
@@ -139,7 +143,11 @@ async function saveOverlayEdits(id, els) {
   const ctx = buildOverlayEditContext(id);
   if (!ctx) return;
   applyOverlayEditValues(ctx);
-  await saveTasks(ctx.tasks);
+  try {
+    await saveTaskUpdate(ctx.tasks, ctx.task);
+  } catch (error) {
+    console.warn("Failed to persist task edits:", error);
+  }
   exitOverlayEditModeSafe(els);
   refreshOverlayView(ctx.task);
   refreshBoardCards();

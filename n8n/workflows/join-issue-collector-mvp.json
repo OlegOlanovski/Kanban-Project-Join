@@ -1,0 +1,270 @@
+{
+  "id": "JICMVP0000000001",
+  "name": "Join - Issue Collector MVP",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "authentication": "oAuth2",
+        "event": "messageReceived",
+        "simple": false,
+        "maxResults": 10,
+        "filters": {
+          "labelIds": [
+            "INBOX"
+          ],
+          "q": "deliveredto:8245oleg+join@gmail.com -from:8245oleg@gmail.com",
+          "readStatus": "unread",
+          "includeDrafts": false,
+          "includeSpamTrash": false
+        },
+        "options": {}
+      },
+      "id": "5393d8d1-3c7b-4c7c-b3d0-249168f62e61",
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -720,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const raw = $json || {};\n\nfunction getAddressRecord(value) {\n  if (!value || typeof value !== 'object') return null;\n  const records = Array.isArray(value.value) ? value.value : [];\n  return records.find((record) => record && record.address) || null;\n}\n\nfunction getAddressText(value) {\n  if (value && typeof value === 'object') return String(value.text || '').trim();\n  return String(value || '').trim();\n}\n\nfunction extractEmail(value) {\n  const record = getAddressRecord(value);\n  if (record) return String(record.address || '').trim().toLowerCase();\n  const text = getAddressText(value);\n  const angleMatch = text.match(/<([^<>\\s]+@[^<>\\s]+)>/);\n  if (angleMatch) return angleMatch[1].toLowerCase();\n  const bareMatch = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}/i);\n  return bareMatch ? bareMatch[0].toLowerCase() : '';\n}\n\nfunction extractName(value, email) {\n  const record = getAddressRecord(value);\n  if (record && record.name) return String(record.name).trim();\n  const text = getAddressText(value);\n  const beforeAddress = text.includes('<') ? text.slice(0, text.indexOf('<')) : '';\n  const normalized = beforeAddress.replace(/^['\\\"]|['\\\"]$/g, '').trim();\n  return normalized || (email ? email.split('@')[0] : 'External stakeholder');\n}\n\nfunction htmlToText(value) {\n  return String(value || '')\n    .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')\n    .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;/gi, ' ')\n    .replace(/&amp;/gi, '&')\n    .replace(/&lt;/gi, '<')\n    .replace(/&gt;/gi, '>')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nconst senderEmail = extractEmail(raw.from);\nif (!senderEmail) throw new Error('The incoming message has no valid sender email.');\n\nconst senderName = extractName(raw.from, senderEmail);\nconst rawSubject = String(raw.subject || '').replace(/\\s+/g, ' ').trim();\nconst subject = rawSubject.replace(/^\\[JOIN REQUEST\\]\\s*/i, '').trim();\nconst body = String(raw.text || '').trim() || htmlToText(raw.html || raw.textAsHtml || raw.snippet);\nif (!subject && !body) throw new Error('The incoming message contains neither a subject nor a body.');\n\nconst receivedAt = raw.date ? new Date(raw.date) : new Date();\nconst safeReceivedAt = Number.isNaN(receivedAt.getTime()) ? new Date() : receivedAt;\nconst temporaryDueDate = new Date(safeReceivedAt.getTime() + 7 * 24 * 60 * 60 * 1000)\n  .toISOString()\n  .slice(0, 10);\nconst gmailMessageId = String(raw.id || '').trim();\nif (!gmailMessageId) throw new Error('The Gmail message ID is missing.');\n\nreturn {\n  json: {\n    gmailMessageId,\n    gmailThreadId: String(raw.threadId || '').trim(),\n    sourceMessageId: String(raw.messageId || gmailMessageId).trim(),\n    requestDate: safeReceivedAt.toLocaleDateString('en-CA', { timeZone: 'Europe/Berlin' }),\n    task: {\n      title: (subject || 'Email request').slice(0, 120),\n      description: (body || 'No email body provided.').slice(0, 4000),\n      dueDate: temporaryDueDate,\n      category: 'user',\n      priority: 'medium',\n      status: 'triage',\n      creator: {\n        type: 'external',\n        source: 'email',\n        name: senderName,\n        email: senderEmail\n      },\n      aiGenerated: false,\n      subtasks: [],\n      assigned: [],\n      sourceMessageId: String(raw.messageId || gmailMessageId).trim(),\n      gmailMessageId,\n      createdAt: safeReceivedAt.toISOString(),\n      processingVersion: 'mvp-1'\n    }\n  }\n};"
+      },
+      "id": "22ce4e37-5571-482d-971e-14cce535f97f",
+      "name": "Normalize Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://remotestorage-706e3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.task }}",
+        "options": {}
+      },
+      "id": "76d98cad-80f9-405a-9b69-344d57d2b348",
+      "name": "Create Triage Task",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -220,
+        100
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "addLabels",
+        "messageId": "={{ $('Normalize Email').item.json.gmailMessageId }}",
+        "labelIds": [
+          "SELECT_ERLEDIGT_LABEL_IN_N8N"
+        ]
+      },
+      "id": "7f58f298-0c48-4838-9e2f-e4ec3b66a821",
+      "name": "Add erledigt Label",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        40,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "removeLabels",
+        "messageId": "={{ $('Normalize Email').item.json.gmailMessageId }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "id": "b877275d-216c-4125-930e-7b7d174c64b6",
+      "name": "Archive Processed Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        300,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "markAsRead",
+        "messageId": "={{ $('Normalize Email').item.json.gmailMessageId }}"
+      },
+      "id": "0e66f6cc-15f4-46f1-b3f8-d26bcf4964ea",
+      "name": "Mark Processed as Read",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "addLabels",
+        "messageId": "={{ $('Normalize Email').item.json.gmailMessageId }}",
+        "labelIds": [
+          "SELECT_ZU_BEARBEITEN_LABEL_IN_N8N"
+        ]
+      },
+      "id": "47be7a7f-9f91-4c7e-bdfa-b4c58f72c479",
+      "name": "Add zu bearbeiten Label",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        40,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "removeLabels",
+        "messageId": "={{ $('Normalize Email').item.json.gmailMessageId }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "id": "204de7cb-b834-47ea-aef1-f8d124379254",
+      "name": "Archive Failed Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        300,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Setup required\n1. Connect `8245oleg@gmail.com` through Gmail OAuth2 in every Gmail node.\n2. Receive stakeholder requests through `8245oleg+join@gmail.com`.\n3. Create the labels `erledigt` and `zu bearbeiten` in Gmail.\n4. Select those labels in the matching Add Label nodes.\n5. Test with non-sensitive sample mail before activation.\n\nCredentials are intentionally excluded from this export.",
+        "height": 300,
+        "width": 420,
+        "color": 5
+      },
+      "id": "bc2689ea-5fba-45eb-a7b2-c3832ef6e2cc",
+      "name": "Setup Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        -300
+      ]
+    }
+  ],
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalize Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Email": {
+      "main": [
+        [
+          {
+            "node": "Create Triage Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Triage Task": {
+      "main": [
+        [
+          {
+            "node": "Add erledigt Label",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add zu bearbeiten Label",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add erledigt Label": {
+      "main": [
+        [
+          {
+            "node": "Archive Processed Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Archive Processed Email": {
+      "main": [
+        [
+          {
+            "node": "Mark Processed as Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add zu bearbeiten Label": {
+      "main": [
+        [
+          {
+            "node": "Archive Failed Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Berlin"
+  },
+  "versionId": "bfbcb11a-448f-4239-9c04-823e47c34dfd",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

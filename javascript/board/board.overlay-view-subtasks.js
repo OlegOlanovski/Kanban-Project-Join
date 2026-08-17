@@ -42,15 +42,19 @@ function createSubtaskLabel(subtask) {
   return label;
 }
 
-/** @param {string|number} taskId Parent task ID. @param {number} subIndex Subtask index. @param {boolean} done Next completion state. @returns {void} */
-function updateSubtaskDone(taskId, subIndex, done) {
+/** @param {string|number} taskId Parent task ID. @param {number} subIndex Subtask index. @param {boolean} done Next completion state. @returns {Promise<void>} */
+async function updateSubtaskDone(taskId, subIndex, done) {
   const tasks = getTasks();
   const idx = findTaskIndexById(taskId, tasks);
   if (idx < 0) return;
   const task = tasks[idx];
   if (!Array.isArray(task.subtasks) || !task.subtasks[subIndex]) return;
   task.subtasks[subIndex].done = !!done;
-  saveTasks(tasks);
+  try {
+    await saveTaskUpdate(tasks, task);
+  } catch (error) {
+    console.warn("Failed to persist subtask status:", error);
+  }
   updateCardSubtaskProgress(task);
 }
 
