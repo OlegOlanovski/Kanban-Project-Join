@@ -33,9 +33,19 @@ Do not paste the Client ID, Client Secret or OAuth tokens into this repository.
 
 The MVP deliberately uses the email subject as the task title, the plain-text body as the description, `user` as the category, `medium` as the priority and seven days from receipt as a temporary deadline. These placeholders will be replaced by validated AI output in the next workflow version.
 
+## Daily request limit
+
+`Reserve Daily Slot` uses Firebase's atomic server-side increment at
+`stakeholderEmailRequests/{YYYY-MM-DD}/count`. Counts 1 through 10 continue to
+ticket creation. Later requests do not create a ticket; `Send Limit Reply`
+notifies the sender and the message follows the normal processed-email path.
+The Landing Page only reads this authoritative counter and does not count mail
+link clicks.
+
 ## Gmail processing states
 
 - Successful Firebase write: add `erledigt`, remove `INBOX`, mark as read.
+- Daily limit reached: send the limit reply, add `erledigt`, remove `INBOX`, mark as read.
 - Failed Firebase write: add `zu bearbeiten`, remove `INBOX`. The message stays unread for manual attention.
 
 ## Security

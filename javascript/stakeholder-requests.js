@@ -1,12 +1,12 @@
 /**
- * Controls the daily stakeholder email-request limit.
- * A request is counted when the user opens the prefilled email link.
+ * Displays the authoritative daily stakeholder email-request limit from Firebase.
+ * The n8n workflow increments the counter only after an email is received.
  */
 (function initStakeholderRequests() {
   const REQUEST_LIMIT = 10;
+  const REFRESH_INTERVAL_MS = 60 * 1000;
   const FIREBASE_NODE = "stakeholderEmailRequests";
   const LOCAL_STORAGE_PREFIX = "join-stakeholder-requests:";
-  const FIREBASE_RETRIES = 4;
 
   const stakeholderScreen = document.getElementById("stakeholderScreen");
   const availableState = document.getElementById("stakeholderAvailableState");
@@ -23,6 +23,10 @@
   createEmailButton.addEventListener("click", handleCreateEmailClick);
   renderRequestState();
   refreshRequestCount();
+  window.setInterval(refreshRequestCount, REFRESH_INTERVAL_MS);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) refreshRequestCount();
+  });
 
   window.StakeholderRequestLimit = {
     refresh: refreshRequestCount,
@@ -42,7 +46,7 @@
       const remoteCount = await fetchRemoteCount(requestedDate);
       if (sequence !== refreshSequence || requestedDate !== activeDate) return requestCount;
 
-      requestCount = Math.max(requestCount, remoteCount);
+      requestCount = remoteCount;
       saveLocalCount(activeDate, requestCount);
       renderRequestState();
     } catch (error) {
@@ -53,7 +57,7 @@
   }
 
   /**
-   * Counts an email request without delaying the mail application.
+   * Prevents opening the regular request link when the server-side limit is reached.
    * @param {MouseEvent} event Click event from the email link.
    */
   function handleCreateEmailClick(event) {
@@ -64,23 +68,6 @@
       renderRequestState();
       return;
     }
-
-    requestCount = Math.min(REQUEST_LIMIT, requestCount + 1);
-    saveLocalCount(activeDate, requestCount);
-    renderRequestState();
-
-    const requestDate = activeDate;
-    const optimisticCount = requestCount;
-    incrementRemoteCount(requestDate, optimisticCount)
-      .then(function (remoteCount) {
-        if (requestDate !== activeDate) return;
-        requestCount = Math.max(requestCount, remoteCount);
-        saveLocalCount(activeDate, requestCount);
-        renderRequestState();
-      })
-      .catch(function (error) {
-        console.warn("Daily request count was saved locally only.", error);
-      });
   }
 
   /** Updates the counter and switches between available and limit states. */
@@ -115,46 +102,6 @@
     });
     if (!response.ok) throw new Error("Firebase read failed with status " + response.status);
     return normalizeCount(await response.json());
-  }
-
-  /**
-   * Atomically increments the Firebase counter using its ETag.
-   * @param {string} dateKey Date in YYYY-MM-DD format.
-   * @param {number} optimisticCount Count already saved in this browser.
-   * @returns {Promise<number>} Confirmed remote count.
-   */
-  async function incrementRemoteCount(dateKey, optimisticCount) {
-    const endpoint = buildFirebaseCountUrl(dateKey);
-
-    for (let attempt = 0; attempt < FIREBASE_RETRIES; attempt += 1) {
-      const readResponse = await fetch(endpoint, {
-        cache: "no-store",
-        headers: { "X-Firebase-ETag": "true" },
-      });
-      if (!readResponse.ok) throw new Error("Firebase read failed with status " + readResponse.status);
-
-      const etag = readResponse.headers.get("ETag");
-      if (!etag) throw new Error("Firebase did not return an ETag.");
-
-      const remoteCount = normalizeCount(await readResponse.json());
-      if (remoteCount >= REQUEST_LIMIT) return REQUEST_LIMIT;
-
-      const nextCount = Math.min(REQUEST_LIMIT, Math.max(remoteCount + 1, optimisticCount));
-      const writeResponse = await fetch(endpoint, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "If-Match": etag,
-        },
-        body: JSON.stringify(nextCount),
-      });
-
-      if (writeResponse.status === 412) continue;
-      if (!writeResponse.ok) throw new Error("Firebase write failed with status " + writeResponse.status);
-      return normalizeCount(await writeResponse.json());
-    }
-
-    throw new Error("Firebase counter changed too often. Please try again.");
   }
 
   /**

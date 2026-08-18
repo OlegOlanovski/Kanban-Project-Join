@@ -15,7 +15,7 @@ Join is a responsive Kanban application for organizing tasks, contacts and proje
 - Subtasks with completion tracking
 - Contact management and task assignments
 - Search and filtering on the board
-- Stakeholder email-request flow with a daily 10-request limit
+- Stakeholder email-request flow with an n8n-enforced daily 10-request limit
 - Credential-free n8n workflow export for the Gmail-to-Triage integration
 - Responsive layouts for desktop, tablet and mobile devices
 - Persistent data storage with Firebase Realtime Database
