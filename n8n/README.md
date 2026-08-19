@@ -12,7 +12,8 @@ Before the first execution:
 2. Create a Gmail OAuth2 credential in n8n and select it in every Gmail node.
 3. In the two **Add label** nodes, replace the placeholder label values by selecting the matching Gmail labels from the n8n dropdown.
 4. Confirm that **Create Triage Task** points to the correct Firebase Realtime Database test project.
-5. Keep the workflow inactive and use **Test workflow** with a non-sensitive test email first.
+5. Create a **Google Gemini (PaLM) API** credential in n8n and select it in **Analyze Email with Gemini**.
+6. Keep the workflow inactive and use **Execute workflow** with a non-sensitive test email first.
 
 The Gmail Trigger accepts only messages delivered to the dedicated alias
 `8245oleg+join@gmail.com`. The subject can be written normally, for example
@@ -31,7 +32,22 @@ Self-hosted n8n requires a custom Google OAuth client:
 
 Do not paste the Client ID, Client Secret or OAuth tokens into this repository.
 
-The MVP deliberately uses the email subject as the task title, the plain-text body as the description, `user` as the category, `medium` as the priority and seven days from receipt as a temporary deadline. These placeholders will be replaced by validated AI output in the next workflow version.
+## AI email analysis
+
+After the daily-limit check, **Analyze Email with Gemini** uses the Google Gemini
+API and the free-tier `gemini-3.1-flash-lite` model to create JSON task metadata.
+The following values are requested and then validated:
+
+- a concise English title;
+- category `tech` or `user`;
+- priority `urgent`, `medium` or `low`;
+- an explicit deadline in `YYYY-MM-DD` format, or `null` when none was stated.
+
+**Build Validated AI Task** validates the result again before writing to Firebase.
+If the email has no explicit deadline, the workflow uses seven days after receipt.
+The original email body is preserved, an AI notice is prepended, and the task is
+marked with `aiGenerated: true` and `processingVersion: gemini-1`. A Gemini or
+validation error goes to the `zu bearbeiten` branch and creates no task.
 
 ## Daily request limit
 
@@ -46,8 +62,8 @@ link clicks.
 
 - Successful Firebase write: add `erledigt`, remove `INBOX`, mark as read.
 - Daily limit reached: send the limit reply, add `erledigt`, remove `INBOX`, mark as read.
-- Failed Firebase write: add `zu bearbeiten`, remove `INBOX`. The message stays unread for manual attention.
+- Failed Gemini analysis, validation or Firebase write: add `zu bearbeiten`, remove `INBOX`. The message stays unread for manual attention.
 
 ## Security
 
-Do not export credentials with workflow data. Never commit Gmail tokens, Google OAuth client secrets, Firebase service-account files, OpenAI API keys or `N8N_ENCRYPTION_KEY`. Local runtime data and common credential files are excluded by the repository `.gitignore`.
+Do not export credentials with workflow data. Never commit Gmail tokens, Google OAuth client secrets, Firebase service-account files, Gemini API keys or `N8N_ENCRYPTION_KEY`. Local runtime data and common credential files are excluded by the repository `.gitignore`.

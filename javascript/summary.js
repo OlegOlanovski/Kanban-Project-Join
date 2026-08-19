@@ -1,5 +1,8 @@
 const DB_TASK_URL = window.getAppDbUrl ? window.getAppDbUrl() : window.DB_TASK_URL;
 const BOARD_PAGE_URL = "./board.html";
+const EMAIL_REQUESTS_NODE = "stakeholderEmailRequests";
+const EMAIL_REQUESTS_REFRESH_INTERVAL_MS = 60 * 1000;
+const EMAIL_REQUESTS_STORAGE_PREFIX = "join-stakeholder-requests:";
 const months = ["January","February","March","April", "May","June","July","August","September","October","November","December",];
 const urgent_tasks = document.getElementById("todo-status-urgent");
 let urgent_tasks_months = document.getElementById("months");
@@ -122,7 +125,86 @@ async function syncTasksFromDB() {
 async function init() {
   await (window.idbStorage && window.idbStorage.ready ? window.idbStorage.ready : Promise.resolve());
   try { await syncTasksFromDB(); } catch (e) { console.warn("Initial tasks sync failed, continuing with local cache", e); }
+  initEmailRequestsCounter();
   getCokkieCheck(); greetingText(); getTasksTotal(); getTasksDone(); getTasksProgress(); getAwaitFeedback(); getUrgrentTodo();
+}
+
+/**
+ * Initialize the daily email request counter.
+ */
+function initEmailRequestsCounter() {
+  refreshEmailRequestsCount();
+  window.setInterval(refreshEmailRequestsCount, EMAIL_REQUESTS_REFRESH_INTERVAL_MS);
+  document.addEventListener("visibilitychange", function() {
+    if (!document.hidden) refreshEmailRequestsCount();
+  });
+}
+
+/**
+ * Fetch today's request count from the same Firebase node used by n8n.
+ */
+async function refreshEmailRequestsCount() {
+  const dateKey = getBerlinDateKey();
+  renderEmailRequestsCount(readCachedEmailRequestsCount(dateKey));
+
+  try {
+    const response = await fetch(
+      DB_TASK_URL + EMAIL_REQUESTS_NODE + "/" + dateKey + "/count.json",
+      { cache: "no-store" }
+    );
+    if (!response.ok) throw new Error("Request counter could not be loaded");
+
+    const count = normalizeEmailRequestsCount(await response.json());
+    localStorage.setItem(EMAIL_REQUESTS_STORAGE_PREFIX + dateKey, String(count));
+    renderEmailRequestsCount(count);
+  } catch (error) {
+    console.warn("Failed to load email request count", error);
+  }
+}
+
+/**
+ * Return today's date in the timezone used by the n8n daily counter.
+ */
+function getBerlinDateKey() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Berlin",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+  const values = {};
+  parts.forEach(function(part) { values[part.type] = part.value; });
+  return values.year + "-" + values.month + "-" + values.day;
+}
+
+/**
+ * Normalize Firebase or cached request count values.
+ */
+function normalizeEmailRequestsCount(value) {
+  const count = Number(value);
+  if (!Number.isFinite(count)) return 0;
+  return Math.max(0, Math.min(10, Math.floor(count)));
+}
+
+/**
+ * Read the latest locally cached count while Firebase is loading.
+ */
+function readCachedEmailRequestsCount(dateKey) {
+  try {
+    return normalizeEmailRequestsCount(localStorage.getItem(EMAIL_REQUESTS_STORAGE_PREFIX + dateKey));
+  } catch (error) {
+    return 0;
+  }
+}
+
+/**
+ * Render the email request count and keep its accessible label in sync.
+ */
+function renderEmailRequestsCount(count) {
+  const counter = document.getElementById("email-requests-count");
+  const card = document.getElementById("email-requests-card");
+  if (counter) counter.innerText = count;
+  if (card) card.setAttribute("aria-label", count + (count === 1 ? " email request" : " email requests"));
 }
 
 /**

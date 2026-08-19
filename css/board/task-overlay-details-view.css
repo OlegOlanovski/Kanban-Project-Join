@@ -22,7 +22,15 @@
   font-size: 17px;
   font-weight: 400;
   line-height: 120%;
-  color: #7c4dff;
+  color: #6e52ff;
+}
+
+.task-overlay-ai-badge span {
+  color: #6e52ff;
+  background: linear-gradient(90deg, #6e52ff 0%, #29abe2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .task-overlay-ai-badge[hidden] {
@@ -58,7 +66,7 @@
 }
 
 .task-chip.user {
-  background: #0038ff;
+  background: #7c3aed;
 }
 
 /* close button (circle hover) */
@@ -73,7 +81,7 @@
   display: grid;
   place-items: center;
 
-  font-size: 18px;
+  font-size: 24px;
   color: #2a3647;
   transition: background 0.15s ease, transform 0.15s ease;
 }
@@ -87,7 +95,7 @@
 .task-overlay-title {
   width: 100%;
   margin: 0;
-  font-size: 42px;
+  font-size: 61px;
   font-weight: 700;
   line-height: 120%;
   color: #000;
@@ -161,17 +169,32 @@
   height: 22px;
 }
 
+.creator-source-email {
+  display: none;
+  width: 76px;
+  height: 24px;
+  flex: 0 0 76px;
+  border-radius: 4px;
+}
+
 .task-overlay-creator[data-creator-type="member"] .creator-icon--member,
 .task-overlay-creator[data-creator-type="member"] .creator-source-icon--member,
-.task-overlay-creator[data-creator-type="external"] .creator-icon--external,
-.task-overlay-creator[data-creator-type="external"] .creator-source-icon--external {
+.task-overlay-creator[data-creator-type="external"] .creator-icon--external {
   display: block;
+}
+
+.task-overlay-creator[data-creator-type="external"] .creator-source-email {
+  display: block;
+}
+
+.task-overlay-creator[data-creator-type="external"] #taskOverlayCreatorSourceText {
+  display: none;
 }
 
 .task-overlay-creator-name {
   min-width: 0;
   color: #000000;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 120%;
   overflow-wrap: anywhere;
 }
@@ -190,6 +213,10 @@
 
 .task-overlay-creator-source[href]:hover {
   color: #177da8;
+}
+
+.task-overlay-creator[data-creator-type="external"] .task-overlay-creator-source[href]:hover {
+  opacity: 0.8;
 }
 
 .task-overlay-creator-source[hidden] {
@@ -262,6 +289,7 @@
   gap: 16px;
   padding: 7px 16px;
   border-radius: 10px;
+  font-size: 20px;
 }
 
 .task-overlay-badge {

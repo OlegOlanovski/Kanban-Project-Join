@@ -19,7 +19,7 @@
 .task-overlay {
   position: relative;
   width: 525px;
-  height: 871px;
+  height: 920px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 32px);
 

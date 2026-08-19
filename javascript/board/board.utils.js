@@ -68,6 +68,22 @@ function formatDate(value) {
 }
 
 /**
+ * Returns the user-facing task description without legacy integration markers.
+ * The AI badge in the overlay already communicates how the ticket was created.
+ * @param {BoardTask} task Task whose description should be displayed.
+ * @returns {string} Clean task description.
+ */
+function getTaskDisplayDescription(task) {
+  let description = String((task && task.description) || "");
+  const source = String((task && task.creator && task.creator.source) || "").toLowerCase();
+  if (!(task && (task.aiGenerated === true || source === "email"))) return description;
+  description = description.replace(/^\[AI-generated ticket from email\]\s*/i, "");
+  return description
+    .replace(/\n*Gesendet mit der Telekom Mail App\s*\n*<?https?:\/\/www\.t-online\.de\/service\/redir\/emailmobilapp_[^>\s]*>?\s*$/i, "")
+    .trim();
+}
+
+/**
  * Builds avatar initials from a full name.
  * @param {string} name Full name or label.
  * @returns {string} One- or two-letter uppercase initials.

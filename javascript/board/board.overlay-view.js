@@ -162,7 +162,7 @@ function setOverlayCategory(task) {
 /** @param {BoardTask} task Task to reflect in title, description, and due date. @returns {void} */
 function setOverlayTexts(task) {
   setText("taskOverlayTitle", task.title || "");
-  setText("taskOverlayDesc", task.description || "");
+  setText("taskOverlayDesc", getTaskDisplayDescription(task));
   setText("taskOverlayDue", formatDate(task.dueDate || task.due || ""));
 }
 

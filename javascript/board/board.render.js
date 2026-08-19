@@ -102,7 +102,7 @@ function buildCardHtml(task) {
   html += '<div class="card-content">';
   html += '<div class="label ' + labelClass + '">' + labelText + "</div>";
   html += '<div class="title">' + escapeHtml(task.title || "") + "</div>";
-  html += '<div class="desc">' + escapeHtml(task.description || "") + "</div>";
+  html += '<div class="desc">' + escapeHtml(getTaskDisplayDescription(task)) + "</div>";
   html += "</div>";
   html += '<div class="card-bottom">';
   html += buildCardSubtaskProgressHtml(task);

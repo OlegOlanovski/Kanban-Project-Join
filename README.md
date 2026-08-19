@@ -15,7 +15,7 @@ Join is a responsive Kanban application for organizing tasks, contacts and proje
 - Subtasks with completion tracking
 - Contact management and task assignments
 - Search and filtering on the board
-- Stakeholder email-request flow with an n8n-enforced daily 10-request limit
+- Stakeholder email-request flow with AI-generated title, category, priority and deadline, plus an n8n-enforced daily 10-request limit
 - Credential-free n8n workflow export for the Gmail-to-Triage integration
 - Responsive layouts for desktop, tablet and mobile devices
 - Persistent data storage with Firebase Realtime Database
@@ -28,6 +28,7 @@ Join is a responsive Kanban application for organizing tasks, contacts and proje
 - CSS3
 - Vanilla JavaScript
 - Firebase Realtime Database REST API
+- n8n and the Google Gemini API
 - IndexedDB and Session Storage
 - Web Crypto API for password hashing
 
@@ -80,9 +81,9 @@ Tasks created inside Join receive a `creator` object automatically. An email/AI 
 
 The first credential-free workflow export and its setup instructions are in
 [`n8n/README.md`](n8n/README.md). Import the JSON file into n8n, connect Gmail
-through OAuth2 and select the Gmail labels documented there. Never commit Gmail
-tokens, Firebase service-account files, OpenAI API keys or the n8n encryption
-key.
+through OAuth2, create a Google Gemini API credential and select the Gmail labels
+documented there. Never commit Gmail tokens, Firebase service-account files,
+Gemini API keys or the n8n encryption key.
 
 ### 4. Start a local server
 
@@ -126,6 +127,7 @@ This project demonstrates practical work with:
 - Drag-and-drop and touch interactions
 - Client-side form validation and browser storage
 - Data synchronization between Firebase and IndexedDB
+- Structured AI extraction and validation for stakeholder emails
 
 The current authentication implementation is intended for demonstration purposes and is not a replacement for a production authentication system such as Firebase Authentication.
 
