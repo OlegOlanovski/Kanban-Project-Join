@@ -99,6 +99,32 @@ Then open [http://localhost:5500](http://localhost:5500) in your browser.
 
 Opening the HTML files directly with a `file://` URL is not recommended because browser security restrictions may prevent parts of the application from working correctly.
 
+## Demo Usage
+
+Before the demo, make sure both n8n workflows are published and active, and
+that the Gmail and Gemini credentials described in [`n8n/README.md`](n8n/README.md)
+are connected.
+
+1. Open the Landing Page and choose **Create request**.
+2. Select **Create Email Request**. Your email application opens with
+   `8245oleg+join@gmail.com` as the recipient.
+3. Send a non-sensitive feature request or technical issue. A special subject
+   prefix is not required; describe the request and an optional deadline in the
+   subject or message body.
+4. Wait for the confirmation email and open the Board as a team member.
+5. Verify that the new ticket appears in **Triage** with an AI-generated badge,
+   the external creator, generated category and priority, and the extracted or
+   fallback deadline.
+6. Move the ticket to another Board column. The creator receives an automatic
+   status-change email from the second n8n workflow.
+7. To demonstrate the cost guard, use the Landing Page counter. After ten AI
+   processing attempts on the same Berlin calendar day, no additional AI ticket
+   is created and the sender receives the daily-limit reply.
+
+If parsing or ticket creation fails, the sender receives a manual-review notice
+and Gmail moves the incoming message to the `zu bearbeiten` label. Successfully
+processed and limit-rejected messages are moved to `erledigt`.
+
 ## Project Structure
 
 ```text
