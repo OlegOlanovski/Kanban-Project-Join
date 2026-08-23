@@ -50,18 +50,26 @@ marked with `aiGenerated: true` and `processingVersion: gemini-1`. A Gemini or
 validation error sends the creator a manual-review notice, then goes to the
 `zu bearbeiten` branch and creates no task.
 
+The Board converts the stored `[AI-generated ticket from email]` marker into
+the visible **AI-generated ticket** badge and omits the raw marker from the
+description shown to users.
+
 After Firebase creates the ticket, **Send Success Confirmation** emails the
 external creator with the generated title, priority and due date. Only then does
 the incoming message continue to the normal processed-email path.
 
 ## Daily request limit
 
-`Reserve Daily Slot` uses Firebase's atomic server-side increment at
-`stakeholderEmailRequests/{YYYY-MM-DD}/count`. Counts 1 through 10 continue to
-ticket creation. Later requests do not create a ticket; `Send Limit Reply`
+`Reserve Daily Slot` uses Firebase's atomic server-side increment for
+`stakeholderEmailRequests/{YYYY-MM-DD}/attempts`. Attempts 1 through 10 continue
+to AI analysis. Later requests do not create a ticket; `Send Limit Reply`
 notifies the sender and the message follows the normal processed-email path.
-The Landing Page only reads this authoritative counter and does not count mail
-link clicks.
+The legacy `count` field is incremented alongside `attempts` for compatibility.
+
+After Firebase creates a ticket, **Record Created Request** increments the
+separate `created` value. The Landing Page reads `attempts` for the cost limit,
+while Summary reads `created` so failed processing attempts are not displayed as
+created email tickets. Neither counter is increased by clicking the email link.
 
 ## Status change notifications
 

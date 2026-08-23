@@ -115,7 +115,7 @@ Kanban-Project-Join/
 
 ## Data Storage
 
-Join stores account records, contacts, tasks and the daily stakeholder request counter in Firebase Realtime Database. The currently configured database is located in the `europe-west1` region. Tasks and contacts can additionally be cached in the browser using IndexedDB, while the request counter uses Local Storage as an offline fallback and technically necessary login state is stored in cookies or Session Storage.
+Join stores account records, contacts, tasks and daily stakeholder request statistics in Firebase Realtime Database. Separate daily values track AI processing attempts and successfully created email tickets. The currently configured database is located in the `europe-west1` region. Tasks and contacts can additionally be cached in the browser using IndexedDB, while request statistics use Local Storage as an offline fallback and technically necessary login state is stored in cookies or Session Storage.
 
 More details are available in the project's [Privacy Policy](subpages/privacy_policy.html).
 

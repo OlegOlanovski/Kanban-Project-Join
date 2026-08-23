@@ -2,7 +2,7 @@ const DB_TASK_URL = window.getAppDbUrl ? window.getAppDbUrl() : window.DB_TASK_U
 const BOARD_PAGE_URL = "./board.html";
 const EMAIL_REQUESTS_NODE = "stakeholderEmailRequests";
 const EMAIL_REQUESTS_REFRESH_INTERVAL_MS = 60 * 1000;
-const EMAIL_REQUESTS_STORAGE_PREFIX = "join-stakeholder-requests:";
+const EMAIL_REQUESTS_STORAGE_PREFIX = "join-created-email-requests:";
 const months = ["January","February","March","April", "May","June","July","August","September","October","November","December",];
 const urgent_tasks = document.getElementById("todo-status-urgent");
 let urgent_tasks_months = document.getElementById("months");
@@ -141,7 +141,7 @@ function initEmailRequestsCounter() {
 }
 
 /**
- * Fetch today's request count from the same Firebase node used by n8n.
+ * Fetch today's successfully created email-ticket count from Firebase.
  */
 async function refreshEmailRequestsCount() {
   const dateKey = getBerlinDateKey();
@@ -149,12 +149,16 @@ async function refreshEmailRequestsCount() {
 
   try {
     const response = await fetch(
-      DB_TASK_URL + EMAIL_REQUESTS_NODE + "/" + dateKey + "/count.json",
+      DB_TASK_URL + EMAIL_REQUESTS_NODE + "/" + dateKey + ".json",
       { cache: "no-store" }
     );
     if (!response.ok) throw new Error("Request counter could not be loaded");
 
-    const count = normalizeEmailRequestsCount(await response.json());
+    const dailyRecord = await response.json();
+    const rawCount = dailyRecord && typeof dailyRecord === "object"
+      ? (dailyRecord.created ?? dailyRecord.count)
+      : dailyRecord;
+    const count = normalizeEmailRequestsCount(rawCount);
     localStorage.setItem(EMAIL_REQUESTS_STORAGE_PREFIX + dateKey, String(count));
     renderEmailRequestsCount(count);
   } catch (error) {

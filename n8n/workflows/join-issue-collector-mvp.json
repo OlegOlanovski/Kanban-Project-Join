@@ -59,6 +59,37 @@
     {
       "parameters": {
         "method": "PATCH",
+        "url": "={{ 'https://remotestorage-706e3-default-rtdb.europe-west1.firebasedatabase.app/stakeholderEmailRequests/' + $('Normalize Email').item.json.requestDate + '.json' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { created: { '.sv': { increment: 1 } } } }}",
+        "options": {}
+      },
+      "id": "0ef15b71-0ec7-4d72-8222-bccbc6cc07cc",
+      "name": "Record Created Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1300,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
         "url": "={{ 'https://remotestorage-706e3-default-rtdb.europe-west1.firebasedatabase.app/stakeholderEmailRequests/' + $json.requestDate + '.json' }}",
         "sendHeaders": true,
         "headerParameters": {
@@ -71,7 +102,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ { count: { '.sv': { increment: 1 } } } }}",
+        "jsonBody": "={{ { count: { '.sv': { increment: 1 } }, attempts: { '.sv': { increment: 1 } } } }}",
         "options": {}
       },
       "id": "91f4a392-5eb1-4ce6-9f37-786f9ac1b328",
@@ -96,7 +127,7 @@
           "conditions": [
             {
               "id": "7f20d88d-8a89-4fda-a5ad-a80a91a2205a",
-              "leftValue": "={{ Number($json.count || 0) }}",
+              "leftValue": "={{ Number($json.attempts || $json.count || 0) }}",
               "rightValue": 10,
               "operator": {
                 "type": "number",
@@ -176,6 +207,21 @@
     },
     {
       "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const data = $json || {};\nconst task = data.task || {};\nconst marker = '[AI-generated ticket from email]';\nconst originalDescription = String(task.description || 'No email body provided.')\n  .replace(/^\\[AI-generated ticket from email\\]\\s*/i, '')\n  .trim();\n\nreturn {\n  json: {\n    ...data,\n    task: {\n      ...task,\n      description: `${marker}\\n\\n${originalDescription}`.slice(0, 4000)\n    }\n  }\n};"
+      },
+      "id": "e9f7b206-d843-47a5-bcdb-64ed12255f8c",
+      "name": "Add AI Notice",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        780,
+        -80
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
         "resource": "message",
         "operation": "send",
         "sendTo": "={{ $('Normalize Email').item.json.task.creator.email }}",
@@ -217,7 +263,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ $('Build Validated AI Task').item.json.task }}",
+        "jsonBody": "={{ $('Add AI Notice').item.json.task }}",
         "options": {}
       },
       "id": "76d98cad-80f9-405a-9b69-344d57d2b348",
@@ -225,7 +271,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        780,
+        1040,
         0
       ],
       "onError": "continueErrorOutput"
@@ -247,7 +293,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1040,
+        1560,
         0
       ],
       "credentials": {
@@ -275,7 +321,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1040,
+        1560,
         320
       ],
       "credentials": {
@@ -300,7 +346,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1300,
+        1820,
         0
       ],
       "credentials": {
@@ -324,7 +370,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1560,
+        2080,
         0
       ],
       "credentials": {
@@ -345,7 +391,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1820,
+        2340,
         0
       ],
       "credentials": {
@@ -369,7 +415,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1300,
+        1820,
         320
       ],
       "credentials": {
@@ -393,7 +439,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1560,
+        2080,
         320
       ],
       "credentials": {
@@ -405,7 +451,7 @@
     },
     {
       "parameters": {
-        "content": "## Setup required\n1. Connect `8245oleg@gmail.com` through Gmail OAuth2 in every Gmail node, including `Send Limit Reply`, `Send Success Confirmation` and `Send Processing Error`.\n2. Receive stakeholder requests through `8245oleg+join@gmail.com`.\n3. Create the labels `erledigt` and `zu bearbeiten` in Gmail.\n4. Select those labels in the matching Add Label nodes.\n5. Create a `Google Gemini (PaLM) API` credential and select it in `Analyze Email with Gemini`.\n6. The first 10 received requests per Berlin calendar day are analyzed and create tickets; later requests receive an automatic limit reply.\n7. Test with non-sensitive sample mail before activation.\n\nCredentials are intentionally excluded from this export.",
+        "content": "## Setup required\n1. Connect `8245oleg@gmail.com` through Gmail OAuth2 in every Gmail node, including `Send Limit Reply`, `Send Success Confirmation` and `Send Processing Error`.\n2. Receive stakeholder requests through `8245oleg+join@gmail.com`.\n3. Create the labels `erledigt` and `zu bearbeiten` in Gmail.\n4. Select those labels in the matching Add Label nodes.\n5. Create a `Google Gemini (PaLM) API` credential and select it in `Analyze Email with Gemini`.\n6. The first 10 received requests per Berlin calendar day are analyzed and create tickets; later requests receive an automatic limit reply.\n7. The daily Firebase record stores `attempts` for the AI cost limit and `created` for successfully created tickets.\n8. `Add AI Notice` prepends the required AI-generation marker to the stored task description.\n9. Test with non-sensitive sample mail before activation.\n\nCredentials are intentionally excluded from this export.",
         "height": 340,
         "width": 420,
         "color": 5
@@ -508,6 +554,24 @@
       "main": [
         [
           {
+            "node": "Add AI Notice",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Processing Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add AI Notice": {
+      "main": [
+        [
+          {
             "node": "Create Triage Task",
             "type": "main",
             "index": 0
@@ -541,6 +605,24 @@
       ]
     },
     "Create Triage Task": {
+      "main": [
+        [
+          {
+            "node": "Record Created Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Processing Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record Created Request": {
       "main": [
         [
           {

@@ -1,6 +1,6 @@
 /**
  * Displays the authoritative daily stakeholder email-request limit from Firebase.
- * The n8n workflow increments the counter only after an email is received.
+ * The n8n workflow increments the attempt counter after an email is received.
  */
 (function initStakeholderRequests() {
   const REQUEST_LIMIT = 10;
@@ -101,7 +101,11 @@
       cache: "no-store",
     });
     if (!response.ok) throw new Error("Firebase read failed with status " + response.status);
-    return normalizeCount(await response.json());
+    const dailyRecord = await response.json();
+    if (dailyRecord && typeof dailyRecord === "object") {
+      return normalizeCount(dailyRecord.attempts ?? dailyRecord.count);
+    }
+    return normalizeCount(dailyRecord);
   }
 
   /**
@@ -112,7 +116,7 @@
   function buildFirebaseCountUrl(dateKey) {
     const databaseUrl = typeof window.getAppDbUrl === "function" ? window.getAppDbUrl() : "";
     if (!databaseUrl) throw new Error("Firebase database URL is not configured.");
-    return databaseUrl + FIREBASE_NODE + "/" + encodeURIComponent(dateKey) + "/count.json";
+    return databaseUrl + FIREBASE_NODE + "/" + encodeURIComponent(dateKey) + ".json";
   }
 
   /** @returns {string} Current date in Europe/Berlin as YYYY-MM-DD. */
