@@ -9,7 +9,7 @@ Import [`workflows/join-issue-collector-mvp.json`](workflows/join-issue-collecto
 Before the first execution:
 
 1. In Gmail account `8245oleg@gmail.com`, create the labels `erledigt` and `zu bearbeiten`.
-2. Create a Gmail OAuth2 credential in n8n and select it in every Gmail node, including **Send Success Confirmation**.
+2. Create a Gmail OAuth2 credential in n8n and select it in every Gmail node, including **Send Success Confirmation** and **Send Processing Error**.
 3. In the two **Add label** nodes, replace the placeholder label values by selecting the matching Gmail labels from the n8n dropdown.
 4. Confirm that **Create Triage Task** points to the correct Firebase Realtime Database test project.
 5. Create a **Google Gemini (PaLM) API** credential in n8n and select it in **Analyze Email with Gemini**.
@@ -47,7 +47,8 @@ The following values are requested and then validated:
 If the email has no explicit deadline, the workflow uses seven days after receipt.
 The original email body is preserved, an AI notice is prepended, and the task is
 marked with `aiGenerated: true` and `processingVersion: gemini-1`. A Gemini or
-validation error goes to the `zu bearbeiten` branch and creates no task.
+validation error sends the creator a manual-review notice, then goes to the
+`zu bearbeiten` branch and creates no task.
 
 After Firebase creates the ticket, **Send Success Confirmation** emails the
 external creator with the generated title, priority and due date. Only then does
@@ -66,7 +67,7 @@ link clicks.
 
 - Successful Firebase write: send the creator a confirmation, add `erledigt`, remove `INBOX`, mark as read.
 - Daily limit reached: send the limit reply, add `erledigt`, remove `INBOX`, mark as read.
-- Failed Gemini analysis, validation or Firebase write: add `zu bearbeiten`, remove `INBOX`. The message stays unread for manual attention.
+- Failed normalization, Gemini analysis, validation, Firebase write or confirmation: notify the creator, add `zu bearbeiten`, remove `INBOX`. The message stays unread for manual attention. If the notification itself fails, the Gmail labeling and archiving path still continues.
 
 ## Security
 
