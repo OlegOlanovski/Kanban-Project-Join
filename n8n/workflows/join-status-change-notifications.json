@@ -1,0 +1,254 @@
+{
+  "id": "JSTATUSNOTIFY001",
+  "name": "Join - Status Change Notifications",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "63a588c2-f571-4a69-b513-6587e00e4a18",
+      "name": "Every Minute",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -600,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://remotestorage-706e3-default-rtdb.europe-west1.firebasedatabase.app/statusNotifications.json",
+        "options": {}
+      },
+      "id": "06629fa4-6ca4-4bbb-9ca7-d2d4208b69e1",
+      "name": "Load Status Notifications",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -360,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first()?.json || {};\nconst statusLabels = {\n  triage: 'Triage',\n  todo: 'To Do',\n  progress: 'In Progress',\n  feedback: 'Await Feedback',\n  done: 'Done'\n};\n\nreturn Object.entries(raw)\n  .filter(([, event]) => event && event.state === 'pending')\n  .sort((left, right) => String(left[1].createdAt || '').localeCompare(String(right[1].createdAt || '')))\n  .slice(0, 10)\n  .map(([eventId, event]) => ({\n    json: {\n      ...event,\n      eventId,\n      previousStatusLabel: statusLabels[event.previousStatus] || event.previousStatus || 'Unknown',\n      newStatusLabel: statusLabels[event.newStatus] || event.newStatus || 'Unknown'\n    }\n  }));"
+      },
+      "id": "f4d55891-9a24-45ca-936f-cbdeec474987",
+      "name": "Collect Pending Notifications",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ 'https://remotestorage-706e3-default-rtdb.europe-west1.firebasedatabase.app/statusNotifications/' + encodeURIComponent($json.eventId) + '.json' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { state: 'processing', processingAt: $now.toISO() } }}",
+        "options": {}
+      },
+      "id": "d0c8d88f-6717-4fb0-a91e-76f59ca947ea",
+      "name": "Claim Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        120,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $('Collect Pending Notifications').item.json.creator.email }}",
+        "subject": "={{ 'Join ticket status changed: ' + $('Collect Pending Notifications').item.json.taskTitle }}",
+        "emailType": "text",
+        "message": "={{ `Hello ${$('Collect Pending Notifications').item.json.creator.name || 'there'},\n\nThe status of your Join ticket has changed.\n\nTicket: ${$('Collect Pending Notifications').item.json.taskTitle}\nPrevious status: ${$('Collect Pending Notifications').item.json.previousStatusLabel}\nNew status: ${$('Collect Pending Notifications').item.json.newStatusLabel}\n\nBest regards,\nJoin Team` }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "b6baa0d0-3cbd-4948-b6f1-a5b20f008430",
+      "name": "Send Status Change Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        360,
+        100
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "XIC5rVgRhUXZuIYh",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ 'https://remotestorage-706e3-default-rtdb.europe-west1.firebasedatabase.app/statusNotifications/' + encodeURIComponent($('Collect Pending Notifications').item.json.eventId) + '.json' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { state: 'sent', sentAt: $now.toISO() } }}",
+        "options": {}
+      },
+      "id": "88fa97bb-3843-4b29-a753-09118d939c89",
+      "name": "Mark Notification Sent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        620,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ 'https://remotestorage-706e3-default-rtdb.europe-west1.firebasedatabase.app/statusNotifications/' + encodeURIComponent($('Collect Pending Notifications').item.json.eventId) + '.json' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { state: 'failed', failedAt: $now.toISO(), error: 'Status notification email could not be sent' } }}",
+        "options": {}
+      },
+      "id": "6f8bb4db-df17-4846-9adc-95cbf189d912",
+      "name": "Mark Notification Failed",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        620,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Status notifications\nThe Join Board writes one pending event to `statusNotifications` after a task status changes successfully. This workflow checks Firebase every minute, claims up to 10 pending events, emails the creator and marks each event as `sent` or `failed`. Select the Join Gmail OAuth2 credential in `Send Status Change Email` before publishing.",
+        "height": 260,
+        "width": 420,
+        "color": 5
+      },
+      "id": "8fb9bdeb-9419-4e4c-80b9-97a45bb2911f",
+      "name": "Setup Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        -240
+      ]
+    }
+  ],
+  "connections": {
+    "Every Minute": {
+      "main": [
+        [
+          {
+            "node": "Load Status Notifications",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Status Notifications": {
+      "main": [
+        [
+          {
+            "node": "Collect Pending Notifications",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Pending Notifications": {
+      "main": [
+        [
+          {
+            "node": "Claim Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim Notification": {
+      "main": [
+        [
+          {
+            "node": "Send Status Change Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Status Change Email": {
+      "main": [
+        [
+          {
+            "node": "Mark Notification Sent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark Notification Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Berlin",
+    "binaryMode": "separate"
+  },
+  "versionId": "6774c883-23e2-45f1-8bd3-e97db2e40be7",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

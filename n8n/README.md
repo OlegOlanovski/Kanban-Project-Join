@@ -2,7 +2,7 @@
 
 This directory contains credential-free workflow exports for the Join Issue Collector.
 
-## MVP workflow
+## Issue Collector workflow
 
 Import [`workflows/join-issue-collector-mvp.json`](workflows/join-issue-collector-mvp.json) into n8n 2.32.6 or newer. The workflow intentionally contains no Gmail, Firebase or AI credentials.
 
@@ -62,6 +62,21 @@ ticket creation. Later requests do not create a ticket; `Send Limit Reply`
 notifies the sender and the message follows the normal processed-email path.
 The Landing Page only reads this authoritative counter and does not count mail
 link clicks.
+
+## Status change notifications
+
+Import [`workflows/join-status-change-notifications.json`](workflows/join-status-change-notifications.json)
+and select the same Gmail OAuth2 credential in **Send Status Change Email**.
+The Join Board creates a `pending` event under `statusNotifications/` only after
+the changed task has been saved successfully and only when its creator has a
+valid email address.
+
+The workflow checks Firebase every minute and processes up to 10 pending events
+per execution. It first changes an event to `processing`, sends the creator an
+email containing the task title and the previous and new Board columns, and then
+sets the event to `sent`. A failed Gmail delivery is stored as `failed`. Claiming
+the event before sending prevents the same event from being emailed twice by
+overlapping scheduled executions.
 
 ## Gmail processing states
 

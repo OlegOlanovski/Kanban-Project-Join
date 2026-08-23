@@ -174,12 +174,78 @@ async function updateTaskStatus(id, status) {
   const tasks = getTasks();
   const idx = findTaskIndexById(id, tasks);
   if (idx === -1) return;
-  tasks[idx].status = status;
+  const previousStatus = normalizeStatusForNotification(tasks[idx].status);
+  const nextStatus = normalizeStatusForNotification(status);
+  if (previousStatus === nextStatus) return;
+
+  tasks[idx].status = nextStatus;
   try {
     await saveTaskUpdate(tasks, tasks[idx]);
   } catch (error) {
     console.warn("Failed to persist task status:", error);
+    return;
   }
+
+  try {
+    await createStatusNotification(tasks[idx], previousStatus, nextStatus);
+  } catch (error) {
+    console.warn("Failed to queue status notification:", error);
+  }
+}
+
+/**
+ * Creates a pending Firebase event for n8n after a task status is persisted.
+ * Tasks without a valid creator email do not create notification events.
+ * @param {BoardTask} task Updated task.
+ * @param {string} previousStatus Status before the move.
+ * @param {string} newStatus Status after the move.
+ * @returns {Promise<void>}
+ */
+async function createStatusNotification(task, previousStatus, newStatus) {
+  const creator = task && task.creator && typeof task.creator === "object" ? task.creator : {};
+  const email = String(creator.email || creator.mail || "").trim().toLowerCase();
+  if (!isStatusNotificationEmail(email)) return;
+
+  const response = await fetch(getStatusNotificationsUrl(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      taskId: String(task.id || ""),
+      taskTitle: String(task.title || "Untitled task").trim(),
+      previousStatus: previousStatus,
+      newStatus: newStatus,
+      creator: {
+        type: String(creator.type || "unknown"),
+        name: String(creator.name || creator.namen || email).trim(),
+        email: email,
+      },
+      state: "pending",
+      createdAt: new Date().toISOString(),
+      processingVersion: "status-1",
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create status notification: " + response.status);
+  }
+}
+
+/** @param {string} status Raw task status. @returns {string} Normalized board status. */
+function normalizeStatusForNotification(status) {
+  if (typeof window.normalizeTaskStatus === "function") return window.normalizeTaskStatus(status);
+  return String(status || "triage").trim().toLowerCase();
+}
+
+/** @param {string} email Candidate creator email. @returns {boolean} Whether it can receive a notification. */
+function isStatusNotificationEmail(email) {
+  return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(email || "").trim());
+}
+
+/** @returns {string} Firebase endpoint for status notification events. */
+function getStatusNotificationsUrl() {
+  const base = window.getAppDbUrl ? window.getAppDbUrl() : window.DB_TASK_URL;
+  if (!base) throw new Error("Firebase database URL is not configured.");
+  return base + "statusNotifications.json";
 }
 
 /**
