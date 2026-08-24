@@ -341,7 +341,7 @@
   }
 
   .task-overlay-title {
-    font-size: 38px;
+    font-size: 36px;
   }
 
   .task-chip {
@@ -474,6 +474,10 @@
     font-size: 40px;
   }
 
+  .task-overlay-title {
+    font-size: 32px;
+  }
+
   .task-overlay {
     height: auto;
     padding: 28px 5px;
@@ -520,6 +524,10 @@
   .task-overlay {
     height: auto;
     padding: 28px 5px;
+  }
+
+  .task-overlay-title {
+    font-size: 28px;
   }
 
   .task-overlay-edit .priority-btn {
