@@ -1326,3 +1326,309 @@ body {
     padding-right: 0;
   }
 }
+
+/* Mobile Summary layout from the final mockup. Keep this block last so it
+   provides one predictable source of truth over the legacy breakpoints. */
+@media (max-width: 600px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .layout,
+  .cantainer,
+  .container,
+  .main,
+  .content-wrepper,
+  .summary-content {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .cantainer,
+  .container,
+  .content-wrepper {
+    overflow-x: hidden;
+  }
+
+  .header {
+    width: 100%;
+    height: 80px;
+    padding: 20px 24px !important;
+    position: fixed;
+    inset: 0 0 auto;
+  }
+
+  .header-logo {
+    display: block;
+    width: 32px;
+    height: 40px;
+  }
+
+  .header-user,
+  .header-guest {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .main {
+    padding-bottom: 104px;
+  }
+
+  .summary-section {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 127px 20px 0;
+  }
+
+  .summary-headline {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 0 38px;
+  }
+
+  .summary-title {
+    margin: 0;
+    font-size: 48px;
+    line-height: 1.1;
+    color: #000000;
+    white-space: nowrap;
+  }
+
+  .summary-divider {
+    display: none;
+  }
+
+  .summary-subtitle {
+    margin: 0;
+    font-size: 21px;
+    line-height: 1.2;
+  }
+
+  .summary-subtitle::after {
+    width: 92px;
+    height: 3px;
+    margin-top: 16px;
+  }
+
+  .summary-content {
+    display: block;
+  }
+
+  .kpi-panel {
+    width: calc(100% - 40px);
+    max-width: none;
+    margin: 0 20px;
+    padding: 0;
+    gap: 24px;
+  }
+
+  .kpi-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .kpi-middle {
+    grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .kpi-bottom {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .kpi-card,
+  .kpi-card--half,
+  .kpi-card--wide,
+  .kpi-card--small,
+  .kpi-card--email {
+    width: 100%;
+    border-radius: 20px;
+  }
+
+  .kpi-card--half {
+    height: 110px;
+    padding: 12px;
+    gap: 14px;
+  }
+
+  .kpi-card--wide,
+  .kpi-middle .kpi-card--wide {
+    height: 110px;
+    padding: 12px 10px;
+    grid-template-columns: minmax(91px, 36%) 1px minmax(0, 1fr);
+    column-gap: 8px;
+  }
+
+  .kpi-card--email {
+    height: 110px;
+    padding: 8px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .kpi-card--small {
+    height: 116px;
+    padding: 10px 6px;
+    gap: 8px;
+  }
+
+  .kpi-icon,
+  .kpi-urgent-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .kpi-icon img,
+  .kpi-urgent-icon img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .kpi-number {
+    font-size: 48px;
+    line-height: 1;
+  }
+
+  .kpi-label {
+    max-width: 96px;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .kpi-urgent-left {
+    gap: 4px;
+  }
+
+  .kpi-card--wide .kpi-urgent-icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+  }
+
+  .kpi-urgent-right {
+    align-items: flex-start;
+    gap: 6px;
+    padding-left: 0;
+  }
+
+  .kpi-date {
+    position: static;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .kpi-date-sub {
+    position: static;
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .sidebar {
+    height: 80px;
+    padding: 2px 10px;
+  }
+
+  .menu ul {
+    padding: 0;
+  }
+
+  .menu-button {
+    width: 80px;
+    height: 76px;
+    padding: 8px 0;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 425px) {
+  .summary-section {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .kpi-panel {
+    width: calc(100% - 32px);
+    margin-right: 16px;
+    margin-left: 16px;
+    gap: 16px;
+  }
+
+  .kpi-top,
+  .kpi-middle,
+  .kpi-bottom {
+    gap: 12px;
+  }
+
+  .kpi-middle {
+    grid-template-columns: minmax(0, 2.5fr) minmax(72px, 1fr);
+  }
+
+  .kpi-card--wide,
+  .kpi-middle .kpi-card--wide {
+    padding: 8px 6px;
+    grid-template-columns: 74px 1px minmax(0, 1fr);
+    column-gap: 4px;
+  }
+
+  .kpi-card--wide .kpi-urgent-left {
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .kpi-card--wide .kpi-urgent-icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .kpi-card--wide .kpi-number {
+    font-size: 36px;
+  }
+
+  .kpi-card--wide .kpi-label {
+    max-width: 100%;
+    font-size: 12px;
+  }
+
+  .kpi-urgent-right {
+    min-width: 0;
+  }
+
+  .kpi-number {
+    font-size: 42px;
+  }
+
+  .kpi-date {
+    max-width: 100%;
+    font-size: 12px;
+  }
+
+  .kpi-date-sub {
+    max-width: 100%;
+    font-size: 11px;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  .sidebar {
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
+  .menu-button {
+    width: 76px;
+  }
+}
