@@ -41,14 +41,17 @@ The following values are requested and then validated:
 - a concise English title;
 - category `tech` or `user`;
 - priority `urgent`, `medium` or `low`;
-- an explicit deadline in `YYYY-MM-DD` format, or `null` when none was stated.
+- an explicit deadline in `YYYY-MM-DD` format, or `null` when none was stated;
+- up to 10 explicitly requested subtasks from a labeled checklist or subtask list.
 
 **Build Validated AI Task** validates the result again before writing to Firebase.
 If the email has no explicit deadline, the workflow uses seven days after receipt.
-The original email body is preserved, an AI notice is prepended, and the task is
-marked with `aiGenerated: true` and `processingVersion: gemini-1`. A Gemini or
-validation error sends the creator a manual-review notice, then goes to the
-`zu bearbeiten` branch and creates no task.
+The original email body is preserved. Extracted subtasks are deduplicated and
+stored in Join's checklist format as `{ title, done: false }`; when the email has
+no explicit subtask list, the task gets an empty checklist. The task is marked
+with `aiGenerated: true` and `processingVersion: gemini-1`. A Gemini or validation
+error sends the creator a manual-review notice, then goes to the `zu bearbeiten`
+branch and creates no task.
 
 The Board converts the stored `[AI-generated ticket from email]` marker into
 the visible **AI-generated ticket** badge and omits the raw marker from the
