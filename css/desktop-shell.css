@@ -1,0 +1,64 @@
+:root {
+  --join-desktop-frame-width: 1208px;
+  --join-desktop-header-width: 1052px;
+}
+
+/*
+ * The Figma desktop frame is 1440px wide: a 232px sidebar plus 1208px
+ * of application content. Keep that composition left-anchored and unchanged
+ * on wider screens instead of stretching or recentering page-specific content.
+ */
+@media (min-width: 1024px) {
+  .cantainer,
+  .container {
+    min-width: 0;
+  }
+
+  .content-wrepper {
+    width: 100%;
+    max-width: var(--join-desktop-frame-width);
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .content-wrepper-header {
+    width: 100%;
+    max-width: var(--join-desktop-header-width);
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .detail-content {
+    max-width: var(--join-desktop-frame-width);
+  }
+
+  .summary-section {
+    width: 100%;
+    max-width: var(--join-desktop-frame-width);
+    margin-left: 0;
+    margin-right: auto;
+    padding-left: 28px;
+  }
+}
+
+/* Five Figma board columns fit into the 1208px desktop content area. */
+@media (min-width: 1440px) {
+  .board {
+    column-gap: 14px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .column {
+    flex: 0 0 220px;
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+  }
+
+  .card,
+  .empty {
+    width: 100%;
+    max-width: 100%;
+  }
+}
