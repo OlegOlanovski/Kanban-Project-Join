@@ -38,7 +38,7 @@ After the daily-limit check, **Analyze Email with Gemini** uses the Google Gemin
 API and the free-tier `gemini-3.1-flash-lite` model to create JSON task metadata.
 The following values are requested and then validated:
 
-- a concise English title;
+- a concise title in the same language as the incoming email;
 - category `tech` or `user`;
 - priority `urgent`, `medium` or `low`;
 - an explicit deadline in `YYYY-MM-DD` format, or `null` when none was stated;
