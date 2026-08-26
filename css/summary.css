@@ -558,6 +558,14 @@ body {
   color: #177da8;
 }
 
+.mobile-greeting-screen {
+  display: none;
+}
+
+.mobile-greeting-screen[hidden] {
+  display: none !important;
+}
+
 @media (max-width: 1200px) {
   .summary-section {
     margin-left: 20px;
@@ -1330,6 +1338,10 @@ body {
 /* Mobile Summary layout from the final mockup. Keep this block last so it
    provides one predictable source of truth over the legacy breakpoints. */
 @media (max-width: 600px) {
+  html.mobile-greeting-pending .content-wrepper {
+    visibility: hidden;
+  }
+
   html,
   body {
     width: 100%;
@@ -1360,6 +1372,78 @@ body {
     padding: 20px 24px !important;
     position: fixed;
     inset: 0 0 auto;
+  }
+
+  body.mobile-greeting-active {
+    overflow: hidden;
+  }
+
+  body.mobile-greeting-active .header {
+    padding: 20px 16px !important;
+  }
+
+  .mobile-greeting-screen {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    bottom: 80px;
+    left: 0;
+    z-index: 998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f6f7f8;
+    opacity: 1;
+    transition: opacity 300ms ease;
+  }
+
+  .mobile-greeting-screen.is-leaving {
+    opacity: 0;
+  }
+
+  .mobile-greeting-content {
+    display: flex;
+    width: max-content;
+    max-width: calc(100% - 32px);
+    min-height: 102px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+  }
+
+  .mobile-greeting-salutation,
+  .mobile-greeting-name {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+      sans-serif;
+    font-style: normal;
+    line-height: 120%;
+    white-space: nowrap;
+  }
+
+  .mobile-greeting-salutation {
+    width: max-content;
+    min-width: 252px;
+    height: 43px;
+    color: #2a3647;
+    font-size: 36px;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .mobile-greeting-name {
+    width: max-content;
+    min-width: 274px;
+    height: 56px;
+    color: #177da8;
+    font-size: 47px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .mobile-greeting-name:empty {
+    display: none;
   }
 
   .header-logo {

@@ -87,6 +87,7 @@ function guastLogin() {
 
   try {
     sessionStorage.setItem("loggedInUser",JSON.stringify({ mail: "Guest", namen: "Guest" }),);
+    sessionStorage.setItem("showMobileGreeting", "true");
   } catch (e) {}
 
   window.location.href = "./subpages/summary.html";
@@ -169,6 +170,7 @@ function handleLoginSuccess(user, infoEl) {
     mail: user.mail || user.email || "",
   };
   sessionStorage.setItem("loggedInUser", JSON.stringify(sessionUser));
+  sessionStorage.setItem("showMobileGreeting", "true");
   const payload = encodeURIComponent(JSON.stringify(user.namen || "Guest"));
   document.cookie = `loggedInUser=${payload}; path=/; max-age=3600`;
   hideInfoNoMatch(infoEl);

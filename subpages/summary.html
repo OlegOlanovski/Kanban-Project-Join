@@ -6,6 +6,16 @@
     <link rel="icon" type="image/svg" sizes="32x32" href="../assets/icons/logo.svg">
     <link rel="stylesheet" href="../css/summary.css">
     <link rel="stylesheet" href="../css/desktop-shell.css">
+    <script>
+      try {
+        if (
+          window.matchMedia("(max-width: 600px)").matches &&
+          sessionStorage.getItem("showMobileGreeting") === "true"
+        ) {
+          document.documentElement.classList.add("mobile-greeting-pending");
+        }
+      } catch (e) {}
+    </script>
     
     
     <title>Summary</title>
@@ -60,6 +70,14 @@
             </div>
           </div>
         </header>
+
+        <section class="mobile-greeting-screen" id="mobileGreetingScreen" aria-live="polite"
+          aria-hidden="true" hidden>
+          <div class="mobile-greeting-content">
+            <p class="mobile-greeting-salutation" id="mobileGreetingSalutation"></p>
+            <p class="mobile-greeting-name" id="mobileGreetingName"></p>
+          </div>
+        </section>
 
         <div class="content-wrepper">
           <div class="summary-section">

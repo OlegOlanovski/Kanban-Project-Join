@@ -129,6 +129,90 @@ async function init() {
   getCokkieCheck(); greetingText(); getTasksTotal(); getTasksDone(); getTasksProgress(); getAwaitFeedback(); getUrgrentTodo();
 }
 
+const MOBILE_GREETING_DURATION_MS = 2000;
+const MOBILE_GREETING_FADE_MS = 300;
+
+/**
+ * Show the one-time greeting screen after a mobile login.
+ */
+function initMobileGreeting() {
+  const screen = document.getElementById("mobileGreetingScreen");
+  if (!screen) return;
+  const requested = consumeMobileGreetingRequest();
+  if (!requested || !window.matchMedia("(max-width: 600px)").matches) {
+    document.documentElement.classList.remove("mobile-greeting-pending");
+    return;
+  }
+  renderMobileGreeting();
+  screen.hidden = false;
+  screen.setAttribute("aria-hidden", "false");
+  document.body.classList.add("mobile-greeting-active");
+  window.setTimeout(() => screen.classList.add("is-leaving"), MOBILE_GREETING_DURATION_MS);
+  window.setTimeout(
+    () => closeMobileGreeting(screen),
+    MOBILE_GREETING_DURATION_MS + MOBILE_GREETING_FADE_MS,
+  );
+}
+
+/**
+ * Consume the one-time session flag set by the login page.
+ */
+function consumeMobileGreetingRequest() {
+  try {
+    const requested = sessionStorage.getItem("showMobileGreeting") === "true";
+    sessionStorage.removeItem("showMobileGreeting");
+    return requested;
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * Render the greeting text and optional registered-user name.
+ */
+function renderMobileGreeting() {
+  const salutation = document.getElementById("mobileGreetingSalutation");
+  const name = document.getElementById("mobileGreetingName");
+  if (!salutation || !name) return;
+  const displayName = getMobileGreetingName();
+  const hasMemberName = displayName && displayName.toLowerCase() !== "guest";
+  salutation.textContent = getTimeBasedGreeting() + (hasMemberName ? "," : "!");
+  name.textContent = hasMemberName ? displayName : "";
+}
+
+/**
+ * Get the current user name from the login session.
+ */
+function getMobileGreetingName() {
+  try {
+    const value = JSON.parse(sessionStorage.getItem("loggedInUser") || "null");
+    return normalizeGreetingName(value);
+  } catch (e) {
+    return "";
+  }
+}
+
+/**
+ * Get a time-dependent greeting.
+ */
+function getTimeBasedGreeting() {
+  const hour = new Date().getHours();
+  return hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+}
+
+/**
+ * Hide and reset the temporary greeting screen.
+ */
+function closeMobileGreeting(screen) {
+  document.body.classList.remove("mobile-greeting-active");
+  document.documentElement.classList.remove("mobile-greeting-pending");
+  screen.classList.remove("is-leaving");
+  screen.setAttribute("aria-hidden", "true");
+  screen.hidden = true;
+}
+
+initMobileGreeting();
+
 /**
  * Initialize the daily email request counter.
  */
