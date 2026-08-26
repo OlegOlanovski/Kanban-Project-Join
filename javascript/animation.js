@@ -21,6 +21,7 @@ if (stakeholderBackButton) stakeholderBackButton.addEventListener("click", showW
  * Show the role selection after the logo animation.
  */
 function showWelcomeScreen() {
+  document.documentElement.classList.add("welcome-visible");
   document.body.classList.add("welcome-visible");
   if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "false");
   const firstAction = welcomeScreen && welcomeScreen.querySelector(".welcome-button");
@@ -31,6 +32,7 @@ function showWelcomeScreen() {
  * Close the role selection and reveal the existing login form.
  */
 function showMemberLogin() {
+  document.documentElement.classList.remove("welcome-visible");
   document.body.classList.remove("welcome-visible");
   document.body.classList.add("login-visible");
   if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "true");
@@ -44,6 +46,7 @@ function showMemberLogin() {
  * Open the stakeholder information step.
  */
 function showStakeholderScreen() {
+  document.documentElement.classList.remove("welcome-visible");
   document.body.classList.remove("welcome-visible");
   document.body.classList.add("stakeholder-visible");
   if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "true");
@@ -59,6 +62,7 @@ function showStakeholderScreen() {
  */
 function showWelcomeFromStakeholder() {
   document.body.classList.remove("stakeholder-visible");
+  document.documentElement.classList.add("welcome-visible");
   document.body.classList.add("welcome-visible");
   if (stakeholderScreen) stakeholderScreen.setAttribute("aria-hidden", "true");
   if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "false");

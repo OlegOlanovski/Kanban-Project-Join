@@ -1389,3 +1389,213 @@ footer .links:hover {
     font-size: 15px;
   }
 }
+
+/* Mobile role selection: Figma frame 428 × 926. */
+@media (max-width: 500px) {
+  html.welcome-visible {
+    background-color: #2a3647;
+  }
+
+  body.welcome-visible {
+    min-height: 926px;
+    background-color: #2a3647;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.welcome-visible .content-wrepper {
+    min-height: 926px;
+  }
+
+  body.welcome-visible header {
+    position: relative;
+    z-index: 110;
+    pointer-events: none;
+  }
+
+  body.welcome-visible .welcome-screen {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 926px;
+    display: block;
+    min-height: 926px;
+    padding: 0;
+    overflow: visible;
+  }
+
+  body.welcome-visible .logo {
+    position: absolute;
+    top: 45px;
+    left: 41px;
+    z-index: 110;
+  }
+
+  body.welcome-visible .logo_page,
+  body.loaded.welcome-visible .logo_page {
+    width: 64px !important;
+    height: 78px !important;
+    content: url("../assets/icons/logo-white.svg");
+  }
+
+  body.welcome-visible .button-section--mobile {
+    position: absolute;
+    top: 187px;
+    left: 50%;
+    z-index: 110;
+    display: flex;
+    width: 199px;
+    height: 23px;
+    margin: 0;
+    gap: 16px;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%);
+  }
+
+  body.welcome-visible .button-section--mobile .links {
+    color: #ffffff;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 120%;
+    white-space: nowrap;
+  }
+
+  body.welcome-visible .button-section--mobile .signup {
+    height: 23px;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #ffffff;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 120%;
+    white-space: nowrap;
+  }
+
+  .welcome-card {
+    position: absolute;
+    top: 226px;
+    left: 16px;
+    width: calc(100% - 32px);
+    max-width: 396px;
+    height: 573px;
+    padding: 64px 28px;
+    border-radius: 30px;
+  }
+
+  .welcome-content {
+    width: 100%;
+    max-width: 340px;
+    height: 445px;
+    gap: 56px;
+  }
+
+  .welcome-intro {
+    width: 100%;
+    height: 145px;
+    gap: 24px;
+  }
+
+  .welcome-heading {
+    width: 100%;
+    height: 64px;
+    justify-content: center;
+  }
+
+  .welcome-heading h1 {
+    font-size: 40px;
+    text-align: center;
+  }
+
+  .welcome-divider {
+    width: 100px;
+    height: 3px;
+  }
+
+  .welcome-intro > p {
+    width: 100%;
+    min-height: 57px;
+    font-size: 16px;
+    line-height: 120%;
+    text-align: center;
+  }
+
+  .welcome-options {
+    width: min(242px, 100%);
+    height: 244px;
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+    gap: 70px;
+  }
+
+  .welcome-option,
+  .welcome-option--member {
+    width: 100%;
+    height: 87px;
+    gap: 16px;
+  }
+
+  .welcome-option-title {
+    gap: 8px;
+    font-size: 18px;
+    line-height: 120%;
+    white-space: nowrap;
+  }
+
+  .welcome-option-title svg {
+    width: 18px;
+    height: 18px;
+    flex-basis: 18px;
+  }
+
+  .welcome-option--member .welcome-option-title svg {
+    width: 22px;
+    height: 18px;
+    flex-basis: 22px;
+  }
+
+  .welcome-button {
+    height: 49px;
+    padding: 15px 24px;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 16px;
+  }
+
+  .welcome-button--primary {
+    width: 161px;
+    border: 0;
+    background: #2a3647;
+    font-size: 16px;
+  }
+
+  .welcome-button--primary .welcome-button-label {
+    width: 113px;
+    height: 19px;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 120%;
+  }
+
+  .welcome-button--secondary {
+    width: 156px;
+    font-size: 16px;
+  }
+
+  .welcome-footer {
+    bottom: 15px;
+    width: 100%;
+    height: 79px;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .welcome-footer a {
+    padding: 8px;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 16px;
+  }
+}
