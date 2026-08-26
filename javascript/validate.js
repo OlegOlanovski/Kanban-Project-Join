@@ -166,13 +166,21 @@ function updateSignupToggleIcons() {
   if (passwordToggleIcon && password) {
     setIconSrc(
       passwordToggleIcon,
-      password.type === "text" ? "visibility.svg" : "visibility_off.svg",
+      password.value.length === 0
+        ? "lock.png"
+        : password.type === "text"
+          ? "visibility.svg"
+          : "visibility_off.svg",
     );
   }
   if (confirmPasswordToggleIcon && confirmPassword) {
     setIconSrc(
       confirmPasswordToggleIcon,
-      confirmPassword.type === "text" ? "visibility.svg" : "visibility_off.svg",
+      confirmPassword.value.length === 0
+        ? "lock.png"
+        : confirmPassword.type === "text"
+          ? "visibility.svg"
+          : "visibility_off.svg",
     );
   }
 }
