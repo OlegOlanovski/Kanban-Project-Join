@@ -159,14 +159,14 @@
                 <p id="login-message"></p> 
                 <p id="reg-msg" class=""></p>
             </div>
-            <h1>Login</h1>
+            <h1>Log in</h1>
 
-            <div class="input-wrapper">
+            <div class="input-wrapper input-wrapper--email">
                 <input id="mail" onchange="validateEmail()" type="email" placeholder="Email" >
                 <img src="./assets/icons/mail.png" alt="email icon" id="email-icon" class="input-icon">
             </div>
                 <span class="info-email" id="info-email">Please enter a valid email.</span>
-            <div class="input-wrapper">
+            <div class="input-wrapper input-wrapper--password">
                 <input id="password" onchange="validatePassword()" class="" type="password" placeholder="Password" autocomplete="off" >
                 <img id="lock-icon" src="./assets/icons/lock.png" alt="password icon" class="input-icon">
             </div>
@@ -174,8 +174,8 @@
             <span class="info-password" id="info-no-match">Check your email and password.</span>
 
             <div class="button-group">
-                <button type="button" onclick="logIn()" class="login-btn">Log In</button>
-                <button onclick="guastLogin()" type="button" class="guest-btn">Guest Log In</button>
+                <button type="button" onclick="logIn()" class="login-btn">Log in</button>
+                <button onclick="guastLogin()" type="button" class="guest-btn">Guest Log in</button>
             </div>
         </form>
         <section class="button-section button-section--mobile">
