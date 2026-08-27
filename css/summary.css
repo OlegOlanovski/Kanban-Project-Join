@@ -1369,7 +1369,7 @@ body {
   .header {
     width: 100%;
     height: 80px;
-    padding: 20px 24px !important;
+    padding: 20px 16px !important;
     position: fixed;
     inset: 0 0 auto;
   }
@@ -1467,21 +1467,24 @@ body {
     width: 100%;
     max-width: none;
     margin: 0;
-    padding: 127px 20px 0;
+    padding: 128px 16px 0;
   }
 
   .summary-headline {
+    position: relative;
     display: flex;
+    width: 223px;
+    height: 104px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
-    margin: 0 0 38px;
+    gap: 8px;
+    margin: 0 0 40px;
   }
 
   .summary-title {
     margin: 0;
-    font-size: 48px;
-    line-height: 1.1;
+    font-size: 47px;
+    line-height: 120%;
     color: #000000;
     white-space: nowrap;
   }
@@ -1492,14 +1495,18 @@ body {
 
   .summary-subtitle {
     margin: 0;
-    font-size: 21px;
-    line-height: 1.2;
+    font-size: 20px;
+    line-height: 120%;
+    white-space: nowrap;
   }
 
   .summary-subtitle::after {
-    width: 92px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 90px;
     height: 3px;
-    margin-top: 16px;
+    margin-top: 0;
   }
 
   .summary-content {
@@ -1507,9 +1514,9 @@ body {
   }
 
   .kpi-panel {
-    width: calc(100% - 40px);
+    width: calc(100% - 32px);
     max-width: none;
-    margin: 0 20px;
+    margin: 0 16px;
     padding: 0;
     gap: 24px;
   }
@@ -1520,7 +1527,7 @@ body {
   }
 
   .kpi-middle {
-    grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 2.206896fr) minmax(0, 1fr);
     gap: 24px;
   }
 
@@ -1541,28 +1548,29 @@ body {
   .kpi-card--half {
     height: 110px;
     padding: 12px;
-    gap: 14px;
+    gap: 10px;
   }
 
   .kpi-card--wide,
   .kpi-middle .kpi-card--wide {
     height: 110px;
-    padding: 12px 10px;
-    grid-template-columns: minmax(91px, 36%) 1px minmax(0, 1fr);
-    column-gap: 8px;
+    padding: 0;
+    grid-template-columns: 90px 2px minmax(0, 135px);
+    justify-content: center;
+    column-gap: 6px;
   }
 
   .kpi-card--email {
     height: 110px;
     padding: 8px;
     flex-direction: column;
-    gap: 4px;
+    gap: 0;
   }
 
   .kpi-card--small {
     height: 116px;
     padding: 10px 6px;
-    gap: 8px;
+    gap: 0;
   }
 
   .kpi-icon,
@@ -1580,8 +1588,8 @@ body {
   }
 
   .kpi-number {
-    font-size: 48px;
-    line-height: 1;
+    font-size: 47px;
+    line-height: 120%;
   }
 
   .kpi-label {
@@ -1591,20 +1599,33 @@ body {
   }
 
   .kpi-urgent-left {
-    gap: 4px;
+    gap: 0;
   }
 
   .kpi-card--wide .kpi-urgent-icon {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    min-height: 38px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .kpi-card--wide .kpi-number {
+    font-size: 40px;
+  }
+
+  .kpi-card--wide .kpi-label {
+    font-size: 14px;
   }
 
   .kpi-urgent-right {
     align-items: flex-start;
-    gap: 6px;
+    width: 135px;
+    gap: 4px;
     padding-left: 0;
+  }
+
+  .kpi-divider {
+    height: 68px;
   }
 
   .kpi-date {
@@ -1615,8 +1636,13 @@ body {
 
   .kpi-date-sub {
     position: static;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.2;
+    opacity: 1;
+  }
+
+  .kpi-bottom .kpi-card--small:nth-child(2) .kpi-label {
+    font-size: 14px;
   }
 
   .sidebar {
@@ -1662,7 +1688,7 @@ body {
   .kpi-card--wide,
   .kpi-middle .kpi-card--wide {
     padding: 8px 6px;
-    grid-template-columns: 74px 1px minmax(0, 1fr);
+    grid-template-columns: 72px 1px minmax(0, 1fr);
     column-gap: 4px;
   }
 
@@ -1684,10 +1710,11 @@ body {
 
   .kpi-card--wide .kpi-label {
     max-width: 100%;
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .kpi-urgent-right {
+    width: auto;
     min-width: 0;
   }
 
@@ -1697,12 +1724,12 @@ body {
 
   .kpi-date {
     max-width: 100%;
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .kpi-date-sub {
     max-width: 100%;
-    font-size: 11px;
+    font-size: 14px;
     white-space: normal;
     overflow-wrap: break-word;
   }

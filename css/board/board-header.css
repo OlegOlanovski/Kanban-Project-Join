@@ -56,11 +56,16 @@
 
 .search-input {
   padding: 12px 40px 12px 16px;
-  border: 1px solid #ccc;
+  border: 1px solid #686868;
   border-radius: 8px;
   font-size: 16px;
   outline: none;
   background: #fff;
+}
+
+.search-input::placeholder {
+  color: #686868;
+  opacity: 1;
 }
 
 .separator {
@@ -68,7 +73,7 @@
   right: 48px;
   width: 1px;
   height: 24px;
-  background-color: #d1d1d1;
+  background-color: #686868;
 }
 
 .search-icon {
@@ -97,4 +102,3 @@
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
   background: #243040;
 }
-

@@ -144,7 +144,7 @@
   background: #ffffff;
   border-radius: 24px;
   padding: 16px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
   cursor: grab;
   user-select: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -180,8 +180,10 @@
   width: fit-content;
   max-width: 100%;
   padding: 4px 16px;
+  height: 27px;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 120%;
   font-weight: 400;
   color: #fff;
   margin-bottom: 10px;
@@ -189,16 +191,19 @@
 }
 
 .label.user {
-  background: #7c3aed;
+  width: 113px;
+  background: #7b3acf;
 }
 
 .label.tech {
-  background: #1fd7c1;
+  width: 144px;
+  background: #12ad9a;
 }
 
 .title {
   font-weight: 700;
   font-size: 16px;
+  line-height: 120%;
   color: #2a3647;
   margin-bottom: 6px;
   word-break: break-word;
@@ -210,7 +215,8 @@
 
 .desc {
   font-size: 16px;
-  color: #a8a8a8;
+  line-height: 120%;
+  color: #686868;
   margin: 0 0 12px;
   word-break: break-word;
   display: -webkit-box;
@@ -224,13 +230,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 188px;
   margin: 8px 0 6px;
 }
 
 .card-progress-bar {
-  flex: 1;
+  flex: 0 0 80px;
+  width: 80px;
   height: 8px;
-  background: #f4f4f4;
+  background: #e4e2e2;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -243,8 +251,10 @@
 
 .card-progress-text {
   font-size: 16px;
-  color: #a8a8a8;
-  min-width: 36px;
+  line-height: 120%;
+  color: #000000;
+  width: 100px;
+  min-width: 100px;
   text-align: right;
 }
 
@@ -269,7 +279,7 @@
   place-items: center;
   color: #fff;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 400;
   border: 1px solid #ffffff;
   margin-left: -8px;
 }
@@ -319,7 +329,12 @@
   background: #ffe62b;
 }
 
+.card-priority-icon {
+  width: 17px;
+  height: 12px;
+  object-fit: contain;
+}
+
 .card-priority-icon.medium {
-  width: 20px;
   opacity: 0.9;
 }
