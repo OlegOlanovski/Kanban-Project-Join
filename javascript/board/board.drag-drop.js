@@ -268,5 +268,5 @@ function setEmptyStateForColumn(col) {
   const cards = col.querySelector(".cards");
   const empty = col.querySelector(".empty");
   if (!cards || !empty) return;
-  empty.style.display = cards.children.length ? "none" : "block";
+  empty.style.display = cards.children.length ? "none" : "flex";
 }

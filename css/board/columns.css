@@ -140,7 +140,8 @@
 .card {
   width: 246px;
   max-width: 246px;
-  height: 250px;
+  height: auto;
+  min-height: 250px;
   background: #ffffff;
   border-radius: 24px;
   padding: 16px;
@@ -150,6 +151,7 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 .card-content {

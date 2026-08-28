@@ -141,7 +141,9 @@
 
                 </div>
 
-                <div id="email-requests-card" class="kpi-card kpi-card--email" aria-label="0 email requests">
+                <div id="email-requests-card" class="kpi-card kpi-card--email" role="link" tabindex="0"
+                  aria-label="0 email requests" onclick="goToBoard()"
+                  onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); goToBoard(); }">
                   <span id="email-requests-count" class="kpi-number kpi-number--accent">0</span>
                   <span class="kpi-label">Email requests</span>
                 </div>

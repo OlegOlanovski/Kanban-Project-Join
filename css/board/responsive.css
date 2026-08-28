@@ -500,6 +500,7 @@
     width: 252px;
     max-width: 252px;
     height: 247px;
+    min-height: 247px;
   }
 
   .cards {

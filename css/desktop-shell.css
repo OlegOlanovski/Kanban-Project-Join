@@ -43,10 +43,63 @@
 
 /* Five Figma board columns fit into the 1208px desktop content area. */
 @media (min-width: 1440px) {
+  .board-section {
+    height: 232px;
+    padding: 0 64px;
+  }
+
+  .board-header {
+    width: 1056px;
+    height: 232px;
+    margin-top: 0;
+    padding-bottom: 0;
+    gap: 0;
+  }
+
+  .board-title {
+    width: 176px;
+    color: #000000;
+    line-height: 120%;
+  }
+
+  .board-nav {
+    width: 504px;
+    gap: 32px;
+  }
+
+  .search-bar,
+  .search-input {
+    width: 312px;
+    height: 48px;
+  }
+
+  .search-input {
+    padding: 8px 48px 8px 16px;
+    border-radius: 10px;
+    font-size: 20px;
+    line-height: 120%;
+  }
+
+  .separator {
+    right: 48px;
+    height: 31px;
+  }
+
+  .add-task-button {
+    width: 160px;
+    height: 48px;
+    padding: 8px 16px;
+    border: 1px solid #2a3647;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
   .board {
-    column-gap: 14px;
+    column-gap: 16px;
     padding-left: 24px;
     padding-right: 24px;
+    margin-top: -32px;
+    overflow-x: hidden;
   }
 
   .column {
@@ -54,11 +107,70 @@
     width: 220px;
     min-width: 220px;
     max-width: 220px;
+    height: 688px;
+  }
+
+  .column-header {
+    width: 220px;
+    height: 24px;
+    padding: 0;
+    line-height: 120%;
+  }
+
+  .add-card-icon {
+    display: none;
+  }
+
+  .cards {
+    width: 220px;
+    min-height: 0;
+    padding: 16px 0 10px;
+  }
+
+  .cards:empty {
+    display: none;
   }
 
   .card,
   .empty {
     width: 100%;
     max-width: 100%;
+  }
+
+  .card {
+    height: auto;
+    min-height: 250px;
+    flex-shrink: 0;
+  }
+
+  .card-content {
+    overflow: visible;
+  }
+
+  .card .title,
+  .card .desc {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: initial;
+  }
+
+  .empty {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 0;
+    border-color: #686868;
+    color: #686868;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.16);
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 120%;
   }
 }
