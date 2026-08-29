@@ -1,0 +1,190 @@
+.help-page .policy-content {
+  scrollbar-width: none;
+}
+
+.help-page .policy-content::-webkit-scrollbar {
+  display: none;
+}
+
+.help-page .policy-back {
+  flex: 0 0 37px;
+  width: 37px;
+  height: 37px;
+  margin: 0;
+}
+
+.help-page .policy-back img {
+  width: 21px;
+  height: 20px;
+}
+
+.help-page .join-accent {
+  color: #177da8;
+}
+
+.help-page .help-copy-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.help-page .help-copy-group p,
+.help-page .help-step-content p {
+  margin: 0;
+}
+
+.help-page .help-closing {
+  margin: 0;
+  color: #000000;
+  font-size: 27px;
+  line-height: 120%;
+}
+
+@media (min-width: 1024px) {
+  .help-page .policy-header {
+    width: 100%;
+    max-width: 1016px;
+    min-height: 73px;
+    justify-content: space-between;
+  }
+
+  .help-page .policy-title {
+    width: auto;
+  }
+
+  .help-page .policy-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .help-page .policy-lead,
+  .help-page .policy-section,
+  .help-page .policy-section p,
+  .help-page .policy-list,
+  .help-page .policy-list li {
+    margin: 0;
+  }
+
+  .help-page .policy-lead {
+    color: #000000;
+    font-size: 16px;
+    line-height: 120%;
+  }
+
+  .help-page .policy-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .help-page .policy-section:first-of-type {
+    min-height: 238px;
+  }
+
+  .help-page .policy-section:nth-of-type(2) {
+    gap: 0;
+  }
+
+  .help-page .policy-section h2 {
+    margin: 0;
+  }
+
+  .help-page .policy-section:nth-of-type(2) h2 {
+    margin-bottom: 24px;
+  }
+
+  .help-page .policy-section:nth-of-type(2) > p {
+    margin-bottom: 16px;
+  }
+
+  .help-page .policy-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+    counter-reset: help-step;
+  }
+
+  .help-page .policy-list li {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr);
+    align-items: start;
+    gap: 35px;
+    counter-increment: help-step;
+  }
+
+  .help-page .policy-list li::before {
+    content: counter(help-step) ".";
+    color: #000000;
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 120%;
+  }
+
+  .help-page .policy-list li:first-child {
+    grid-template-columns: 21px minmax(0, 1fr);
+  }
+
+  .help-page .policy-list li:last-child {
+    grid-template-columns: 25px minmax(0, 1fr);
+  }
+
+  .help-page .help-step-content {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+  }
+
+  .help-page .help-step-content strong {
+    font-size: 20px;
+    line-height: 120%;
+  }
+}
+
+@media (max-width: 1023px) {
+  .help-page .layout,
+  .help-page .cantainer,
+  .help-page .main,
+  .help-page .policy-content {
+    width: 100%;
+    min-width: 0;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .help-page .policy-header {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .help-page .policy-body,
+  .help-page .policy-lead,
+  .help-page .policy-section,
+  .help-page .help-copy-group,
+  .help-page .help-step-content {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    overflow-wrap: anywhere;
+  }
+
+  .help-page .policy-list {
+    padding-left: 28px;
+  }
+
+  .help-page .help-step-content strong {
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .help-page .help-step-content p + p {
+    margin-top: 12px;
+  }
+}

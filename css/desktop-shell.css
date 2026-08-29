@@ -9,6 +9,106 @@
  * on wider screens instead of stretching or recentering page-specific content.
  */
 @media (min-width: 1024px) {
+  .sidebar {
+    position: sticky;
+    top: 0;
+    width: 232px;
+    min-width: 232px;
+    height: 100vh;
+    max-height: 100vh;
+    flex: 0 0 232px;
+    min-height: 100vh;
+    align-self: flex-start;
+    padding: 64px 0;
+  }
+
+  .sidebar .logo {
+    width: 232px;
+    height: 121.97px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sidebar .logo img {
+    width: 100.03px;
+    height: 121.97px;
+  }
+
+  .menu {
+    width: 232px;
+    margin-top: 114px;
+    flex: 1 1 auto;
+  }
+
+  .menu ul {
+    display: flex;
+    flex-direction: column;
+    width: 232px;
+    margin: 0;
+    padding: 0;
+    gap: 15px;
+  }
+
+  .menu ul > li {
+    width: 232px;
+    height: 46px;
+    flex: 0 0 46px;
+  }
+
+  .menu a {
+    display: flex;
+    align-items: center;
+    width: 232px;
+    height: 46px;
+    padding: 8px 56px;
+    font-size: 16px;
+    line-height: 120%;
+  }
+
+  .menu-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    height: 30px;
+    padding: 0;
+    gap: 12px;
+    white-space: nowrap;
+  }
+
+  .menu img {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+  }
+
+  .sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    width: 232px;
+    margin: auto 0 0;
+    gap: 4px;
+  }
+
+  .sidebar-footer a {
+    display: flex;
+    align-items: center;
+    width: 232px;
+    height: 35px;
+    padding: 8px 60px;
+    font-size: 16px;
+    line-height: 120%;
+    white-space: nowrap;
+  }
+
+  .sidebar-footer a:hover {
+    transform: none;
+  }
+
+  .sidebar-footer a.active {
+    background: #091931;
+  }
+
   .cantainer,
   .container {
     min-width: 0;
@@ -38,6 +138,108 @@
     margin-left: 0;
     margin-right: auto;
     padding-left: 28px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .sidebar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    height: 80px;
+    min-height: 80px;
+    padding: 2px 8px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .sidebar .logo,
+  .sidebar-footer {
+    display: none;
+  }
+
+  .menu {
+    display: flex;
+    width: 100%;
+    height: 76px;
+    margin: 0;
+    justify-content: center;
+  }
+
+  .menu ul {
+    position: static;
+    display: flex;
+    width: 100%;
+    height: 76px;
+    margin: 0;
+    padding: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .menu ul > li {
+    display: flex;
+    min-width: 0;
+    height: 76px;
+    flex: 1 1 0;
+    justify-content: center;
+  }
+
+  .menu a {
+    display: flex;
+    width: 100%;
+    height: 76px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 120%;
+    background: transparent;
+  }
+
+  .menu-button {
+    display: flex;
+    width: 76px;
+    height: 76px;
+    padding: 15px 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border-radius: 16px;
+    white-space: nowrap;
+  }
+
+  .menu img {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+  }
+
+  .menu a.active {
+    background: transparent;
+  }
+
+  .menu a.active .menu-button {
+    background: #091931;
+  }
+
+  .menu a.active::before,
+  .menu a.active::after {
+    display: none;
+  }
+
+  #login-btn {
+    display: none;
   }
 }
 

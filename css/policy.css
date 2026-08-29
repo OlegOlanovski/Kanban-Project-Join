@@ -25,6 +25,21 @@ body {
   max-width: 1920px;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.header-logo {
+  display: none;
+  width: auto;
+  height: 42px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .main {
   flex: 1;
   min-height: 0;
@@ -109,6 +124,10 @@ body {
   margin: 0 0 12px;
 }
 
+.policy-body a {
+  color: #177da8;
+}
+
 .policy-list {
   margin: 0;
   padding-left: 18px;
@@ -118,7 +137,124 @@ body {
   margin-bottom: 8px;
 }
 
+@media (min-width: 1024px) {
+  .policy-content {
+    padding: 110px 96px 96px;
+  }
+
+  .policy-header {
+    align-items: center;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+
+  .policy-title {
+    width: 419px;
+    color: #000000;
+    font-size: 61px;
+    font-weight: 700;
+    line-height: 120%;
+  }
+
+  .policy-divider {
+    display: none;
+  }
+
+  .policy-body {
+    width: 100%;
+    max-width: 1016px;
+    color: #000000;
+    font-size: 16px;
+    line-height: 120%;
+  }
+
+  .policy-section {
+    margin-top: 35px;
+  }
+
+  .policy-section:first-child {
+    margin-top: 0;
+  }
+
+  .policy-section h2 {
+    margin-bottom: 10px;
+    color: #000000;
+    font-size: 27px;
+    line-height: 120%;
+  }
+
+  .legal-notice-page .policy-title {
+    width: 371px;
+  }
+
+  .legal-notice-page .policy-body {
+    max-width: 1014px;
+  }
+
+  .legal-notice-page .policy-section {
+    margin-top: 24px;
+  }
+
+  .legal-notice-page .policy-section h2 {
+    margin-bottom: 0;
+    font-size: 20px;
+  }
+
+  .legal-notice-page .policy-section:first-child h2 {
+    margin-bottom: 16px;
+    font-size: 27px;
+  }
+
+  .header-user {
+    border-width: 2px;
+    color: #177da8;
+    font-size: 20px;
+  }
+
+  .header-title {
+    width: 319px;
+  }
+
+  .menu {
+    margin-top: 114px;
+  }
+
+  .sidebar-footer {
+    width: 232px;
+    margin-top: auto;
+    margin-left: 0;
+    gap: 4px;
+  }
+
+  .sidebar-footer a {
+    display: flex;
+    align-items: center;
+    width: 232px;
+    height: 35px;
+    padding: 8px 60px;
+    color: #e7e7e7;
+    white-space: nowrap;
+  }
+
+  .sidebar-footer a.active {
+    background: #091931;
+  }
+}
+
 @media (max-width: 1023px) {
+  .header-title {
+    display: none;
+    width: auto;
+    height: auto;
+    content: none;
+  }
+
+  .header-logo {
+    display: block;
+    width: 56px;
+    height: 64px;
+  }
+
   .policy-content {
     padding: 56px 48px 80px;
   }
@@ -131,8 +267,6 @@ body {
     padding: 40px 24px calc(120px + env(safe-area-inset-bottom));
     margin: 80px 0 0 0;
   }
-
-
 }
 
 @media (max-width: 900px) {
@@ -159,5 +293,12 @@ body {
 
   .policy-title {
     font-size: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header-logo {
+    width: 32px;
+    height: 39.02px;
   }
 }
