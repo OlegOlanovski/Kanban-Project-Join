@@ -189,6 +189,9 @@ function bindSubtaskList(els) {
 function handleSubtaskListClick(e) {
   const item = e.target.closest(".subtasks-item");
   if (!item) return;
+  const action = e.target.closest("button");
+  if (!action || !item.contains(action)) return;
+  e.preventDefault();
   if (handleSubtaskRemove(e)) return;
   if (handleSubtaskEdit(e, item)) return;
   if (handleSubtaskSave(e, item)) return;
@@ -283,8 +286,8 @@ function renderSubtasks() {
       <li class="subtasks-item">
         <span>${s.title}</span>
         <div class="subtasks-actions">  
-        <button class="subtasks-edit" data-index="${i}"><img src="../assets/icons/edit-gray.svg" alt="Edit subtask ${s.title}"></button>
-       <span class="subtasks-separator"></span> <button class="subtasks-remove" data-index="${i}"><img src="../assets/icons/delete.svg" alt="Remove subtask ${s.title}"></button>
+        <button type="button" class="subtasks-edit" data-index="${i}"><img src="../assets/icons/edit-gray.svg" alt="Edit subtask ${s.title}"></button>
+       <span class="subtasks-separator"></span> <button type="button" class="subtasks-remove" data-index="${i}"><img src="../assets/icons/delete.svg" alt="Remove subtask ${s.title}"></button>
       </div></li>`;
   });
 }
@@ -298,7 +301,7 @@ function renderSubtasks() {
 function startInlineSubtaskEdit(item, index, title) {
   if (!item) return;
   item.innerHTML = "";
-  const input = createSubtaskEditInput(title);
+  const input = createSubtaskEditInput(title, index);
   const actions = createSubtaskEditActions(index);
   item.appendChild(input);
   item.appendChild(actions);
@@ -307,12 +310,26 @@ function startInlineSubtaskEdit(item, index, title) {
 /**
  * Create subtask edit input.
  */
-function createSubtaskEditInput(title) {
+function createSubtaskEditInput(title, index) {
   const input = document.createElement("input");
   input.type = "text";
   input.className = "subtasks-edit-input";
   input.value = title || "";
+  input.addEventListener("keydown", (e) => handleSubtaskEditKeydown(e, index));
   return input;
+}
+/**
+ * Save or cancel inline subtask editing from the keyboard.
+ */
+function handleSubtaskEditKeydown(e, index) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    commitSubtaskTitle(index, e.currentTarget.value);
+  }
+  if (e.key === "Escape") {
+    e.preventDefault();
+    renderSubtasks();
+  }
 }
 /**
  * Create subtask edit actions.
@@ -330,6 +347,7 @@ function createSubtaskEditActions(index) {
  */
 function createSubtaskSaveBtn(index) {
   const saveBtn = document.createElement("button");
+  saveBtn.type = "button";
   saveBtn.className = "subtasks-save-edit";
   saveBtn.dataset.index = String(index);
   saveBtn.innerHTML = '<img src="../assets/icons/check-black.svg" alt="Save subtask">';
@@ -348,6 +366,7 @@ function createSubtaskSeparator() {
  */
 function createSubtaskCancelBtn(index) {
   const cancelBtn = document.createElement("button");
+  cancelBtn.type = "button";
   cancelBtn.className = "subtasks-cancel-edit";
   cancelBtn.dataset.index = String(index);
   cancelBtn.innerHTML = '<img src="../assets/icons/iconoir_cancel.svg" alt="Cancel edit">';

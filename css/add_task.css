@@ -166,6 +166,11 @@
   outline: none;
 }
 
+#addTaskRoot .form-details input[type="date"],
+#addTaskRoot .form-details input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
 .form-details textarea {
   width: 100%;
   height: 168px;
@@ -293,6 +298,8 @@
   flex-direction: row-reverse;
   gap: 0px;
   padding: 6px;
+  position: relative;
+  z-index: 1;
 }
 
 .subtasks-icon {
@@ -300,14 +307,22 @@
   height: 16px;
 }
 
-.subtasks-remove {
+.subtasks-remove,
+.subtasks-edit,
+.subtasks-save-edit,
+.subtasks-cancel-edit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
   background: transparent;
   border: none;
   color: #666;
   font-size: 16px;
   cursor: pointer;
   line-height: 1;
-  padding: 0 2px;
+  padding: 0;
 }
 
 .subtasks-remove img {
@@ -315,44 +330,14 @@
   height: 16px;
 }
 
-.subtasks-edit {
-  background: transparent;
-  border: none;
-  color: #666;
-  font-size: 16px;
-  cursor: pointer;
-  line-height: 1;
-  padding: 0 2px;
-}
-
 .subtasks-edit img {
   width: 16px;
   height: 16px;
 }
 
-.subtasks-save-edit {
-  background: transparent;
-  border: none;
-  color: #666;
-  font-size: 16px;
-  cursor: pointer;
-  line-height: 1;
-  padding: 0 2px;
-}
-
 .subtasks-save-edit img {
   width: 16px;
   height: 16px;
-}
-
-.subtasks-cancel-edit {
-  background: transparent;
-  border: none;
-  color: #666;
-  font-size: 16px;
-  cursor: pointer;
-  line-height: 1;
-  padding: 0 2px;
 }
 
 .subtasks-cancel-edit img {
@@ -365,6 +350,14 @@
   height: 18px;
   background-color: #969595;
   margin: 0 4px;
+}
+
+.add-task-footer-wrapper {
+  pointer-events: none;
+}
+
+.add-task-footer-wrapper .primary-btn {
+  pointer-events: auto;
 }
 
 .form-details textarea {
@@ -558,6 +551,260 @@ label .label-star {
 .modal-actions .modal-ok {
   height: 42px;
   width: 110px;
+}
+
+/* Desktop Add Task layout from the 1440 x 1024 Figma frame. */
+@media (min-width: 1024px) {
+  #addTaskRoot > .summary-section {
+    width: 1208px;
+    height: auto;
+    margin: 0;
+    padding: 110px 0 0 95px;
+  }
+
+  #addTaskRoot .summary-headline {
+    width: 278px;
+    height: 73px;
+    margin: 0;
+  }
+
+  #addTaskRoot .summary-title {
+    width: 278px;
+    height: 73px;
+    margin: 0;
+    color: #000000;
+    font-size: 61px;
+    font-weight: 700;
+    line-height: 120%;
+  }
+
+  #addTaskRoot > .content-wrepper {
+    display: flex;
+    width: 1208px;
+    max-width: 1208px;
+    margin: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  #addTaskRoot .kpi-panel-task {
+    display: grid;
+    grid-template-columns: 440px 96.25px 440px;
+    width: 976.25px;
+    height: 424px;
+    margin: 48px 0 0 95px;
+    padding: 0;
+    gap: 0;
+  }
+
+  #addTaskRoot .form_1,
+  #addTaskRoot .form_2 {
+    display: flex;
+    width: 440px;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  #addTaskRoot .form_1 {
+    height: 376px;
+  }
+
+  #addTaskRoot .form_2 {
+    grid-column: 3;
+    height: 400px;
+  }
+
+  #addTaskRoot .form-details {
+    width: 440px;
+    height: auto;
+    gap: 0;
+  }
+
+  #addTaskRoot .form-details label,
+  #addTaskRoot .form-details p {
+    width: 100%;
+    height: 24px;
+    margin: 0;
+    color: #2a3647;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 120%;
+  }
+
+  #addTaskRoot .form_1 .form-details > label:not(:first-child) {
+    margin-top: 32px;
+  }
+
+  #addTaskRoot .form_1 input,
+  #addTaskRoot .form_1 textarea {
+    margin-top: 8px;
+  }
+
+  #addTaskRoot .form-details input[type="text"],
+  #addTaskRoot .form-details input[type="date"] {
+    width: 440px;
+    height: 48px;
+    border: 1px solid #686868;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 20px;
+    line-height: 120%;
+  }
+
+  #addTaskRoot #title {
+    padding-right: 21px;
+    padding-left: 21px;
+  }
+
+  #addTaskRoot .form-details textarea {
+    width: 440px;
+    height: 120px;
+    border: 1px solid #686868;
+    border-radius: 10px;
+    padding: 18px 16px;
+    font-size: 20px;
+    line-height: 120%;
+  }
+
+  #addTaskRoot .form-details input::placeholder,
+  #addTaskRoot .form-details textarea::placeholder {
+    font-size: 20px;
+    line-height: 120%;
+  }
+
+  #addTaskRoot .form-separator {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+    align-self: start;
+    width: 0;
+    height: 424px;
+    margin: 0;
+    border-left: 1px solid #686868;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    opacity: 1;
+  }
+
+  #addTaskRoot .form_2 .form-details > p:not(:first-child),
+  #addTaskRoot .form_2 .form-details > label {
+    margin-top: 24px;
+  }
+
+  #addTaskRoot .priority-section {
+    width: 440px;
+    height: 56px;
+    margin-top: 8px;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
+  #addTaskRoot .priority-section .priority-btn {
+    flex: 0 0 136px;
+    width: 136px;
+    height: 56px;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 120%;
+  }
+
+  #addTaskRoot .priority-section .priority-btn.--selected {
+    font-weight: 700;
+  }
+
+  #addTaskRoot #assignedInput,
+  #addTaskRoot #categoryInput,
+  #addTaskRoot .subtasks-input {
+    width: 440px;
+    height: 48px;
+    margin-top: 8px;
+    border-color: #686868;
+    border-radius: 10px;
+  }
+
+  #addTaskRoot #assignedInput,
+  #addTaskRoot #categoryInput {
+    padding: 12px 16px;
+    font-size: 20px;
+    line-height: 120%;
+  }
+
+  #addTaskRoot #assignedText {
+    justify-content: flex-start;
+    color: #000000;
+  }
+
+  #addTaskRoot .subtasks-input input[type="text"] {
+    height: 48px;
+    margin: 0;
+    padding: 12px 72px 12px 16px;
+  }
+
+  #addTaskRoot .subtasks-list:empty {
+    display: none;
+    margin: 0;
+  }
+
+  #addTaskRoot .kpi-panel-task-footer {
+    display: flex;
+    width: 976.25px;
+    height: 56px;
+    margin: 138px 0 0 95px;
+    padding: 0;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  #addTaskRoot .required-note {
+    width: 170px;
+    height: 24px;
+    margin: 0;
+    color: #ff8190;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 120%;
+    white-space: nowrap;
+  }
+
+  #addTaskRoot .required-note .label-star {
+    color: #ff8190;
+  }
+
+  #addTaskRoot .create-task-button {
+    width: 309px;
+    height: 56px;
+    margin: 0;
+    gap: 16px;
+  }
+
+  #addTaskRoot .create-task-button .primary-btn {
+    height: 56px;
+    padding: 16px;
+    gap: 4px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
+  #addTaskRoot .create-task-button .primary-btn .btn-icon {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  #addTaskRoot .create-task-button .--primary-btn-cancel {
+    width: 110px;
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  #addTaskRoot .create-task-button #createTaskBtn {
+    width: 183px;
+    font-size: 21px;
+    font-weight: 700;
+  }
 }
 
 @media (max-width: 1023px) {
