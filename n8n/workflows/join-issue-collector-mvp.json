@@ -16,11 +16,7 @@
         "simple": false,
         "maxResults": 10,
         "filters": {
-          "labelIds": [
-            "INBOX"
-          ],
-          "q": "deliveredto:8245oleg+join@gmail.com -from:8245oleg@gmail.com",
-          "readStatus": "unread",
+          "q": "to:8245oleg+join@gmail.com",
           "includeDrafts": false,
           "includeSpamTrash": false
         },
