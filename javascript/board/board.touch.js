@@ -147,7 +147,7 @@ function onTouchEnd() {
 
   if (wasActive) {
     const el = document.elementFromPoint(lastTouchClientX, lastTouchClientY);
-    const zone = el && el.closest ? el.closest(".column .cards") : null;
+    const zone = el && el.closest ? el.closest(".column") : null;
     if (zone) handleTouchDrop(zone, card, id);
   }
 
@@ -168,8 +168,7 @@ function updateTouchDragOver(x, y) {
   clearDragOverClasses();
   const el = document.elementFromPoint(x, y);
   if (!el || !el.closest) return;
-  const zone = el.closest(".column .cards");
+  const zone = el.closest(".column");
   if (!zone) return;
-  const col = zone.closest(".column");
-  if (col) col.classList.add("drag-over");
+  zone.classList.add("drag-over");
 }

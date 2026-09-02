@@ -49,19 +49,20 @@ function clearDragOverClasses() {
 }
 
 /**
- * Attaches drag/drop listeners to every column card container.
+ * Attaches drag/drop listeners to every board column.
+ * The column remains available as a drop target when its card container is empty.
  * @returns {void}
  */
 function bindDropZones() {
-  const zones = document.querySelectorAll(".column .cards");
+  const zones = document.querySelectorAll(".column");
   for (let i = 0; i < zones.length; i++) {
     attachZoneEvents(zones[i]);
   }
 }
 
 /**
- * Wires all drop-zone event handlers to one column card container.
- * @param {Element} zone Drop target container inside a board column.
+ * Wires all drop-zone event handlers to one board column.
+ * @param {Element} zone Board column used as the drop target.
  * @returns {void}
  */
 function attachZoneEvents(zone) {
@@ -72,33 +73,32 @@ function attachZoneEvents(zone) {
 
 /**
  * Adds the `dragover` handler that enables dropping and highlights the column.
- * @param {Element} zone Drop target container inside a board column.
+ * @param {Element} zone Board column used as the drop target.
  * @returns {void}
  */
 function addDragOverHandler(zone) {
   zone.addEventListener("dragover", function (e) {
     e.preventDefault();
-    const col = zone.closest(".column");
-    if (col) col.classList.add("drag-over");
+    zone.classList.add("drag-over");
     e.dataTransfer.dropEffect = "move";
   });
 }
 
 /**
  * Adds the `dragleave` handler that removes column highlighting.
- * @param {Element} zone Drop target container inside a board column.
+ * @param {Element} zone Board column used as the drop target.
  * @returns {void}
  */
 function addDragLeaveHandler(zone) {
-  zone.addEventListener("dragleave", function () {
-    const col = zone.closest(".column");
-    if (col) col.classList.remove("drag-over");
+  zone.addEventListener("dragleave", function (e) {
+    if (e.relatedTarget && zone.contains(e.relatedTarget)) return;
+    zone.classList.remove("drag-over");
   });
 }
 
 /**
- * Adds the `drop` handler for one column card container.
- * @param {Element} zone Drop target container inside a board column.
+ * Adds the `drop` handler for one board column.
+ * @param {Element} zone Board column used as the drop target.
  * @returns {void}
  */
 function addDropHandler(zone) {
@@ -109,34 +109,37 @@ function addDropHandler(zone) {
 
 /**
  * Moves a dragged card into the target zone and persists its new status.
- * @param {Element} zone Drop target container inside a board column.
+ * @param {Element} zone Board column used as the drop target.
  * @param {DragEvent} e Native drop event.
  * @returns {void}
  */
 function handleDrop(zone, e) {
   e.preventDefault();
-  const col = zone.closest(".column");
-  if (col) col.classList.remove("drag-over");
+  const col = zone.matches(".column") ? zone : zone.closest(".column");
+  const cards = col ? col.querySelector(".cards") : null;
+  if (!cards) return;
+  col.classList.remove("drag-over");
   const id = e.dataTransfer.getData("text/plain");
   const card = getDraggedCard(id);
   if (!card) return;
-  zone.appendChild(card);
+  cards.appendChild(card);
   updateStatusAfterDrop(col, id);
   updateEmptyStates();
 }
 
 /**
  * Completes a touch drag by moving the card into the target zone.
- * @param {Element} zone Drop target container inside a board column.
+ * @param {Element} zone Board column used as the drop target.
  * @param {HTMLElement|null} card Card element being moved.
  * @param {string|null} id Task identifier associated with the dragged card.
  * @returns {void}
  */
 function handleTouchDrop(zone, card, id) {
-  const col = zone.closest(".column");
-  if (col) col.classList.remove("drag-over");
-  if (!card || !id) return;
-  zone.appendChild(card);
+  const col = zone.matches(".column") ? zone : zone.closest(".column");
+  const cards = col ? col.querySelector(".cards") : null;
+  if (!cards || !card || !id) return;
+  col.classList.remove("drag-over");
+  cards.appendChild(card);
   updateStatusAfterDrop(col, id);
   updateEmptyStates();
 }
