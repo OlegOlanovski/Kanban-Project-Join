@@ -245,6 +245,10 @@
 
 /* Five Figma board columns fit into the 1208px desktop content area. */
 @media (min-width: 1440px) {
+  .content-wrepper-header {
+    max-width: none;
+  }
+
   .board-section {
     height: 232px;
     padding: 0 64px;
