@@ -52,9 +52,6 @@ function showStakeholderScreen() {
   if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "true");
   if (stakeholderScreen) stakeholderScreen.setAttribute("aria-hidden", "false");
   if (window.StakeholderRequestLimit) window.StakeholderRequestLimit.refresh();
-  setTimeout(() => {
-    if (stakeholderBackButton) stakeholderBackButton.focus();
-  }, 400);
 }
 
 /**

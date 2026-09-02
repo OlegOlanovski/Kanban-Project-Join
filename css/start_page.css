@@ -1036,6 +1036,22 @@ footer .links:hover {
   }
 }
 
+/* Prevent the stakeholder footer from covering content on short landscape screens. */
+@media (min-width: 769px) and (max-height: 700px) {
+  .stakeholder-layout {
+    margin-bottom: 0;
+  }
+
+  .stakeholder-footer {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    justify-content: center;
+    margin: 32px auto 24px;
+  }
+}
+
 @media (max-width: 768px) {
   html,
   body {
