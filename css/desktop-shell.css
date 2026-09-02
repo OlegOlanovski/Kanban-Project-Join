@@ -141,6 +141,17 @@
   }
 }
 
+/* Keep the desktop sidebar usable on short landscape notebook screens. */
+@media (min-width: 1024px) and (max-height: 700px) {
+  .sidebar {
+    padding: 40px 0 20px;
+  }
+
+  .menu {
+    margin-top: 80px;
+  }
+}
+
 @media (max-width: 1023px) {
   .sidebar {
     position: fixed;

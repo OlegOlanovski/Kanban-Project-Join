@@ -807,6 +807,53 @@ label .label-star {
   }
 }
 
+/* Compact two-column layout for landscape notebooks with a desktop sidebar. */
+@media (min-width: 1024px) and (max-width: 1319px) {
+  #addTaskRoot > .summary-section {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #addTaskRoot > .content-wrepper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #addTaskRoot .kpi-panel-task {
+    grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr);
+    width: min(976.25px, calc(100% - 119px));
+  }
+
+  #addTaskRoot .form_1,
+  #addTaskRoot .form_2,
+  #addTaskRoot .form-details,
+  #addTaskRoot .form-details input[type="text"],
+  #addTaskRoot .form-details input[type="date"],
+  #addTaskRoot .form-details textarea,
+  #addTaskRoot .priority-section,
+  #addTaskRoot #assignedInput,
+  #addTaskRoot #categoryInput,
+  #addTaskRoot .subtasks-input {
+    width: 100%;
+  }
+
+  #addTaskRoot .priority-section {
+    gap: 8px;
+  }
+
+  #addTaskRoot .priority-section .priority-btn {
+    width: auto;
+    min-width: 0;
+    flex: 1 1 0;
+    font-size: 16px;
+    gap: 4px;
+  }
+
+  #addTaskRoot .kpi-panel-task-footer {
+    width: min(976.25px, calc(100% - 119px));
+  }
+}
+
 @media (max-width: 1023px) {
   .form-details {
     display: flex;
