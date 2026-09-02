@@ -305,7 +305,7 @@
     padding-left: 24px;
     padding-right: 24px;
     margin-top: -32px;
-    overflow-x: hidden;
+    overflow: visible;
   }
 
   .column {
@@ -313,7 +313,8 @@
     width: 220px;
     min-width: 220px;
     max-width: 220px;
-    height: 688px;
+    height: auto;
+    min-height: calc(100vh - 320px);
   }
 
   .column-header {
