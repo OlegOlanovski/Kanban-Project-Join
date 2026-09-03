@@ -1609,12 +1609,25 @@ body {
     min-height: 40px;
   }
 
+  .kpi-card--wide .kpi-info {
+    width: 50px;
+    height: 65px;
+    flex: 0 0 50px;
+    justify-content: center;
+  }
+
   .kpi-card--wide .kpi-number {
+    width: 50px;
+    height: 48px;
     font-size: 40px;
+    line-height: 48px;
   }
 
   .kpi-card--wide .kpi-label {
+    width: 46px;
+    height: 17px;
     font-size: 14px;
+    line-height: 17px;
   }
 
   .kpi-urgent-right {
@@ -1682,30 +1695,32 @@ body {
   }
 
   .kpi-middle {
-    grid-template-columns: minmax(0, 2.5fr) minmax(72px, 1fr);
+    grid-template-columns: 256px minmax(72px, 1fr);
   }
 
   .kpi-card--wide,
   .kpi-middle .kpi-card--wide {
-    padding: 8px 6px;
-    grid-template-columns: 72px 1px minmax(0, 1fr);
-    column-gap: 4px;
+    padding: 0;
+    grid-template-columns: 90px 2px 135px;
+    justify-content: center;
+    column-gap: 6px;
   }
 
   .kpi-card--wide .kpi-urgent-left {
-    gap: 4px;
+    width: 90px;
+    gap: 0;
     min-width: 0;
   }
 
   .kpi-card--wide .kpi-urgent-icon {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    min-height: 32px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
   }
 
   .kpi-card--wide .kpi-number {
-    font-size: 36px;
+    font-size: 40px;
   }
 
   .kpi-card--wide .kpi-label {
@@ -1714,8 +1729,10 @@ body {
   }
 
   .kpi-urgent-right {
-    width: auto;
+    width: 135px;
     min-width: 0;
+    gap: 4px;
+    padding-left: 0;
   }
 
   .kpi-number {
@@ -1741,5 +1758,81 @@ body {
 
   .menu-button {
     width: 76px;
+  }
+}
+
+@media (max-width: 359px) {
+  .summary-section {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .kpi-panel {
+    width: calc(100% - 16px);
+    margin-right: 8px;
+    margin-left: 8px;
+    gap: 12px;
+  }
+
+  .kpi-top,
+  .kpi-middle,
+  .kpi-bottom {
+    gap: 8px;
+  }
+
+  .kpi-middle {
+    grid-template-columns: minmax(0, 2.5fr) minmax(72px, 1fr);
+  }
+
+  .kpi-card--wide,
+  .kpi-middle .kpi-card--wide {
+    padding-right: 4px;
+    padding-left: 4px;
+    grid-template-columns: 72px 1px minmax(0, 1fr);
+    column-gap: 8px;
+  }
+
+  .kpi-card--wide .kpi-urgent-left {
+    width: 72px;
+  }
+
+  .kpi-card--wide .kpi-urgent-icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .kpi-card--wide .kpi-info {
+    width: 40px;
+    height: 60px;
+    flex-basis: 40px;
+  }
+
+  .kpi-card--wide .kpi-number {
+    width: 40px;
+    height: 43px;
+    font-size: 36px;
+    line-height: 43px;
+  }
+
+  .kpi-card--wide .kpi-label {
+    width: 40px;
+  }
+
+  .kpi-urgent-right {
+    width: auto;
+  }
+
+  .kpi-divider {
+    height: 60px;
+  }
+
+  .kpi-date {
+    font-size: 14px;
+  }
+
+  .kpi-date-sub {
+    font-size: 13px;
   }
 }
