@@ -27,7 +27,9 @@
   width: 100%;
 }
 
-.task-edit-field p {
+.task-edit-field p,
+.task-edit-field label {
+  margin: 0;
   font-size: 16px;
   font-weight: 600;
   color: #2a3647;

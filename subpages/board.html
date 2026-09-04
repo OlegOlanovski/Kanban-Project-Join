@@ -225,18 +225,18 @@
 
                 <form class="task-overlay-edit" id="taskOverlayEditForm" hidden>
                     <div class="task-edit-field">
-                        <p for="taskEditTitle">Title</p>
+                        <label for="taskEditTitle">Title</label>
                         <input id="taskEditTitle" name="title" type="text" />
                     </div>
 
                     <div class="task-edit-field">
-                        <p for="taskEditDesc">Description</p>
+                        <label for="taskEditDesc">Description</label>
                         <textarea id="taskEditDesc" name="description" rows="4"></textarea>
                     </div>
 
                     <div class="task-edit-row">
                         <div class="task-edit-field">
-                            <p for="taskEditDue">Due date</p>
+                            <label for="taskEditDue">Due date</label>
                             <input id="taskEditDue" name="dueDate" type="date" />
                         </div>
                     </div>
@@ -269,7 +269,7 @@
                     </div>
 
                     <div class="task-edit-field">
-                        <p for="taskEditSubtaskInput">Subtasks</p>
+                        <label for="taskEditSubtaskInput">Subtasks</label>
                         <div class="subtasks-input">
                             <input type="text" id="taskEditSubtaskInput" placeholder="Add new subtask">
                             <button type="button" id="taskEditClearSubtaskBtn" class="subtasks-clear-btn"
@@ -366,12 +366,12 @@
 
                                 <div class="multi-select-dropdown hidden" id="assignedDropdown"></div>
                             </div>
-                            <label for="category">Category <span class="label-star">*</span></label>
+                            <label for="categoryInput">Category <span class="label-star">*</span></label>
                             <div class="multi-select category-select">
-                                <div class="multi-select-input" id="categoryInput">
+                                <button class="multi-select-input" id="categoryInput" type="button">
                                     <span id="categoryText">Select task category</span>
                                     <span class="dropdown-arrow" id="categoryArrow">▼</span>
-                                </div>
+                                </button>
                                 <div class="multi-select-dropdown hidden" id="categoryDropdown">
                                     <div class="category-option" data-value="user">User Story</div>
                                     <div class="category-option" data-value="tech">Technical Task</div>

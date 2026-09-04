@@ -5,13 +5,18 @@
 }
 
 .multi-select-input {
+    appearance: none;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 8px;
     cursor: pointer;
+    width: 100%;
     min-height: 40px;
     background: white;
     font-size: 16px;
+    font-family: inherit;
+    color: inherit;
+    text-align: left;
 }
 
 
