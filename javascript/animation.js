@@ -18,12 +18,26 @@ if (createRequestButton) createRequestButton.addEventListener("click", showStake
 if (stakeholderBackButton) stakeholderBackButton.addEventListener("click", showWelcomeFromStakeholder);
 
 /**
+ * Keep a screen's ARIA visibility and keyboard focus state in sync.
+ * @param {HTMLElement|null} screen Screen to update.
+ * @param {boolean} hidden Whether the screen should be hidden.
+ */
+function setScreenHidden(screen, hidden) {
+  if (!screen) return;
+  if (hidden && screen.contains(document.activeElement)) {
+    document.activeElement.blur();
+  }
+  screen.inert = hidden;
+  screen.setAttribute("aria-hidden", String(hidden));
+}
+
+/**
  * Show the role selection after the logo animation.
  */
 function showWelcomeScreen() {
   document.documentElement.classList.add("welcome-visible");
   document.body.classList.add("welcome-visible");
-  if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "false");
+  setScreenHidden(welcomeScreen, false);
   const firstAction = welcomeScreen && welcomeScreen.querySelector(".welcome-button");
   if (firstAction) firstAction.focus();
 }
@@ -35,7 +49,7 @@ function showMemberLogin() {
   document.documentElement.classList.remove("welcome-visible");
   document.body.classList.remove("welcome-visible");
   document.body.classList.add("login-visible");
-  if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "true");
+  setScreenHidden(welcomeScreen, true);
   setTimeout(() => {
     const emailInput = document.getElementById("mail");
     if (emailInput) emailInput.focus();
@@ -49,9 +63,12 @@ function showStakeholderScreen() {
   document.documentElement.classList.remove("welcome-visible");
   document.body.classList.remove("welcome-visible");
   document.body.classList.add("stakeholder-visible");
-  if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "true");
-  if (stakeholderScreen) stakeholderScreen.setAttribute("aria-hidden", "false");
+  setScreenHidden(welcomeScreen, true);
+  setScreenHidden(stakeholderScreen, false);
   if (window.StakeholderRequestLimit) window.StakeholderRequestLimit.refresh();
+  setTimeout(() => {
+    if (stakeholderBackButton) stakeholderBackButton.focus();
+  }, 400);
 }
 
 /**
@@ -61,8 +78,8 @@ function showWelcomeFromStakeholder() {
   document.body.classList.remove("stakeholder-visible");
   document.documentElement.classList.add("welcome-visible");
   document.body.classList.add("welcome-visible");
-  if (stakeholderScreen) stakeholderScreen.setAttribute("aria-hidden", "true");
-  if (welcomeScreen) welcomeScreen.setAttribute("aria-hidden", "false");
+  setScreenHidden(stakeholderScreen, true);
+  setScreenHidden(welcomeScreen, false);
   setTimeout(() => {
     if (createRequestButton) createRequestButton.focus();
   }, 400);
