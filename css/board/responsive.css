@@ -512,7 +512,11 @@
     align-items: stretch;
     gap: 16px;
     -webkit-overflow-scrolling: touch;
-    padding: 0;
+    width: calc(100% + 32px);
+    max-width: none;
+    margin: -16px -16px -12px;
+    padding: 16px 16px 28px;
+    scroll-padding-inline: 16px;
   }
 
   .cards .card {
@@ -651,11 +655,12 @@
 
   .cards {
     display: flex;
-    width: 100%;
+    width: calc(100% + 32px);
     min-width: 0;
-    max-width: 100%;
+    max-width: none;
     height: auto;
-    padding: 4px 0 12px;
+    margin: -16px -16px -12px;
+    padding: 16px 16px 28px;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: stretch;
@@ -665,6 +670,7 @@
     scrollbar-width: thin;
     scrollbar-color: #a8a8a8 transparent;
     -webkit-overflow-scrolling: touch;
+    scroll-padding-inline: 16px;
   }
 
   .cards::-webkit-scrollbar {
