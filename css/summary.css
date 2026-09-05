@@ -1786,14 +1786,14 @@ body {
 
   .kpi-card--wide,
   .kpi-middle .kpi-card--wide {
-    padding-right: 4px;
-    padding-left: 4px;
-    grid-template-columns: 72px 1px minmax(0, 1fr);
-    column-gap: 8px;
+    padding-right: 10px;
+    padding-left: 10px;
+    grid-template-columns: 76px 1px minmax(0, 1fr);
+    column-gap: 6px;
   }
 
   .kpi-card--wide .kpi-urgent-left {
-    width: 72px;
+    width: 76px;
   }
 
   .kpi-card--wide .kpi-urgent-icon {
@@ -1804,20 +1804,22 @@ body {
   }
 
   .kpi-card--wide .kpi-info {
-    width: 40px;
+    width: 44px;
     height: 60px;
-    flex-basis: 40px;
+    flex-basis: 44px;
   }
 
   .kpi-card--wide .kpi-number {
-    width: 40px;
+    width: 44px;
     height: 43px;
     font-size: 36px;
     line-height: 43px;
   }
 
   .kpi-card--wide .kpi-label {
-    width: 40px;
+    width: 44px;
+    font-size: 14px;
+    line-height: 17px;
   }
 
   .kpi-urgent-right {
