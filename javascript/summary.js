@@ -1,8 +1,5 @@
 const DB_TASK_URL = window.getAppDbUrl ? window.getAppDbUrl() : window.DB_TASK_URL;
 const BOARD_PAGE_URL = "./board.html";
-const EMAIL_REQUESTS_NODE = "stakeholderEmailRequests";
-const EMAIL_REQUESTS_REFRESH_INTERVAL_MS = 60 * 1000;
-const EMAIL_REQUESTS_STORAGE_PREFIX = "join-created-email-requests:";
 const months = ["January","February","March","April", "May","June","July","August","September","October","November","December",];
 const urgent_tasks = document.getElementById("todo-status-urgent");
 let urgent_tasks_months = document.getElementById("months");
@@ -125,8 +122,7 @@ async function syncTasksFromDB() {
 async function init() {
   await (window.idbStorage && window.idbStorage.ready ? window.idbStorage.ready : Promise.resolve());
   try { await syncTasksFromDB(); } catch (e) { console.warn("Initial tasks sync failed, continuing with local cache", e); }
-  initEmailRequestsCounter();
-  getCokkieCheck(); greetingText(); getTasksTotal(); getTasksDone(); getTasksProgress(); getAwaitFeedback(); getUrgrentTodo();
+  getCokkieCheck(); greetingText(); getEmailRequestsTotal(); getTasksTotal(); getTasksDone(); getTasksProgress(); getAwaitFeedback(); getUrgrentTodo();
 }
 
 const MOBILE_GREETING_DURATION_MS = 2000;
@@ -214,75 +210,27 @@ function closeMobileGreeting(screen) {
 initMobileGreeting();
 
 /**
- * Initialize the daily email request counter.
+ * Count all email or AI-generated tasks currently present on the board.
  */
-function initEmailRequestsCounter() {
-  refreshEmailRequestsCount();
-  window.setInterval(refreshEmailRequestsCount, EMAIL_REQUESTS_REFRESH_INTERVAL_MS);
-  document.addEventListener("visibilitychange", function() {
-    if (!document.hidden) refreshEmailRequestsCount();
-  });
+function getEmailRequestsTotal() {
+  const count = getSummaryTasks().filter(isEmailRequestTask).length;
+  renderEmailRequestsCount(count);
 }
 
 /**
- * Fetch today's successfully created email-ticket count from Firebase.
+ * Check whether a task originated from the email/AI request workflow.
+ * @param {Object<string, *>} task Task to inspect.
+ * @returns {boolean} Whether the task should be included in the email-request total.
  */
-async function refreshEmailRequestsCount() {
-  const dateKey = getBerlinDateKey();
-  renderEmailRequestsCount(readCachedEmailRequestsCount(dateKey));
-
-  try {
-    const response = await fetch(
-      DB_TASK_URL + EMAIL_REQUESTS_NODE + "/" + dateKey + ".json",
-      { cache: "no-store" }
-    );
-    if (!response.ok) throw new Error("Request counter could not be loaded");
-
-    const dailyRecord = await response.json();
-    const rawCount = dailyRecord && typeof dailyRecord === "object"
-      ? (dailyRecord.created ?? dailyRecord.count)
-      : dailyRecord;
-    const count = normalizeEmailRequestsCount(rawCount);
-    localStorage.setItem(EMAIL_REQUESTS_STORAGE_PREFIX + dateKey, String(count));
-    renderEmailRequestsCount(count);
-  } catch (error) {
-    console.warn("Failed to load email request count", error);
-  }
-}
-
-/**
- * Return today's date in the timezone used by the n8n daily counter.
- */
-function getBerlinDateKey() {
-  const parts = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Europe/Berlin",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).formatToParts(new Date());
-  const values = {};
-  parts.forEach(function(part) { values[part.type] = part.value; });
-  return values.year + "-" + values.month + "-" + values.day;
-}
-
-/**
- * Normalize Firebase or cached request count values.
- */
-function normalizeEmailRequestsCount(value) {
-  const count = Number(value);
-  if (!Number.isFinite(count)) return 0;
-  return Math.max(0, Math.min(10, Math.floor(count)));
-}
-
-/**
- * Read the latest locally cached count while Firebase is loading.
- */
-function readCachedEmailRequestsCount(dateKey) {
-  try {
-    return normalizeEmailRequestsCount(localStorage.getItem(EMAIL_REQUESTS_STORAGE_PREFIX + dateKey));
-  } catch (error) {
-    return 0;
-  }
+function isEmailRequestTask(task) {
+  if (!task || typeof task !== "object") return false;
+  const creator = task.creator && typeof task.creator === "object" ? task.creator : {};
+  const source = String(creator.source || task.source || task.createdVia || task.origin || "")
+    .trim()
+    .toLowerCase();
+  const explicitAi = task.aiGenerated === true || task.isAiGenerated === true || task.ai_generated === true;
+  const legacyMarker = /^\[AI-generated ticket from email\]/i.test(String(task.description || "").trim());
+  return ["email", "ai", "ai-email", "email-ai"].includes(source) || explicitAi || legacyMarker;
 }
 
 /**
