@@ -524,20 +524,7 @@
   }
 }
 
-@media (max-width: 480px) {
-  .board-title {
-    font-size: 47px;
-  }
-
-  .task-overlay-title {
-    font-size: 32px;
-  }
-
-  .task-overlay {
-    height: auto;
-    padding: 28px 5px;
-  }
-
+@media (max-width: 513px) {
   .task-overlay-edit .priority-section {
     flex-wrap: nowrap;
     gap: 8px;
@@ -559,6 +546,21 @@
     align-items: center;
     justify-content: center;
     gap: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .board-title {
+    font-size: 47px;
+  }
+
+  .task-overlay-title {
+    font-size: 32px;
+  }
+
+  .task-overlay {
+    height: auto;
+    padding: 28px 5px;
   }
 }
 
