@@ -547,6 +547,12 @@
     justify-content: center;
     gap: 3px;
   }
+
+  .task-overlay-edit .priority-btn .btn-icon {
+    width: 16px;
+    height: auto;
+    flex: 0 0 auto;
+  }
 }
 
 @media (max-width: 480px) {
